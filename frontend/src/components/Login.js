@@ -3,12 +3,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import Table from './Table';
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [userpassword, setPassword] = useState("");
-  const [error, setError] = useState(""); // State variable for error
+  const [error, setError] = useState("");
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -41,7 +40,7 @@ const Login = () => {
               <div className="col-md-6">
               <div className="card bg-dark text-light">
                   <div className="card-header">
-                  <h3 className="text-center">Login<Table /></h3>
+                  <h3 className="text-center">Login</h3>
                   </div>
                   <div className="card-body">
                   <Form onSubmit={ submitForm }>
@@ -51,7 +50,7 @@ const Login = () => {
                         type="text" 
                         className="form-control" 
                         id="username" 
-                        placeholder="Enter username"
+                        placeholder="Enter Username"
                         value={ username }
                         onChange={ (e) => setUsername(e.target.value) }
                       />
@@ -62,7 +61,7 @@ const Login = () => {
                         type="password" 
                         className="form-control" 
                         id="password" 
-                        placeholder="Enter password"
+                        placeholder="Enter Password"
                         value={ userpassword }
                         onChange={ (e) => setPassword(e.target.value) }
                         minLength={8}

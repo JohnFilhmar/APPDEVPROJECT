@@ -10,12 +10,15 @@ const useRequireAuth = () => {
     const checkAuthentication = async () => {
       try {
         const response = await axios.get('Users');
-        if (response.status === 200) {
-          setLoggedIn(true);
-        } else {
-          setLoggedIn(false);
-          history.push('/login');
+        if (response.access != null){
+            history.push(response.access);
         }
+        // if (response.status === 200) {
+        //   setLoggedIn(true);
+        // } else {
+        //   setLoggedIn(false);
+        //   history.push('/login');
+        // }
       } catch (error) {
         console.error('Error checking authentication:', error);
         setLoggedIn(false);

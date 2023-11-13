@@ -18,13 +18,16 @@ class Users extends ResourceController
     {
         $session = session();
         $userAccess = $session->get('userAccess');
-        $userRole = $session->get('userRole');
-
-        if ($userAccess && $userRole) {
-            return $this->respond(['status' => 200, 'message' => 'User is authenticated']);
+        // $userRole = $session->get('userRole');
+        if($userAccess != null && $userAccess == "ADMIN"){
+            $accessdirect = "/login";
         } else {
-            return $this->respond(['status' => 401, 'message' => 'User is not authenticated']);
+            $accessdirect = null;
         }
+        $response = [
+            'access' => $accessdirect,
+        ];
+        return $this->respondCreated($response);
     }
     /**
      * Authenticate a user based on provided credentials
@@ -52,6 +55,12 @@ class Users extends ResourceController
 
         if ($user && password_verify($userPassword, $user['userPassword'])) {
             // Authentication successful
+            $session = session();
+            $sesdata = [
+                'userAccess' => $user['userAccess'],
+                'userRole' => $user['userRole']
+            ];
+            $session->set($sesdata);
             $response = [
                 'status' => 200,
                 'error' => null,
@@ -60,10 +69,6 @@ class Users extends ResourceController
                     'success' => 'Login successful',
                 ]
             ];
-
-            $session = session();
-            $session->set('userAccess', $user['userAccess']);
-            $session->set('userRole', $user['userRole']);
 
             return $this->respondCreated($response);
         } else {
