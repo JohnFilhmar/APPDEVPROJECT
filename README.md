@@ -9,6 +9,7 @@ Brief description of your project.
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Running the Application](#running-the-application)
+- [TABLE & Charts](#TABLE-&-Charts-Source)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
