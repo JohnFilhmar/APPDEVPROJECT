@@ -9,19 +9,31 @@ const Register = () => {
     const [userpassword, setPassword] = useState("");
     const [userrole, setRole] = useState("");
     const [useraccess, setAccess] = useState("");
-    // const [loading, setLoading] = useState(false);
-    // const [error, setError] = useState(null);
+    const [error, setError] = useState(null);
     
+    // handle form submition
     const submitForm = async (e) => {
       e.preventDefault();
-      await axios.postForm('Users',{
-        userName: username,
-        userPassword: userpassword,
-        userRole: userrole,
-        userAccess: useraccess,
-      });
+      try {
+        const response = await axios.postForm('Users',{
+          userName: username,
+          userPassword: userpassword,
+          userRole: userrole,
+          userAccess: useraccess,
+        });
+  
+        if (response.data && response.data.redirect && response.data.messages && response.data.messages.success) {
+          console.log(response.data.messages.success);
+          // redirect user to login page if user's authenticated
+          window.location.href = response.data.redirect;
+        } else if (response.data && response.data.messages && response.data.messages.error) {
+          // Set the error state
+          setError(response.data.messages.error); 
+        }
+      } catch(error) {
+        console.error('Error',error);
+      }
     }
-
     return (
     <>
       <div className="row justify-content-center">
@@ -54,6 +66,7 @@ const Register = () => {
                         placeholder="Enter password"
                         value={userpassword}
                         onChange={(e) => setPassword(e.target.value)}
+                        minLength={8}
                     />
                     </Form.Group>
                     <Form.Group className="form-group">
@@ -85,6 +98,7 @@ const Register = () => {
                     </Button>
                 </Form><br />
                 <Link to="/login"><Button className="btn btn-secondary btn-block">Go back to login</Button></Link>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
             </div>
           </div>
         </div>

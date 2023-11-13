@@ -16,7 +16,15 @@ class Users extends ResourceController
     use ResponseTrait;
     public function index()
     {
-        //
+        $session = session();
+        $userAccess = $session->get('userAccess');
+        $userRole = $session->get('userRole');
+
+        if ($userAccess && $userRole) {
+            return $this->respond(['status' => 200, 'message' => 'User is authenticated']);
+        } else {
+            return $this->respond(['status' => 401, 'message' => 'User is not authenticated']);
+        }
     }
     /**
      * Authenticate a user based on provided credentials
@@ -47,10 +55,16 @@ class Users extends ResourceController
             $response = [
                 'status' => 200,
                 'error' => null,
+                'redirect' => '/dashboard',
                 'messages' => [
                     'success' => 'Login successful',
                 ]
             ];
+
+            $session = session();
+            $session->set('userAccess', $user['userAccess']);
+            $session->set('userRole', $user['userRole']);
+
             return $this->respondCreated($response);
         } else {
             // Authentication failed
@@ -107,6 +121,7 @@ class Users extends ResourceController
         $response = [
             'status' => 201,
             'error' => null,
+            'redirect' => '/login',
             'messages' => [
                 'success' => 'User Registered',
             ],
