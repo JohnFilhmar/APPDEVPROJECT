@@ -1,10 +1,12 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import TookitProvider, { Search } from 'react-bootstrap-table-next';
 import useProducts from "../hooks/useProducts";
 
 const Table = () => {
     const { products, loading, error } = useProducts();
-
+    const { SearchBar } = Search;
+    
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -31,10 +33,14 @@ const Table = () => {
 
     return (
         <div>
+            <SearchBar />
             <BootstrapTable
                 keyField='id'
                 data={products}
                 columns={columns}
+                striped
+                hover
+                condensed
             />
         </div>
     );
