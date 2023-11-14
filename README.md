@@ -1,4 +1,4 @@
-# Project Name
+# JMS Multi-Hub System
 
 Brief description of your project.
 
