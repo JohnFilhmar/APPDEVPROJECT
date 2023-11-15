@@ -16,18 +16,7 @@ class Users extends ResourceController
     use ResponseTrait;
     public function index()
     {
-        $session = session();
-        $userAccess = $session->get('userAccess');
-        // $userRole = $session->get('userRole');
-        if($userAccess != null && $userAccess == "ADMIN"){
-            $accessdirect = "/login";
-        } else {
-            $accessdirect = null;
-        }
-        $response = [
-            'access' => $accessdirect,
-        ];
-        return $this->respondCreated($response);
+        //
     }
     /**
      * Authenticate a user based on provided credentials
@@ -36,6 +25,7 @@ class Users extends ResourceController
      */
     public function authenticate()
     {
+        $session = \Config\Services::session();
         helper(['form']);
 
         $rules = [
@@ -54,13 +44,9 @@ class Users extends ResourceController
         $user = $userModel->where('userName', $userName)->first();
 
         if ($user && password_verify($userPassword, $user['userPassword'])) {
-            // Authentication successful
-            $session = session();
-            $sesdata = [
-                'userAccess' => $user['userAccess'],
-                'userRole' => $user['userRole']
-            ];
-            $session->set($sesdata);
+
+            $session->set('isLoggedIn',true);
+
             $response = [
                 'status' => 200,
                 'error' => null,
@@ -122,7 +108,7 @@ class Users extends ResourceController
 
         $userModel = new UserModel();
         $userModel->save($data);
-
+        
         $response = [
             'status' => 201,
             'error' => null,
@@ -153,5 +139,15 @@ class Users extends ResourceController
     public function delete($id = null)
     {
         //
+    }
+
+    public function logout()
+    {
+        $session = \Config\Services::session();
+        $response = [
+            'redirect' => '/login',
+        ];
+        $session->destroy();
+        return $this->respondCreated($response);
     }
 }

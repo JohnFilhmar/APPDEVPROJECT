@@ -1,22 +1,42 @@
-import { Navbar } from 'flowbite-react';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import axios from 'axios';
+import { Navbar,Alert } from 'flowbite-react';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 
 const TopNavbar = () => {
+    const [message,setMessage] = useState("");
+
+    const logout = async (e) => {
+        try{
+            const response = await axios.get('logout');
+            console.log(response);
+            if(response.data.redirect){
+                console.log(response)
+                window.location.href = response.data.redirect;
+            } else {
+                setMessage("Something may have gone wrong");
+            }
+        }catch(error){
+            console.error('Logout error:', error);
+            setMessage('An error occurred during logout');
+        }
+    };
     return (
         <>
             <Navbar>
-                <Navbar.Brand as={Link} to="/">
+                <Navbar.Brand as={NavLink} to="/">
                     <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">JMS Multi-Hub System</span>
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
-                    <Navbar.Link to="/" active>Home</Navbar.Link>
-                    <Navbar.Link as={Link} to="#">About</Navbar.Link>
-                    <Navbar.Link to="/">Services</Navbar.Link>
-                    <Navbar.Link to="/">Pricing</Navbar.Link>
-                    <Navbar.Link to="/">Contact</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="/" active>Dashboard</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="/">About</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="/">Services</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="/">Pricing</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="#" onClick={logout} style={{color: 'red'}}>Logout</Navbar.Link>
                 </Navbar.Collapse>
             </Navbar>
+            { message && <Alert color="info"><span className="font-medium">{message}</span></Alert>}
         </>
     );
 }

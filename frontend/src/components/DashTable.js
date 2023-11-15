@@ -9,32 +9,33 @@ const ITEMS_PER_PAGE = 10;
 const DashTable = () => {
     const { products, loading, error } = useProducts();
     const [currentPage, setCurrentPage] = useState(1);
+    const [query,setQuery] = useState("");
 
     // Calculate the total number of pages
     const pageCount = Math.ceil(products.length / ITEMS_PER_PAGE);
-
-    // Slice the products array to display only the current page's worth of items
-    const displayedProducts = products.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
-    );
 
     const onPageChange = (page) => {
         setCurrentPage(page);
     };
 
+    // Searching item name from the table
+    function search(data) {
+        return data.filter((item) => item.itemname.toLowerCase().includes(query));
+    };
+
+    // Slice the products array to display only the current page's worth of items
+    const displayedProducts = search(products).slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
     return (
         <>
-            {/* Header */}
-            <div className="grid grid-cols-1 mb-4">
-                <div className="col-span-1 bg-gray-200 p-4">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Inventory</h2>
-                {/* <h1>{products.length}</h1> */}
-                </div>
-            </div>
+            <br/><br/>
             {/* Table */}
-                <div className="relative">
-                    <Table striped>
+            <div className="relative">
+                <div className="static overflow-x-auto">
+                    <Table striped className="min-w-full">
                         <Table.Head>
                             <Table.HeadCell>Product name</Table.HeadCell>
                             <Table.HeadCell>Category</Table.HeadCell>
@@ -78,27 +79,35 @@ const DashTable = () => {
                         )}
                     </Table.Body>
                     </Table>
-
-                    <div className="flex justify-between mt-5">
-                        {/* CSV Link - Bottom Left */}
-                        <div>
-                            <Button>
-                                <CSVLink
-                                    data={displayedProducts.map(product => Object.values(product))}
-                                    headers={['id', 'itemname', 'category', 'partnumber', 'compatibility', 'marketprice', 'boughtprice', 'sellingprice', 'initialquantity', 'currentquantity', 'branch', 'lastdateupdated', 'supplier']}
-                                    filename={'inventory.csv'}
-                                >
-                                    Download CSV
-                                </CSVLink>
-                            </Button>
-                        </div>
-                        <div/>
-                        {/* Pagination - Bottom Right */}
-                        <div>
-                            <Pagination currentPage={currentPage} totalPages={pageCount} onPageChange={onPageChange} />
-                        </div>
+                </div>
+                <div className="absolute top-[-50px] right-0 ">
+                    <input
+                        type="text"
+                        className="border rounded p-2"
+                        placeholder="Search..."
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                </div>
+                <div className="flex justify-between mt-5">
+                    {/* CSV Link - Bottom Left */}
+                    <div>
+                        <Button className='mt-5'>
+                            <CSVLink
+                                data={products.map(product => Object.values(product))}
+                                headers={['id', 'itemname', 'category', 'partnumber', 'compatibility', 'marketprice', 'boughtprice', 'sellingprice', 'initialquantity', 'currentquantity', 'branch', 'lastdateupdated', 'supplier']}
+                                filename={'inventory.csv'}
+                            >
+                                CSV
+                            </CSVLink>
+                        </Button>
+                    </div>
+                    <div/>
+                    {/* Pagination - Bottom Right */}
+                    <div>
+                        <Pagination layout="table" currentPage={currentPage} totalPages={pageCount} onPageChange={onPageChange} />
                     </div>
                 </div>
+            </div>
         </>
     );
 };

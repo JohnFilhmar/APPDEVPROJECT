@@ -16,10 +16,21 @@ const Login = () => {
         userPassword: userpassword,
       });
 
-      if (response.data && response.data.redirect && response.data.messages && response.data.messages.success) {
-        console.log('Login successful:', response.data.messages.success);
+      // const access = await axios.get('access');
+      // if(access === "FULL"){
+
+      // } else if (access === "LIMITED"){
+
+      // } else if (access === "TEMPORARY"){
+        
+      // }
+
+      if (response.data && response.data.redirect) 
+      {
         window.location.href = response.data.redirect;
-      } else if (response.data && response.data.messages && response.data.messages.error) {
+      } 
+      else if (response.data && response.data.messages && response.data.messages.error) 
+      {
         setError(response.data.messages.error);
       }
     } catch(error) {
