@@ -1,18 +1,15 @@
 import { BrowserRouter as Router, Route, Switch, useLocation } from "react-router-dom";
 import Login from "./components/Login";
 import TopNavbar from "./components/TopNavbar";
-import Dashboard from "./components/Dashboard";
 import Register from "./components/Register";
-// import useRequireAuth from "./hooks/useRequireAuth";
+import DashTable from "./components/DashTable";
 
 function App() {
   return (
     <>
-      <div className="container mt-5">
-        <Router>
-          <AppContent />
-        </Router>
-      </div>
+      <Router>
+        <AppContent />
+      </Router>
     </>
   );
 }
@@ -21,21 +18,14 @@ const AppContent = () => {
   const location = useLocation();
   const isLoginPath = location.pathname === '/login';
   const isRegisterPath = location.pathname === '/register';
-  // const isLoggedIn = useRequireAuth();
-  // if(isLoggedIn){
-  //   return (
-  //     <>
-  //       hello
-  //     </>
-  //   )
-  // }
+  
   return (
     <>
       {!isLoginPath && !isRegisterPath && <TopNavbar />}
       <Switch>
-        <Route exact path="/login" component={Login}/>
-        <Route exact path="/register" component={Register}/>
-        <Route exact path="/dashboard" component={Dashboard}/>
+        <Route path="/login" component={Login}/>
+        <Route path="/register" component={Register}/>
+        <Route path="/" component={DashTable}/>
       </Switch>
     </>
   );

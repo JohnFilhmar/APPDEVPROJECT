@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -43,10 +41,10 @@ const Register = () => {
               <h3 className="text-center">Register</h3>
             </div>
             <div className="card-body">
-                <Form onSubmit={submitForm}>
-                    <Form.Group className="form-group">
-                    <Form.Label htmlFor="username">Username:</Form.Label>
-                    <Form.Control
+                <form onSubmit={submitForm}>
+                    <div className="form-group">
+                    <label htmlFor="username">Username:</label>
+                    <input
                         type="text"
                         name="username"
                         className="form-control"
@@ -55,10 +53,10 @@ const Register = () => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
-                    </Form.Group>
-                    <Form.Group className="form-group">
-                    <Form.Label htmlFor="password">Password:</Form.Label>
-                    <Form.Control
+                    </div>
+                    <div className="form-group">
+                    <label htmlFor="password">Password:</label>
+                    <input
                         type="password"
                         name="password"
                         className="form-control"
@@ -68,10 +66,10 @@ const Register = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         minLength={8}
                     />
-                    </Form.Group>
-                    <Form.Group className="form-group">
-                    <Form.Label htmlFor="userrole">User Role:</Form.Label>
-                    <Form.Control
+                    </div>
+                    <div className="form-group">
+                    <label htmlFor="userrole">User Role:</label>
+                    <input
                         type="text"
                         name="userrole"
                         className="form-control"
@@ -80,10 +78,10 @@ const Register = () => {
                         value={userrole}
                         onChange={(e) => setRole(e.target.value)}
                     />
-                    </Form.Group>
-                    <Form.Group className="form-group">
-                    <Form.Label htmlFor="useraccess">User Access:</Form.Label>
-                    <Form.Control
+                    </div>
+                    <div className="form-group">
+                    <label htmlFor="useraccess">User Access:</label>
+                    <input
                         type="text"
                         name="useraccess"
                         className="form-control"
@@ -92,12 +90,12 @@ const Register = () => {
                         value={useraccess}
                         onChange={(e) => setAccess(e.target.value)}
                     />
-                    </Form.Group>
-                    <Button type="submit" className="btn btn-primary btn-block">
+                    </div>
+                    <button type="submit" className="btn btn-primary btn-block">
                     Register
-                    </Button>
-                </Form><br />
-                <Link to="/login"><Button className="btn btn-secondary btn-block">Go back to login</Button></Link>
+                    </button>
+                </form><br />
+                <Link to="/login"><button className="btn btn-secondary btn-block">Go back to login</button></Link>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
             </div>
           </div>

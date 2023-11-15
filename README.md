@@ -78,26 +78,7 @@ Before you begin, ensure you have the following installed:
     ```bash
     php spark serve
     ```
-### If errors persists upon installation of vendors and node_modules, try :
-
-### Fixing issues (use --legacy-peer-deps or --force)
-
-1. Install dependencies
-
-    ```bash
-    npm install jquery react-bootstrap-table-next --save --legacy-peer-deps
-    ```
-
-### TABLE & Charts source
-
-REACT-GOOGLE-CHARTS
-
-Explore documentation to further contribute and understand to the project : [https://www.react-google-charts.com/examples](https://www.react-google-charts.com/examples).
-
-REACT-BOOTSTRAP-TABLE2
-
-Explore documentation to further contribute and understand to the project : [https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html).
-
+    
 Your application should now be running. Open your browser and visit [http://localhost:3000](http://localhost:3000) to access the frontend.
 
 ## Usage

@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -43,10 +41,10 @@ const Login = () => {
                   <h3 className="text-center">Login</h3>
                   </div>
                   <div className="card-body">
-                  <Form onSubmit={ submitForm }>
-                      <Form.Group className="form-group">
-                      <Form.Label htmlFor="username">Email address:</Form.Label>
-                      <Form.Control 
+                  <form onSubmit={ submitForm }>
+                      <div className="form-group">
+                      <label htmlFor="username">Email address:</label>
+                      <input 
                         type="text" 
                         className="form-control" 
                         id="username" 
@@ -54,10 +52,10 @@ const Login = () => {
                         value={ username }
                         onChange={ (e) => setUsername(e.target.value) }
                       />
-                      </Form.Group>
-                      <Form.Group className="form-group">
-                      <Form.Label htmlFor="password">Password:</Form.Label>
-                      <Form.Control 
+                      </div>
+                      <div className="form-group">
+                      <label htmlFor="password">Password:</label>
+                      <input 
                         type="password" 
                         className="form-control" 
                         id="password" 
@@ -66,11 +64,11 @@ const Login = () => {
                         onChange={ (e) => setPassword(e.target.value) }
                         minLength={8}
                       />
-                      </Form.Group>
-                      <Button type="submit" className="btn btn-primary btn-block">Login</Button>
+                      </div>
+                      <button type="submit" className="btn btn-primary btn-block">Login</button>
                       {/* {error && <p style={{ color: 'red' }}>Error: {error.message}</p>} */}
-                    </Form><br />
-                    <Link to="/register"><Button className="btn btn-secondary btn-block">Register</Button></Link>
+                    </form><br />
+                    <Link to="/register"><button className="btn btn-secondary btn-block">Register</button></Link>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                   </div>
               </div>

@@ -69,7 +69,6 @@ class Users extends ResourceController
                     'success' => 'Login successful',
                 ]
             ];
-
             return $this->respondCreated($response);
         } else {
             // Authentication failed
