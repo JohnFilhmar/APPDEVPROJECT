@@ -110,9 +110,10 @@ class Users extends ResourceController
 
         $data = [
             'userName' => $this->request->getVar('userName'),
-            'userPassword' => password_hash($this->request->getVar('userPassword'), PASSWORD_DEFAULT), // Hash the password
+            'userPassword' => password_hash($this->request->getVar('userPassword'), PASSWORD_DEFAULT),
             'userRole' => $this->request->getVar('userRole'),
             'userAccess' => $this->request->getVar('userAccess'),
+            'datecreated' => $this->request->getVar('dateCreated'),
         ];
 
         if (!$this->validate($rules)) {

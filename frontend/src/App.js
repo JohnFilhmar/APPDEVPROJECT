@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Switch, useLocation } from "react-route
 import Login from "./components/Login";
 import TopNavbar from "./components/TopNavbar";
 import Register from "./components/Register";
-import DashTable from "./components/DashTable";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ const AppContent = () => {
       <Switch>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
-        <Route path="/" component={DashTable}/>
+        <Route path="/" component={Dashboard}/>
       </Switch>
     </>
   );

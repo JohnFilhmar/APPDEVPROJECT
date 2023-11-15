@@ -1,4 +1,4 @@
-import { DarkThemeToggle, Flowbite, Navbar } from 'flowbite-react';
+import { Navbar } from 'flowbite-react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const TopNavbar = () => {
@@ -15,7 +15,6 @@ const TopNavbar = () => {
                     <Navbar.Link to="/">Services</Navbar.Link>
                     <Navbar.Link to="/">Pricing</Navbar.Link>
                     <Navbar.Link to="/">Contact</Navbar.Link>
-                    <Flowbite><DarkThemeToggle/></Flowbite>
                 </Navbar.Collapse>
             </Navbar>
         </>

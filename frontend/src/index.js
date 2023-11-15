@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 import App from './App';
 import './index.css';
-import 'bootstrap';
 
 axios.defaults.baseURL="http://localhost:8080/";
 
