@@ -34,7 +34,7 @@ const TopNavbar = () => {
                 <Navbar.Collapse>
                     <Navbar.Link as={NavLink} to="/" active>Dashboard</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/ecomm">E-Shop</Navbar.Link>
-                    <Navbar.Link as={NavLink} to="/">Services</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="/messaging">Messaging</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/">Pricing</Navbar.Link>
                     <Navbar.Link as={NavLink} to="#" onClick={logout} style={{color: 'red'}}>Logout</Navbar.Link>   
                 </Navbar.Collapse>

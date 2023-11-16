@@ -33,14 +33,19 @@ const DashTable = () => {
         <>
             <br/><br/>
             {/* Table */}
-            <div className="relative">
+            <div className="relative sm:text-sm md:text-base lg:text-lg">
                 <div className="static overflow-x-auto">
                     <Table striped className="min-w-full">
                         <Table.Head>
-                            <Table.HeadCell>Product name</Table.HeadCell>
-                            <Table.HeadCell>Category</Table.HeadCell>
+                            <Table.HeadCell>Item Name</Table.HeadCell>
                             <Table.HeadCell>Part Number</Table.HeadCell>
+                            <Table.HeadCell>Branch</Table.HeadCell>
+                            <Table.HeadCell>Category</Table.HeadCell>
                             <Table.HeadCell>Market Price</Table.HeadCell>
+                            <Table.HeadCell>Bought Price</Table.HeadCell>
+                            <Table.HeadCell>Selling Price</Table.HeadCell>
+                            <Table.HeadCell>Initial Quantity</Table.HeadCell>
+                            <Table.HeadCell>Available</Table.HeadCell>
                             <Table.HeadCell>Actions</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
@@ -63,9 +68,14 @@ const DashTable = () => {
                                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {product.itemname}
                                 </Table.Cell>
-                                <Table.Cell>{product.category}</Table.Cell>
                                 <Table.Cell>{product.partnumber}</Table.Cell>
-                                <Table.Cell>{product.marketprice}</Table.Cell>
+                                <Table.Cell>{product.category}</Table.Cell>
+                                <Table.Cell>{product.branch}</Table.Cell>
+                                <Table.Cell>₱{product.marketprice}</Table.Cell>
+                                <Table.Cell>₱{product.boughtprice}</Table.Cell>
+                                <Table.Cell>₱{product.sellingprice}</Table.Cell>
+                                <Table.Cell>{product.initialquantity}pc/s</Table.Cell>
+                                <Table.Cell>{product.currentquantity}pc/s</Table.Cell>
                                 <Table.Cell>
                                     <Link
                                     to={`/edit/${product.id}`}
@@ -94,7 +104,7 @@ const DashTable = () => {
                         <Button className='mt-5'>
                             <CSVLink
                                 data={products.map(product => Object.values(product))}
-                                headers={['id', 'itemname', 'category', 'partnumber', 'compatibility', 'marketprice', 'boughtprice', 'sellingprice', 'initialquantity', 'currentquantity', 'branch', 'lastdateupdated', 'supplier']}
+                                headers={['id', 'itemname', 'image', 'category', 'partnumber', 'compatibility', 'marketprice', 'boughtprice', 'sellingprice', 'initialquantity', 'currentquantity', 'branch', 'lastdateupdated', 'supplier']}
                                 filename={'inventory.csv'}
                             >
                                 CSV
@@ -103,8 +113,13 @@ const DashTable = () => {
                     </div>
                     <div/>
                     {/* Pagination - Bottom Right */}
-                    <div>
-                        <Pagination layout="table" currentPage={currentPage} totalPages={pageCount} onPageChange={onPageChange} />
+                    <div className='flex'>
+                        <div>
+                            <Pagination layout="table" currentPage={currentPage} totalPages={pageCount} onPageChange={onPageChange} />
+                        </div>
+                        <div className='mt-7'>
+                            <Button as={Link} to="/itemform">Add New Item</Button>
+                        </div>
                     </div>
                 </div>
             </div>

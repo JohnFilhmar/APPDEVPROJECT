@@ -78,7 +78,7 @@ const ProductGrid = () => {
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 ml-4 mr-4 mt-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-10 ml-4 mr-4 mt-5 text-sm lg:text-lg md:text-base sm:text-sm">
             {generateRandomGrid(products)}
         </div>
     );

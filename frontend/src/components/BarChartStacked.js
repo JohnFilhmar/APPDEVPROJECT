@@ -22,7 +22,7 @@ ChartJS.register(
 
 const defaultOptions = {
   plugins: {
-    
+    legend: false
   },
   responsive: true,
   maintainAspectRatio: false,
