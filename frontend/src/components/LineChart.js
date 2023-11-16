@@ -59,7 +59,7 @@ const App = () => {
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Total Sales</h2>
             </div>
         </div>
-       <Line options={options} data={data} />
+        <Line options={options} data={data} />
     </>
   );
 };

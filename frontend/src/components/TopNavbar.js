@@ -21,19 +21,22 @@ const TopNavbar = () => {
             setMessage('An error occurred during logout');
         }
     };
+    
+    
     return (
         <>
             <Navbar>
                 <Navbar.Brand as={NavLink} to="/">
+                    <img src="jms.png" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
                     <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">JMS Multi-Hub System</span>
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
                     <Navbar.Link as={NavLink} to="/" active>Dashboard</Navbar.Link>
-                    <Navbar.Link as={NavLink} to="/">About</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="/ecomm">E-Shop</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/">Services</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/">Pricing</Navbar.Link>
-                    <Navbar.Link as={NavLink} to="#" onClick={logout} style={{color: 'red'}}>Logout</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="#" onClick={logout} style={{color: 'red'}}>Logout</Navbar.Link>   
                 </Navbar.Collapse>
             </Navbar>
             { message && <Alert color="info"><span className="font-medium">{message}</span></Alert>}

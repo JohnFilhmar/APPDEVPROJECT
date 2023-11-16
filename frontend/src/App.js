@@ -4,6 +4,7 @@ import TopNavbar from "./components/TopNavbar";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import NotFound from './components/NotFound';
+import ECommerce from './components/ECommerce';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ const AppContent = () => {
         <Route exact path="/" component={Dashboard}/>
         <Route exact path="/login" component={Login}/>
         <Route exact path="/register" component={Register}/>
+        <Route exact path="/ecomm" component={ECommerce}/>
         <Route exact path="*" component={NotFound}/>
       </Switch>
     </>

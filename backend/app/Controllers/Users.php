@@ -46,14 +46,13 @@ class Users extends ResourceController
         if ($user && password_verify($userPassword, $user['userPassword'])) {
 
             $session->set('isLoggedIn',true);
+            $session->set('accessibility',$user['userAccess']);
 
             $response = [
                 'status' => 200,
                 'error' => null,
-                'redirect' => '/dashboard',
-                'messages' => [
-                    'success' => 'Login successful',
-                ]
+                'redirect' => '/',
+                'access' => $session->get('accessibility'),
             ];
             return $this->respondCreated($response);
         } else {
@@ -148,6 +147,16 @@ class Users extends ResourceController
             'redirect' => '/login',
         ];
         $session->destroy();
+        return $this->respondCreated($response);
+    }
+
+    public function accessibility()
+    {
+        $session = \Config\Services::session();
+        $access = $session->get('accessibility');
+        $response = [
+            'access' => $access
+        ];
         return $this->respondCreated($response);
     }
 }
