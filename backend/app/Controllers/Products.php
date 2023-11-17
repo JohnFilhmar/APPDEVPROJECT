@@ -158,4 +158,9 @@ class Products extends ResourceController
         ];
         return $this->respondCreated($response);
     }
+
+    public function hashResponse($respose)
+    {
+        
+    }
 }

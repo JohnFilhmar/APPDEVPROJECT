@@ -1,6 +1,5 @@
-import { Router } from 'react-router-dom';
-import './App.css';
-import { Route, Switch } from 'react-router-dom/cjs/react-router-dom.min';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Home from './components/Home';
 import CanubingMain from './components/CanubingMain';
 import Canubing1_2 from './components/Canubing1_2';
 import Bayanan from './components/Bayanan';
@@ -13,11 +12,12 @@ function App() {
     <>
       <Router>
         <Switch>
-          <Route exact path="/canubingmain" component={CanubingMain}/>
-          <Route exact path="/canubing1_2" component={Canubing1_2}/>
-          <Route exact path="/bayanan" component={Bayanan}/>
-          <Route exact path="/malinao" component={Malinao}/>
-          <Route exact path="/notfound" component={NotFound}/>
+          <Route exact path="/" component={Home}/>
+          <Route path="/canubingmain" component={CanubingMain}/>
+          <Route path="/canubing1_2" component={Canubing1_2}/>
+          <Route path="/bayanan" component={Bayanan}/>
+          <Route path="/malinao" component={Malinao}/>
+          <Route path="/*" component={NotFound}/>
         </Switch>
       </Router>
     </>
