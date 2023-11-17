@@ -27,8 +27,8 @@ const TopNavbar = () => {
         <>
             <Navbar className='sticky top-0'>
                 <Navbar.Brand as={NavLink} to="/">
-                    <img src="jms.png" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-                    <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">JMS Multi-Hub System</span>
+                    <img src="jms.png" className="mr-3 w-7 sm:w-10 md:w-15 lg:w-20 h-7 sm:h-10 md:h-15 lg:h-20" alt="Flowbite React Logo"/>
+                    <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Multi-Hub System</span>
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>

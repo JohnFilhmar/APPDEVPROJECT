@@ -59,7 +59,7 @@ const Login = () => {
               </div>
               <div>
               <Label htmlFor="password">Password:</Label>
-              <TextInput 
+              <TextInput
                 type="password" 
                 className="form-control" 
                 id="password" 
