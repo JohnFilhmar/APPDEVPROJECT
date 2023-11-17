@@ -3,20 +3,13 @@ import { Card, Dropdown } from 'flowbite-react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import useProducts from '../hooks/useProducts';
 
-// const getRandomSpan = () => Math.floor(Math.random() * 3) + 1;
-// const getRandomCols = () => Math.floor(Math.random() * 2) + 1;
-// const getRandomRows = () => Math.floor(Math.random() * 3) + 1;
-
 const generateRandomGrid = (products) => {
     return products.map((product, index) => {
-        // const span = getRandomSpan();
-        // const colSpan = getRandomCols();
-        // const rowSpan = getRandomRows();
 
         return (
             <Card
                 key={index} 
-                className={`mb-4`}
+                className={`mb-4 text-sm lg:text-lg md:text-base sm:text-sm`}
                 imgAlt='NoImageToShow'
                 imgSrc='logo512.png'
                 // imgSrc={product.image}
@@ -58,8 +51,6 @@ const generateRandomGrid = (products) => {
             <p className='font-bold'>
                 Branch: {product.branch}
             </p>
-            {/* <img src="logo512.png" alt="NoImageToShow" className='w-16 sm:w-32 lg:w-48' style={{position:'static', left: '10px'}}/> */}
-            {/* Add other card content based on your product data */}
             </Card>
         );
     });

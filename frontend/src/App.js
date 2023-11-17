@@ -25,8 +25,6 @@ function App() {
     <>
       <Router>
         <Layout children={<AppContent/>} foot={<Footer/>}/>
-        {/* <AppContent />
-        <Footer /> */}
       </Router>
     </>
   );
@@ -39,7 +37,8 @@ const AppContent = () => {
   
   return (
     <>
-      {!isLoginPath && !isRegisterPath && <TopNavbar />}
+      <div className="container mx-auto">
+        {!isLoginPath && !isRegisterPath && <TopNavbar />}
       <Switch>
         <Route exact path="/" component={Dashboard}/>
         <Route exact path="/login" component={Login}/>
@@ -49,6 +48,7 @@ const AppContent = () => {
         <Route exact path="/itemform" component={ItemForm}/>
         <Route exact path="*" component={NotFound}/>
       </Switch>
+      </div>
     </>
   );
 };

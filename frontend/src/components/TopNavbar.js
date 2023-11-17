@@ -25,7 +25,7 @@ const TopNavbar = () => {
     
     return (
         <>
-            <Navbar>
+            <Navbar className='sticky top-0'>
                 <Navbar.Brand as={NavLink} to="/">
                     <img src="jms.png" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
                     <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">JMS Multi-Hub System</span>
