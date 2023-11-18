@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { Button, Card, Label, TextInput } from 'flowbite-react';
@@ -7,6 +7,18 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [userpassword, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [registrationSuccess, setRegistrationSuccess] = useState(sessionStorage.getItem('Registered'));
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setRegistrationSuccess(false);
+      sessionStorage.removeItem('Registered');
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [registrationSuccess]);
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -27,6 +39,8 @@ const Login = () => {
 
       if (response.data && response.data.redirect) 
       {
+        sessionStorage.setItem('loggedIn',true);
+        sessionStorage.setItem('username',username);
         window.location.href = response.data.redirect;
       } 
       else if (response.data && response.data.messages && response.data.messages.error) 
@@ -51,6 +65,7 @@ const Login = () => {
                 type="text" 
                 className="form-control" 
                 id="username" 
+                autoComplete={username}
                 placeholder="Enter Username"
                 value={ username }
                 onChange={ (e) => setUsername(e.target.value) }
@@ -68,11 +83,13 @@ const Login = () => {
                 onChange={ (e) => setPassword(e.target.value) }
                 minLength={8}
                 required
+                autoComplete=""
               />
               </div>
               <Button type="submit">Login</Button>
             </form>
             <Link to="/register" className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-lg focus:ring-2">Register</Link>
+            {sessionStorage.getItem('Registered') && registrationSuccess && <p style={{color:'green'}}>"Registration Successful"</p>}
             {error && <p style={{ color: 'red' }}>{error}</p>}
           </Card>
         </div>

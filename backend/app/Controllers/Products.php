@@ -44,6 +44,7 @@ class Products extends ResourceController
         helper(['form']);
         $rules = [
             'itemname' => 'required',
+            'image' => 'uploaded[image]|max_size[image,2048]|is_image[image]',
             'category' => 'required',
             'partnumber' => 'required',
             'compatibility' => 'required',
@@ -57,32 +58,45 @@ class Products extends ResourceController
             'supplier' => 'required',
         ];
 
-        $data = [
-            'itemname' => $this->request->getVar('itemname'),
-            'category' => $this->request->getVar('category'),
-            'partnumber' => $this->request->getVar('partnumber'),
-            'compatibility' => $this->request->getVar('compatibility'),
-            'marketprice' => $this->request->getVar('marketprice'),
-            'boughtprice' => $this->request->getVar('boughtprice'),
-            'sellingprice' => $this->request->getVar('sellingprice'),
-            'initialquantity' => $this->request->getVar('initialquantity'),
-            'currentquantity' => $this->request->getVar('currentquantity'),
-            'branch' => $this->request->getVar('branch'),
-            'lastdateupdated' => $this->request->getVar('lastdateupdated'),
-            'supplier' => $this->request->getVar('supplier'),
-        ];
-        if(!$this->validate($rules)) return $this->fail($this->validator->getErrors());
-        $main = new ProductModel();
-        $main->save($data);
-        $response = [
-            'status' => 201,
-            'error' => null,
-            'messsages' => [
-                'success' => 'Data Inserted'
-            ]
-        ];
-        return $this->respondCreated($response);
+        if (!$this->validate($rules)) {
+            return $this->fail($this->validator->getErrors());
+        }
+
+        $file = $this->request->getFile('image');
+        if ($file->isValid() && !$file->hasMoved()) {
+            $file->move(ROOTPATH . 'public/uploads', $file->getName());
+            $data = [
+                'itemname' => $this->request->getVar('itemname'),
+                'image' => $file->getName(),
+                'category' => $this->request->getVar('category'),
+                'partnumber' => $this->request->getVar('partnumber'),
+                'compatibility' => $this->request->getVar('compatibility'),
+                'marketprice' => $this->request->getVar('marketprice'),
+                'boughtprice' => $this->request->getVar('boughtprice'),
+                'sellingprice' => $this->request->getVar('sellingprice'),
+                'initialquantity' => $this->request->getVar('initialquantity'),
+                'currentquantity' => $this->request->getVar('currentquantity'),
+                'branch' => $this->request->getVar('branch'),
+                'lastdateupdated' => $this->request->getVar('lastdateupdated'),
+                'supplier' => $this->request->getVar('supplier'),
+            ];
+
+            $main = new ProductModel();
+            $main->save($data);
+            $response = [
+                'status' => 201,
+                'error' => null,
+                'messsages' => [
+                    'success' => 'Data Inserted',
+                    'file_name' => $file->getName(),
+                ]
+            ];
+            return $this->respondCreated($response);
+        }
+
+        return $this->fail('File upload failed.');
     }
+
 
     /**
      * Add or update a model resource, from "posted" properties
@@ -161,6 +175,6 @@ class Products extends ResourceController
 
     public function hashResponse($respose)
     {
-        
+
     }
 }

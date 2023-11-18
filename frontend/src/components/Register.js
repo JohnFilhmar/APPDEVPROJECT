@@ -35,6 +35,7 @@ const Register = () => {
         if (response.data && response.data.redirect && response.data.messages && response.data.messages.success) {
           console.log(response.data.messages.success);
           // redirect user to login page if user's authenticated
+          sessionStorage.setItem('Registered',true);
           window.location.href = response.data.redirect;
         } else if (response.data && response.data.messages && response.data.messages.error) {
           // Set the error state
@@ -62,6 +63,7 @@ const Register = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
+                    autoComplete=""
                 />
                 <Label htmlFor="password">Password:</Label>
                 <TextInput
@@ -74,6 +76,7 @@ const Register = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={8}
+                    autoComplete=""
                 />
                 <Label htmlFor="userrole">Role:</Label>
                 <Select

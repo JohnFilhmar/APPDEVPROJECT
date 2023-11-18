@@ -25,7 +25,7 @@ const Dashboard = () => {
     <>
       <div className="min-h-screen bg-gray-100">
         {/* Main Content */}
-        <div className="container mx-auto p-4 border-x-4">
+        <div className="p-4 border-x-4">
           {/* Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b-4">
             {/* First row, first column */}
