@@ -7,9 +7,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-     
-        gradient: 'linear-gradient(to bottom, #f2f2f2, #d9d9d9, #fff)',
-      
+    
      
       container: {
         padding: {
@@ -36,6 +34,10 @@ module.exports = {
         textAlign: {
           DEFAULT: 'center',
         },
+        backdropBlur: {
+          xs: '2px',
+        },
+        
       spacing: {
         '128': '32rem',
         '144': '36rem',
@@ -43,6 +45,7 @@ module.exports = {
       borderRadius: {
         '4xl': '2rem',
       }
+      
      
     },
 
@@ -50,9 +53,6 @@ module.exports = {
   plugins: [
     require('flowbite/plugin')
   ],
-  backgroundImage: {
-    gradient: 'linear-gradient(to bottom, #f2f2f2, #d9d9d9, #fff)',
-  },
   
     }
 
