@@ -20,6 +20,16 @@ const Login = () => {
     };
   }, [registrationSuccess]);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setError(null);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [error]);
+
   const submitForm = async (e) => {
     e.preventDefault();
     try {
@@ -28,27 +38,15 @@ const Login = () => {
         userPassword: userpassword,
       });
 
-      // const access = await axios.get('access');
-      // if(access === "FULL"){
-
-      // } else if (access === "LIMITED"){
-
-      // } else if (access === "TEMPORARY"){
-        
-      // }
-
       if (response.data && response.data.redirect) 
       {
         sessionStorage.setItem('isLoggedIn',true);
         sessionStorage.setItem('username',username);
+        sessionStorage.setItem('accessibility',response.data.access);
         window.location.href = response.data.redirect;
-      } 
-      else if (response.data && response.data.messages && response.data.messages.error) 
-      {
-        setError(response.data.messages.error);
       }
     } catch(error) {
-      console.error('Error',error);
+      setError(error.message)
     }
   }
   return (
@@ -90,7 +88,7 @@ const Login = () => {
             </form>
             <Link to="/register" className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-lg focus:ring-2">Register</Link>
             {sessionStorage.getItem('Registered') && registrationSuccess && <p style={{color:'green'}}>"Registration Successful"</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}. Try Again.</p>}
           </Card>
         </div>
       </>

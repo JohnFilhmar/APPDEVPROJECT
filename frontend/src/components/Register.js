@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { Button, Card, Label, Select, TextInput } from 'flowbite-react';
@@ -9,7 +9,17 @@ const Register = () => {
     const [userrole, setRole] = useState("");
     const [useraccess, setAccess] = useState("");
     const [error, setError] = useState(null);
-    
+
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        setError(null);
+      }, 5000);
+  
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }, [error]);
+
     function getCurrentDateFormatted() {
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -37,12 +47,9 @@ const Register = () => {
           // redirect user to login page if user's authenticated
           sessionStorage.setItem('Registered',true);
           window.location.href = response.data.redirect;
-        } else if (response.data && response.data.messages && response.data.messages.error) {
-          // Set the error state
-          setError(response.data.messages.error); 
         }
       } catch(error) {
-        console.error('Error',error);
+        setError(error.message);
       }
     }
     return (
@@ -107,7 +114,7 @@ const Register = () => {
                 <Button type="submit">Register</Button>
             </form>
             <Link to="/login" className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-lg focus:ring-2">Go Back</Link>
-            {error && <p style={{ color: 'red' }}>{error}</p>}<br/>
+            {error && <p style={{ color: 'red' }}>{error}. Try Again.</p>}<br/>
           </Card>
       </div>
     </>

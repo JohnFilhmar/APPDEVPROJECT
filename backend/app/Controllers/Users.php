@@ -47,12 +47,14 @@ class Users extends ResourceController
 
             $session->set('isLoggedIn',true);
             $session->set('accessibility',$user['userAccess']);
+            $session->set('role',$user['userRole']);
 
             $response = [
                 'status' => 200,
                 'error' => null,
                 'redirect' => '/dashboard',
                 'access' => $session->get('accessibility'),
+                'role' => $session->get('role'),
             ];
             return $this->respondCreated($response);
         } else {

@@ -9,10 +9,10 @@ const TopNavbar = () => {
     const logout = async (e) => {
         try{
             const response = await axios.get('logout');
-            console.log(response);
             if(response.data.redirect){
-                console.log(response)
+                sessionStorage.setItem('isLoggedIn',false);
                 sessionStorage.removeItem('username');
+                sessionStorage.removeItem('accessibility');
                 window.location.href = response.data.redirect;
             } else {
                 setMessage("Something may have gone wrong");
