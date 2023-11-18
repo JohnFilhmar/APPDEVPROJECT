@@ -11,8 +11,8 @@ function App() {
   return (
     <>
       <Router>
+        <Home/>
         <Switch>
-          <Route exact path="/" component={Home}/>
           <Route path="/canubingmain" component={CanubingMain}/>
           <Route path="/canubing1_2" component={Canubing1_2}/>
           <Route path="/bayanan" component={Bayanan}/>
