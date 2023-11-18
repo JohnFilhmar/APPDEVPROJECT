@@ -33,7 +33,7 @@ const TopNavbar = () => {
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
-                    <Navbar.Link as={NavLink} to="/" active>Dashboard</Navbar.Link>
+                    <Navbar.Link as={NavLink} to="/dashboard" active>Dashboard</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/ecomm">E-Shop</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/messaging">Messaging</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/">Pricing</Navbar.Link>

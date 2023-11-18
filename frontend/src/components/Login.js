@@ -39,7 +39,7 @@ const Login = () => {
 
       if (response.data && response.data.redirect) 
       {
-        sessionStorage.setItem('loggedIn',true);
+        sessionStorage.setItem('isLoggedIn',true);
         sessionStorage.setItem('username',username);
         window.location.href = response.data.redirect;
       } 

@@ -1,9 +1,9 @@
-import { Alert, Button, FileInput, Label, TextInput } from "flowbite-react";
+import { Button, FileInput, Label, TextInput } from "flowbite-react";
 import { useState } from "react";
 import useCacheOptions from "../hooks/useCacheOptions";
 import useAddProduct from "../hooks/useAddProduct";
 import Loading from "./Loading";
-import { HiInformationCircle } from 'react-icons/hi';
+import PromptError from './PromptError';
 
 const ItemForm = () => {
     const [ItemName, setItemName] = useState("");
@@ -13,7 +13,7 @@ const ItemForm = () => {
     const [SellingPrice, setSellingPrice] = useState("");
     const [InitialQuantity, setInitialQuantity] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
-    const { data, error, loading, postRequest } = useAddProduct('Products');
+    const { error, loading, postRequest } = useAddProduct('Products');
 
     // supplier input
     const {
@@ -24,7 +24,7 @@ const ItemForm = () => {
       handleSuggestionClick: handleSuggestionClickSupplier,
       handleInputFocus: handleInputFocusSupplier,
       handleInputBlur: handleInputBlurSupplier,
-    } = useCacheOptions("cachedSupplierSuggestions");
+    } = useCacheOptions("supplierSuggestions");
     // category input
     const {
       options: categoryOptions,
@@ -34,7 +34,7 @@ const ItemForm = () => {
       handleSuggestionClick: handleSuggestionClickCategory,
       handleInputFocus: handleInputFocusCategory,
       handleInputBlur: handleInputBlurCategory,
-    } = useCacheOptions("cachedCategorySuggestions");
+    } = useCacheOptions("categorySuggestion");
     // compatibility input
     const {
         options: compatibilityOptions,
@@ -44,7 +44,7 @@ const ItemForm = () => {
         handleSuggestionClick: handleSuggestionClickCompatibility,
         handleInputFocus: handleInputFocusCompatibility,
         handleInputBlur: handleInputBlurCompatibility,
-    } = useCacheOptions("cachedCompatibilitySuggestions");
+    } = useCacheOptions("compatibilitySuggestion");
     // branch input
     const {
       options: branchOptions,
@@ -54,7 +54,7 @@ const ItemForm = () => {
       handleSuggestionClick: handleSuggestionClickBranch,
       handleInputFocus: handleInputFocusBranch,
       handleInputBlur: handleInputBlurBranch,
-    } = useCacheOptions("cachedBranchSuggestions");
+    } = useCacheOptions("BranchSuggestion");
 
     function getCurrentDateFormatted() {
         const currentDate = new Date();
@@ -85,14 +85,14 @@ const ItemForm = () => {
         const partval = Math.min(99999, parseInt(e.target.value.replace(/\D/g, '').slice(0, 5), 10) || 1);
         setPartNumber(partval);
     };
-
-    const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-    };
     
     const parseQuantity = (e) => {
         const quantityValue = Math.min(999, parseInt(e.target.value.replace(/\D/g, '').slice(0, 3), 10) || 1);
         setInitialQuantity(quantityValue);
+    };
+
+    const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
     };
     
     const SubmitForm = async (e) => {
@@ -102,49 +102,49 @@ const ItemForm = () => {
             console.error('No file selected');
             return;
         }
-        const formData = new FormData();
-        formData.append('image', selectedFile);
         
-        const postData = {
-        itemname: ItemName,
-        image: formData,
-        category: categoryOptions,
-        partnumber: PartNumber,
-        compatibility: compatibilityOptions,
-        marketprice: MarketPrice,
-        boughtprice: BoughtPrice,
-        sellingprice: SellingPrice,
-        initquantity: InitialQuantity,
-        // current quantity is handled on the backend to add to an existing item name if there is one
-        branch: branchOptions,
-        lastdateupdated: getCurrentDateFormatted,
-        supplier: supplierOptions,
-        };
+        const formData = new FormData();
+        formData.append('itemname', ItemName);
+        formData.append('image', selectedFile); // Use the same field name expected by the backend
+        formData.append('category', categoryOptions);
+        formData.append('partnumber', PartNumber);
+        formData.append('compatibility', compatibilityOptions);
+        formData.append('marketprice', MarketPrice);
+        formData.append('boughtprice', BoughtPrice);
+        formData.append('sellingprice', SellingPrice);
+        formData.append('initialquantity', InitialQuantity);
+        formData.append('branch', branchOptions);
+        formData.append('lastdateupdated', getCurrentDateFormatted());
+        formData.append('supplier', supplierOptions);
 
-        if (loading) {
-          return <Loading />;
-        }
-    
-        if (error) {
-          return (
-            <Alert color="failure" icon={HiInformationCircle}>
-              <span className="font-medium">Error!</span>{error}
-            </Alert>
-          );
-        }
-    
-        if (data) {
-          // Handle success, e.g., redirect or display a success message
-          return  (
-            <Alert color="success" onDismiss={() => alert('Alert dismissed!')}>
-                <span className="font-medium">Success!</span>{data}.
-            </Alert>
-          );
-        }
+        try {
+            const response = await postRequest(formData);
 
-        postRequest(postData);
-        localStorage.setItem("cachedSuggestions", JSON.stringify(supplierSuggestion));
-        localStorage.setItem("cachedSuggestions", JSON.stringify(categorySuggestion));
+            if (loading) {
+              return <Loading />;
+            }
+        
+            if (error) {
+              return (
+                <PromptError message={error}/>
+              );
+            }
+        
+            if (response && response.messages && response.messages.success) {
+                sessionStorage.setItem('uploadSuccess', response.messages.success);
+            }
+            
+            if(response && response.redirect){
+                window.location.href = response.redirect;
+            }
+            
+            localStorage.setItem("supplierSuggestions", JSON.stringify(supplierSuggestion));
+            localStorage.setItem("categorySuggestion", JSON.stringify(categorySuggestion));
+            localStorage.setItem("compatibilityOptions", JSON.stringify(compatibilityOptions));
+            localStorage.setItem("branchOptions", JSON.stringify(branchOptions));
+        } catch(error) {
+            <PromptError message={error}/>
+        }
     };
 
     return (
@@ -349,7 +349,7 @@ const ItemForm = () => {
                         </ul>
                         )}
                     </div>
-                    <div className="submitbutton flex justify-end lg:items-center">
+                    <div className="submitbutton flex justify-end lg:items-center mt-5">
                         <Button type="submit" size="xl" style={{ width: '30vw' }}>Add Item</Button>
                     </div>
                 </form>

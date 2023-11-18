@@ -51,7 +51,7 @@ class Users extends ResourceController
             $response = [
                 'status' => 200,
                 'error' => null,
-                'redirect' => '/',
+                'redirect' => '/dashboard',
                 'access' => $session->get('accessibility'),
             ];
             return $this->respondCreated($response);

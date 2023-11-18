@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 const useCacheOptions = (cachename) => {
+  
   const [options, setOptions] = useState([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [suggestion, setSuggestions] = useState("");

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, useLocation, Redirect } from "react-router-dom";
 import Login from "./components/Login";
 import TopNavbar from "./components/TopNavbar";
 import Register from "./components/Register";
@@ -20,6 +20,7 @@ const AppContent = () => {
   const location = useLocation();
   const isLoginPath = location.pathname === '/login';
   const isRegisterPath = location.pathname === '/register';
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -27,12 +28,29 @@ const AppContent = () => {
         <div className="container mx-auto">
           {!isLoginPath && !isRegisterPath && <TopNavbar />}
           <Switch>
-            <Route exact path="/" component={Dashboard}/>
-            <Route exact path="/login" component={Login}/>
-            <Route exact path="/register" component={Register}/>
-            <Route exact path="/ecomm" component={ECommerce}/>
-            <Route exact path="/messaging" component={Messages}/>
-            <Route exact path="/itemform" component={ItemForm}/>
+
+            {/* Public Routes */}
+            {!isLoggedIn && (
+              <Switch>
+                <Redirect to="/login" />
+                <Route exact path="/login" component={Login}/>
+                <Route exact path="/register" component={Register}/>
+              </Switch>
+            )}
+            
+            {/* Authenticated Routes */}
+            {isLoggedIn && (
+              <Switch>
+                <Redirect from="/login" to="/dashboard" />
+                <Redirect from="/register" to="/dashboard" />
+                <Route exact path="/dashboard" component={Dashboard} />
+                <Route exact path="/ecomm" component={ECommerce}/>
+                <Route exact path="/messaging" component={Messages}/>
+                <Route exact path="/itemform" component={ItemForm}/>
+              </Switch>
+            )}
+            
+            {/* Fallback for unknown routes */}
             <Route exact path="*" component={NotFound}/>
           </Switch>
         </div>

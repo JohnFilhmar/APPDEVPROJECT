@@ -44,7 +44,7 @@ class Products extends ResourceController
         helper(['form']);
         $rules = [
             'itemname' => 'required',
-            'image' => 'uploaded[image]|max_size[image,2048]|is_image[image]',
+            'image' => 'uploaded[image]',
             'category' => 'required',
             'partnumber' => 'required',
             'compatibility' => 'required',
@@ -52,7 +52,6 @@ class Products extends ResourceController
             'boughtprice' => 'required',
             'sellingprice' => 'required',
             'initialquantity' => 'required',
-            'currentquantity' => 'required',
             'branch' => 'required',
             'lastdateupdated' => 'required',
             'supplier' => 'required',
@@ -75,7 +74,7 @@ class Products extends ResourceController
                 'boughtprice' => $this->request->getVar('boughtprice'),
                 'sellingprice' => $this->request->getVar('sellingprice'),
                 'initialquantity' => $this->request->getVar('initialquantity'),
-                'currentquantity' => $this->request->getVar('currentquantity'),
+                'currentquantity' => $this->request->getVar('initialquantity'),
                 'branch' => $this->request->getVar('branch'),
                 'lastdateupdated' => $this->request->getVar('lastdateupdated'),
                 'supplier' => $this->request->getVar('supplier'),
@@ -86,6 +85,7 @@ class Products extends ResourceController
             $response = [
                 'status' => 201,
                 'error' => null,
+                'redirect' => '/dashboard',
                 'messsages' => [
                     'success' => 'Data Inserted',
                     'file_name' => $file->getName(),
