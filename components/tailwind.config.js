@@ -11,32 +11,11 @@ module.exports = {
      
       container: {
         padding: {
-          DEFAULT: '20px',
-        },
-        margin: {
-          DEFAULT: '0 auto',
-        },
-        width: {
-          DEFAULT: '500px',
-        },
-        border: {
-          DEFAULT: '1px solid #ccc',
-        },
-        borderRadius: {
-          DEFAULT: '5px',
-        },
-        backgroundColor: {
-          DEFAULT: '#fff',
-        },
-        boxShadow: {
-          DEFAULT: '0 0 10px rgba(0, 0, 0, 0.2)',
-        },
-        textAlign: {
-          DEFAULT: 'center',
-        },
-        backdropBlur: {
-          xs: '2px',
-        },
+          DEFAULT: '1rem',
+          sm: '2rem',
+          lg: '4rem',
+          xl: '5rem',
+          '2xl': '6rem',
         
       spacing: {
         '128': '32rem',
@@ -45,8 +24,7 @@ module.exports = {
       borderRadius: {
         '4xl': '2rem',
       }
-      
-     
+    
     },
 
   },
@@ -55,5 +33,5 @@ module.exports = {
   ],
   
     }
-
   }
+}
