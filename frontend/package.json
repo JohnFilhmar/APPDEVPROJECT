@@ -10,6 +10,7 @@
     "axios": "^1.6.1",
     "bootstrap": "^4.6.2",
     "chart.js": "^4.4.0",
+    "crypto-js": "^4.2.0",
     "faker": "^5.5.3",
     "flowbite": "^2.1.1",
     "flowbite-react": "^0.6.4",

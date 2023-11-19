@@ -1,30 +1,50 @@
-import { useState } from 'react';
-import { Spinner, Table, Pagination, Button } from 'flowbite-react';
+import { useEffect, useState } from 'react';
+import { Spinner, Table, Pagination, Button, Alert, Dropdown } from 'flowbite-react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import useProducts from '../hooks/useProducts';
 import { CSVLink } from 'react-csv';
+import { HiInformationCircle } from 'react-icons/hi';
+import axios from 'axios';
 
 const ITEMS_PER_PAGE = 10;
 
 const DashTable = () => {
     const { products, loading, error } = useProducts();
     const [currentPage, setCurrentPage] = useState(1);
-    const [query,setQuery] = useState("");
+    const [filteredBranchData, setFilteredBranchData] = useState([...products]);
 
-    // Calculate the total number of pages
-    const pageCount = Math.ceil(products.length / ITEMS_PER_PAGE);
+    const pageCount = Math.ceil(filteredBranchData.length / ITEMS_PER_PAGE);
 
     const onPageChange = (page) => {
         setCurrentPage(page);
     };
 
-    // Searching item name from the table
-    function search(data) {
-        return data.filter((item) => item.itemname.toLowerCase().includes(query));
+    useEffect(() => {
+        setFilteredBranchData([...products]);
+    },[products])
+    
+    const search = (query) => {
+            const results = products.filter((product) =>
+            product.itemname.toLowerCase().includes(query.toLowerCase()) ||
+            product.category.toLowerCase().includes(query.toLowerCase()) ||
+            product.compatibility.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredBranchData(results);
+    };
+
+    const handleBranchButtonClick = async (branch) => {
+        if (branch === 'All Branch') {
+            setFilteredBranchData([...products]);
+        } else {
+            const response = await axios.get('Products');
+            const branchResults = response.data.filter((product) => 
+            product.branch.toLowerCase().includes(branch.toLowerCase()));
+            setFilteredBranchData(branchResults);
+        }
     };
 
     // Slice the products array to display only the current page's worth of items
-    const displayedProducts = search(products).slice(
+    const displayedProducts = filteredBranchData.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
     );
@@ -39,8 +59,8 @@ const DashTable = () => {
                         <Table.Head>
                             <Table.HeadCell>Item Name</Table.HeadCell>
                             <Table.HeadCell>Part Number</Table.HeadCell>
-                            <Table.HeadCell>Branch</Table.HeadCell>
                             <Table.HeadCell>Category</Table.HeadCell>
+                            <Table.HeadCell>Branch</Table.HeadCell>
                             <Table.HeadCell>Market Price</Table.HeadCell>
                             <Table.HeadCell>Bought Price</Table.HeadCell>
                             <Table.HeadCell>Selling Price</Table.HeadCell>
@@ -51,13 +71,15 @@ const DashTable = () => {
                         <Table.Body className="divide-y">
                         {loading ? (
                         <tr>
-                            <td colSpan="5" className="text-center py-4">
+                            <td colSpan="10" className="text-center py-4">
                             <Spinner aria-label="Default status example" />
                             </td>
                         </tr>
                         ) : error ? (
                         <tr>
-                            <td colSpan="5">Error: {error.message}</td>
+                            <Alert color="failure" icon={HiInformationCircle}>
+                                <span className="font-medium">Error ! </span>Something have gone wrong.
+                            </Alert>
                         </tr>
                         ) : (
                         displayedProducts.map((product) => (
@@ -93,10 +115,36 @@ const DashTable = () => {
                 <div className="absolute top-[-50px] right-0 ">
                     <input
                         type="text"
-                        className="border rounded p-2"
+                        className="border rounded p-2 w-20"
                         placeholder="Search..."
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => search(e.target.value)}
                     />
+                </div>
+                {/* <div className="absolute top-[-50px] left-0 md:grid md:grid-cols-5 lg:grid lg:grid-cols-5 gap-4 sm:hidden md:hidden">
+                    <Button onClick={() => handleBranchButtonClick('All Branch')}>
+                    All Branch
+                    </Button>
+                    <Button onClick={() => handleBranchButtonClick('Canubing I')}>
+                    Canubing I
+                    </Button>
+                    <Button onClick={() => handleBranchButtonClick('Canubing I.2')}>
+                    Canubing I.2
+                    </Button>
+                    <Button onClick={() => handleBranchButtonClick('Bayanan II')}>
+                    Bayanan II
+                    </Button>
+                    <Button onClick={() => handleBranchButtonClick('Malinao')}>
+                    Malinao
+                    </Button>
+                </div> */}
+                <div className="absolute top-[-50px] left-0">
+                    <Dropdown label="Branches" dismissOnClick={false}>
+                        <Dropdown.Item className='justify-center' onClick={() => handleBranchButtonClick('All Branch')}>All Branch</Dropdown.Item><Dropdown.Divider />
+                        <Dropdown.Item className='justify-center' onClick={() => handleBranchButtonClick('Canubing I')}>Canubing I</Dropdown.Item><Dropdown.Divider />
+                        <Dropdown.Item className='justify-center' onClick={() => handleBranchButtonClick('Canubing I.2')}>Canubing I.2</Dropdown.Item><Dropdown.Divider />
+                        <Dropdown.Item className='justify-center' onClick={() => handleBranchButtonClick('Bayanan II')}>Bayanan II</Dropdown.Item><Dropdown.Divider />
+                        <Dropdown.Item className='justify-center' onClick={() => handleBranchButtonClick('Malinao')}>Malinao</Dropdown.Item><Dropdown.Divider />
+                    </Dropdown>
                 </div>
                 <div className="flex justify-between mt-5">
                     {/* CSV Link - Bottom Left */}

@@ -10,6 +10,7 @@ import Messages from './components/Messages';
 import Footer from './components/Footer';
 import ItemForm from './components/ItemForm';
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import Profile from "./components/Profile";
 
 const App = () => (
   <Router>
@@ -35,10 +36,12 @@ const AppContent = () => {
             {/* Public Routes */}
             {!isLoggedIn && (
               <Switch>
+                <Redirect from="/" to="/login"/>
                 <Redirect from="/dashboard" to="/login"/>
                 <Redirect from="/ecomm" to="/login"/>
                 <Redirect from="/messaging" to="/login"/>
                 <Redirect from="/itemform" to="/login"/>
+                <Redirect from="/profile" to="/login"/>
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/register" component={Register}/>
               </Switch>
@@ -53,6 +56,7 @@ const AppContent = () => {
                 <Route exact path="/ecomm" component={ECommerce}/>
                 <Route exact path="/messaging" component={Messages}/>
                 <Route exact path="/itemform" component={ItemForm}/>
+                <Route exact path="/profile" component={Profile}/>
               </Switch>
             )}
             

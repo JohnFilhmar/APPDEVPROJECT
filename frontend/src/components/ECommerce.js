@@ -1,84 +1,110 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useProducts from '../hooks/useProducts';
-import { Button, Card, Dropdown } from 'flowbite-react';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Button, Card, Modal } from 'flowbite-react';
 import Loading from './Loading';
 import PromptError from './PromptError';
+import axios from 'axios';
 
-const gridItems = (products) => {
-  
-  const access = sessionStorage.getItem('accessibility');
-
+const gridItems = (products, click) => {
   return products.map((product, index) => {
     return (
-        <Card
-            key={index} 
-            className={`mb-4 text-sm lg:text-lg md:text-base`}
-            imgAlt='NoImageToShow'
-            imgSrc={product.image}
-        >
+      <Card
+        key={index}
+        className={`mb-4 text-sm lg:text-lg md:text-base`}
+        imgSrc={`http://localhost:8080/uploads/${product.image}`}
+        imgAlt='NoImageToShow'
+        onClick={() => click(product)}
+      >
         <div className="flex justify-end pt-4">
-          {access === 'FULL' && (
-            <Dropdown inline label="">
-            <Dropdown.Item>
-              <Link
-                to="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Edit
-              </Link>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Link
-                to="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Export Data
-              </Link>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Link
-                to="#"
-                className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Delete
-              </Link>
-            </Dropdown.Item>
-          </Dropdown>
-          )}
         </div>
         <h1 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            {product.itemname}
+          {product.compatibility} - {product.itemname}
         </h1>
-        <p className='font-bold'>
-            {product.compatibility} - {product.partnumber}
-        </p>
-        <p className='font-bold'>
-            Branch: {product.branch}
-        </p>
-        <Button color='success'>Add to card</Button>
-        </Card>
-      );
+      </Card>
+    );
   });
 };
 
 const ProductGrid = () => {
-    
-    const { products, loading, error } = useProducts();
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const { products, loading, error } = useProducts();
 
-    if (loading) {
-        return <Loading />;
+  const search = async (query) => {
+    try {
+      const response = await axios.get('Products');
+      const filteredResults = response.data.filter(product =>
+        product.itemname.toLowerCase().includes(query.toLowerCase()) ||
+        product.category.toLowerCase().includes(query.toLowerCase()) ||
+        product.compatibility.toLowerCase().includes(query.toLowerCase())
+      );
+      setSearchResults(filteredResults);
+    } catch (error) {
+      console.error('Search error:', error);
+      // Handle the error as needed
     }
-    
-    if (error) {
-        return <PromptError />;
-    }
+  };
 
-    return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 ml-4 mr-4 mt-5 text-sm lg:text-lg md:text-base sm:text-sm">
-            {gridItems(products)}
-        </div>
-    );
+  const addToCart = () => {
+    const existingItems = localStorage.getItem('cart');
+    const cartItems = existingItems ? JSON.parse(existingItems) : [];
+    if (selectedProduct) {
+      cartItems.push(selectedProduct);
+    }
+    const updatedCart = JSON.stringify(cartItems);
+    localStorage.setItem('cart', updatedCart);
+    setOpenModal(false);
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <PromptError />;
+  }
+
+  return (
+    <>
+      <h1 className='text-center font-black text-lg md:text-xl lg:text-2xl'>Search</h1>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 ml-4 mr-4 mt-5 text-sm lg:text-lg md:text-base sm:text-sm">
+        <input
+          type="text"
+          className="border rounded p-2 col-span-2 md:col-span-3 lg:col-span-5 text-center"
+          placeholder="Search for an item..."
+          onChange={(e) => search(e.target.value)}
+        />
+        {gridItems(searchResults.length > 0 ? searchResults : products, (product) => {
+          setSelectedProduct(product);
+          setOpenModal(true);
+        })}
+      </div>
+      <Modal size="lg" show={openModal} onClose={() => setOpenModal(false)}>
+        <Modal.Header>{selectedProduct && selectedProduct.category} - { selectedProduct && selectedProduct.itemname}</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            {selectedProduct && (
+              <>
+                <img src={`http://localhost:8080/uploads/${selectedProduct.image}`} alt="Selected Product" />
+                <p className='text-base/6'>
+                  Compatibility: {selectedProduct.compatibility}<br/>
+                  Price: ₱{selectedProduct.sellingprice}<br/>
+                  Branch: {selectedProduct.branch}
+                </p>
+              </>
+            )}
+          </div>
+        </Modal.Body>
+        <Modal.Footer className='justify-end'>
+          <Button onClick={addToCart}>Add To Cart</Button>
+          <Button color="gray" onClick={() => setOpenModal(false)}>
+            Back
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
 };
 
 export default ProductGrid;

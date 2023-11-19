@@ -62,11 +62,12 @@ class Products extends ResourceController
         }
 
         $file = $this->request->getFile('image');
+        $fileName = $file->getClientName();
         if ($file->isValid() && !$file->hasMoved()) {
             $file->move(ROOTPATH . 'public/uploads', $file->getName());
             $data = [
                 'itemname' => $this->request->getVar('itemname'),
-                'image' => $file->getName(),
+                'image' => $fileName,
                 'category' => $this->request->getVar('category'),
                 'partnumber' => $this->request->getVar('partnumber'),
                 'compatibility' => $this->request->getVar('compatibility'),
@@ -86,10 +87,7 @@ class Products extends ResourceController
                 'status' => 201,
                 'error' => null,
                 'redirect' => '/dashboard',
-                'messsages' => [
-                    'success' => 'Data Inserted',
-                    'file_name' => $file->getName(),
-                ]
+                'messsages' => 'success',
             ];
             return $this->respondCreated($response);
         }
@@ -108,6 +106,7 @@ class Products extends ResourceController
         helper(['form']);
         $rules = [
             'itemname' => 'required',
+            'image' => 'required',
             'category' => 'required',
             'partnumber' => 'required',
             'compatibility' => 'required',
@@ -171,10 +170,5 @@ class Products extends ResourceController
             ]
         ];
         return $this->respondCreated($response);
-    }
-
-    public function hashResponse($respose)
-    {
-
     }
 }

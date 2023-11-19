@@ -144,9 +144,12 @@ class Users extends ResourceController
 
     public function logout()
     {
+        // $encrypter = \Config\Services::encrypter();
         $session = \Config\Services::session();
+        // $ciphertext = $encrypter->encrypt("hello");
         $response = [
             'redirect' => '/login',
+            // 'cipher' => $ciphertext
         ];
         $session->destroy();
         return $this->respondCreated($response);

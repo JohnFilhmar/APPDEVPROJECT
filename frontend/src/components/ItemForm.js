@@ -155,7 +155,7 @@ const ItemForm = () => {
                 </div>
             </div>
             <div className="mb-10">
-                <form method="post" onSubmit={SubmitForm}className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4">
+                <form method="post" enctype="multipart/form-data" onSubmit={SubmitForm}className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4">
                     <div className="itemname">
                         <Label htmlFor="itemname">Item Name:</Label>
                         <TextInput
