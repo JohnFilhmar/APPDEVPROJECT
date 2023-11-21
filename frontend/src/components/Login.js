@@ -44,6 +44,8 @@ const Login = () => {
         sessionStorage.setItem('username',username);
         sessionStorage.setItem('accessibility',response.data.access);
         window.location.href = response.data.redirect;
+      } else if (response.data && response.data.messages && response.data.messages.error){
+        setError(response.data.messages.error);
       }
     } catch(error) {
       setError(error.message)

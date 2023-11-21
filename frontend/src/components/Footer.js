@@ -23,8 +23,8 @@ const Foot = () => {
                     <Footer.Title title="about" />
                     <Footer.LinkGroup col>
                         <Footer.Link as={Link} to="#">Canubing I Main Branch</Footer.Link>
-                        <Footer.Link as={Link} to="#">Canubing I.2 Branch</Footer.Link>
-                        <Footer.Link as={Link} to="#">Bayanan II Branch</Footer.Link>
+                        <Footer.Link as={Link} to="/Canubing1_2">Canubing I.2 Branch</Footer.Link>
+                        <Footer.Link as={Link} to="/Bayanan">Bayanan II Branch</Footer.Link>
                         <Footer.Link as={Link} to="#">Malinao Branch</Footer.Link>
                     </Footer.LinkGroup>
                     </div>
