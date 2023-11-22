@@ -29,6 +29,7 @@ const Register = () => {
     
       return formattedDate;
     }
+    
     const formattedDate = getCurrentDateFormatted();
     
     const submitForm = async (e) => {

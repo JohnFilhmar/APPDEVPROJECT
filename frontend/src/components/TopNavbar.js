@@ -1,5 +1,4 @@
 import axios from 'axios';
-import CryptoJS from 'crypto-js';
 import { Navbar,Alert,Dropdown, Button, Modal, Badge } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom/cjs/react-router-dom.min';
@@ -36,22 +35,22 @@ const TopNavbar = () => {
     const logout = async (e) => {
         try {
             const response = await axios.get('logout');
-            const encData = response.data.cipher;
+            // const encData = response.data.cipher;
             // console.log(encData);
-            const encryptedData = response.data.ciphertext;
-            const encryptionKey = 'f!1lHm4R0lA_A1b3uRm4cAp7a_abRi31LEL4l0nG(s)p';
-            const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
-            const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
-            const parsedData = JSON.stringify(decryptedData);
-            console.log(parsedData);
-            // if (response.data.redirect) {
-            //   sessionStorage.setItem('isLoggedIn', false);
-            //   sessionStorage.removeItem('username');
-            //   sessionStorage.removeItem('accessibility');
-            //   window.location.href = response.data.redirect;
-            // } else {
-            //   setMessage('Something may have gone wrong');
-            // }
+            // const encryptedData = response.data.ciphertext;
+            // const encryptionKey = 'f!1lHm4R0lA_A1b3uRm4cAp7a_abRi31LEL4l0nG(s)p';
+            // const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+            // const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+            // const parsedData = JSON.stringify(decryptedData);
+            // console.log(parsedData);
+            if (response.data.redirect) {
+              sessionStorage.setItem('isLoggedIn', false);
+              sessionStorage.removeItem('username');
+              sessionStorage.removeItem('accessibility');
+              window.location.href = response.data.redirect;
+            } else {
+              setMessage('Something may have gone wrong');
+            }
         } catch (error) {
             console.error('Logout error:', error);
             setMessage('An error occurred during logout');
