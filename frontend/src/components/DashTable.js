@@ -151,7 +151,7 @@ const DashTable = () => {
                     <div>
                         <Button className='mt-5'>
                             <CSVLink
-                                data={products.map(product => Object.values(product))}
+                                data={filteredBranchData.map(product => Object.values(product))}
                                 headers={['id', 'itemname', 'image', 'category', 'partnumber', 'compatibility', 'marketprice', 'boughtprice', 'sellingprice', 'initialquantity', 'currentquantity', 'branch', 'lastdateupdated', 'supplier']}
                                 filename={'inventory.csv'}
                             >

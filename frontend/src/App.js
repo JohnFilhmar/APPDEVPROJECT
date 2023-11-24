@@ -1,4 +1,5 @@
 import React from "react";
+// eslint-disable-next-line
 import { BrowserRouter as Router, Route, Switch, useLocation } from "react-router-dom";
 import Login from "./components/Login";
 import TopNavbar from "./components/TopNavbar";
@@ -11,13 +12,13 @@ import Footer from './components/Footer';
 import ItemForm from './components/ItemForm';
 import Bayanan from './components/about/Bayanan';
 import Canubing1_2 from './components/about/Canubing1_2';
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
-import Profile from "./components/Profile";
+import { BrowserRouter, Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import Profile from "./components/profile/Profile";
 
 const App = () => (
-  <Router>
+  <BrowserRouter basename="/">
     <AppContent />
-  </Router>
+  </BrowserRouter>
 );
 
 const AppContent = () => {
@@ -45,10 +46,10 @@ const AppContent = () => {
                 <Redirect from="/profile" to="/login"/>
                 <Redirect from="/Canubing1_2" to="/login"/>
                 <Redirect from="/Bayanan" to="/login"/>
-                <Route exact path="/login" component={Login}/>
-                <Route exact path="/register" component={Register}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/register" component={Register}/>
                 {/* Fallback for unknown routes */}
-                <Route exact path="*" component={NotFound}/>
+                <Route path="*" component={NotFound}/>
               </Switch>
             )}
             
@@ -57,13 +58,13 @@ const AppContent = () => {
               <Switch>
                 <Redirect from="/login" to="/dashboard"/>
                 <Redirect from="/register" to="/dashboard"/>
-                <Route exact path="/dashboard" component={Dashboard} />
-                <Route exact path="/ecomm" component={ECommerce}/>
-                <Route exact path="/messaging" component={Messages}/>
-                <Route exact path="/itemform" component={ItemForm}/>
-                <Route exact path="/profile" component={Profile}/>
-                <Route exact path="/Canubing1_2" component={Canubing1_2}/>
-                <Route exact path="/Bayanan" component={Bayanan}/>
+                <Route path="/profile" component={Profile}/>
+                <Route path="/dashboard" component={Dashboard} />
+                <Route path="/ecomm" component={ECommerce}/>
+                <Route path="/messaging" component={Messages}/>
+                <Route path="/itemform" component={ItemForm}/>
+                <Route path="/Canubing1_2" component={Canubing1_2}/>
+                <Route path="/Bayanan" component={Bayanan}/>
                 {/* Fallback for unknown routes */}
                 <Route path="*" component={NotFound}/>
               </Switch>
