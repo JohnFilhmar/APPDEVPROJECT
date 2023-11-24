@@ -25,6 +25,7 @@ const ItemForm = () => {
       handleInputFocus: handleInputFocusSupplier,
       handleInputBlur: handleInputBlurSupplier,
     } = useCacheOptions("supplierSuggestions");
+    
     // category input
     const {
       options: categoryOptions,

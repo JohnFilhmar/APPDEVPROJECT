@@ -34,7 +34,7 @@ const AppContent = () => {
           {isLoggedIn && <TopNavbar />}
           
           <Switch>
-            
+
             {/* Public Routes */}
             {!isLoggedIn && (
               <Switch>
@@ -47,6 +47,8 @@ const AppContent = () => {
                 <Redirect from="/Bayanan" to="/login"/>
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/register" component={Register}/>
+                {/* Fallback for unknown routes */}
+                <Route exact path="*" component={NotFound}/>
               </Switch>
             )}
             
@@ -62,11 +64,12 @@ const AppContent = () => {
                 <Route exact path="/profile" component={Profile}/>
                 <Route exact path="/Canubing1_2" component={Canubing1_2}/>
                 <Route exact path="/Bayanan" component={Bayanan}/>
+                {/* Fallback for unknown routes */}
+                <Route path="*" component={NotFound}/>
               </Switch>
             )}
             
-            {/* Fallback for unknown routes */}
-            <Route exact path="*" component={NotFound}/>
+
           </Switch>
         </div>
       </div>

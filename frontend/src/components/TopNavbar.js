@@ -35,14 +35,7 @@ const TopNavbar = () => {
     const logout = async (e) => {
         try {
             const response = await axios.get('logout');
-            // const encData = response.data.cipher;
-            // console.log(encData);
-            // const encryptedData = response.data.ciphertext;
-            // const encryptionKey = 'f!1lHm4R0lA_A1b3uRm4cAp7a_abRi31LEL4l0nG(s)p';
-            // const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
-            // const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
-            // const parsedData = JSON.stringify(decryptedData);
-            // console.log(parsedData);
+            console.log(response);
             if (response.data.redirect) {
               sessionStorage.setItem('isLoggedIn', false);
               sessionStorage.removeItem('username');

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UserModel;
+use Config\Encryption;
 
 class Users extends ResourceController
 {
@@ -144,24 +145,26 @@ class Users extends ResourceController
 
     public function logout()
     {
-        // $encrypter = \Config\Services::encrypter();
         $session = \Config\Services::session();
-        // $ciphertext = $encrypter->encrypt("hello");
         $response = [
             'redirect' => '/login',
-            // 'cipher' => $ciphertext
         ];
         $session->destroy();
         return $this->respondCreated($response);
+        // $encrypter = \Config\Services::encrypter();
+        // $encData = $encrypter->encrypt('HELLO');
+        // return $this->respond($encData);
     }
 
     public function accessibility()
     {
         $session = \Config\Services::session();
+        $encrypter = \Config\Services::encrypter();
         $access = $session->get('accessibility');
         $response = [
             'access' => $access
         ];
-        return $this->respondCreated($response);
+        $encData = $encrypter->encrypt('HELLO');
+        return $this->respond($encData);
     }
 }

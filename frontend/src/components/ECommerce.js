@@ -74,6 +74,7 @@ const ProductGrid = () => {
           className="border rounded p-2 col-span-2 md:col-span-3 lg:col-span-5 text-center"
           placeholder="Search for an item..."
           onChange={(e) => search(e.target.value)}
+          name='search'
         />
         {gridItems(searchResults.length > 0 ? searchResults : products, (product) => {
           setSelectedProduct(product);
