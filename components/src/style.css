@@ -1,0 +1,9 @@
+.navbar-glow {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.containerWithBackground {
+    background-image: url("components/src/images/pngtree-various-metal-parts-of-a-motor-vehicle-picture-image_3475618.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
