@@ -55,7 +55,7 @@ const DashTable = () => {
             {/* Table */}
             <div className="relative sm:text-sm md:text-base lg:text-lg">
                 <div className="static overflow-x-auto">
-                    <Table striped className="min-w-full">
+                    <Table striped className="min-w-full min-h-[645px] max-h-[645px]">
                         <Table.Head>
                             <Table.HeadCell>Item Name</Table.HeadCell>
                             <Table.HeadCell>Part Number</Table.HeadCell>
@@ -85,7 +85,7 @@ const DashTable = () => {
                         displayedProducts.map((product) => (
                             <Table.Row
                                 key={product.id}
-                                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                                className="bg-white dark:border-gray-700 dark:bg-gray-800 divide-x"
                             >
                                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {product.itemname}
@@ -120,23 +120,6 @@ const DashTable = () => {
                         onChange={(e) => search(e.target.value)}
                     />
                 </div>
-                {/* <div className="absolute top-[-50px] left-0 md:grid md:grid-cols-5 lg:grid lg:grid-cols-5 gap-4 sm:hidden md:hidden">
-                    <Button onClick={() => handleBranchButtonClick('All Branch')}>
-                    All Branch
-                    </Button>
-                    <Button onClick={() => handleBranchButtonClick('Canubing I')}>
-                    Canubing I
-                    </Button>
-                    <Button onClick={() => handleBranchButtonClick('Canubing I.2')}>
-                    Canubing I.2
-                    </Button>
-                    <Button onClick={() => handleBranchButtonClick('Bayanan II')}>
-                    Bayanan II
-                    </Button>
-                    <Button onClick={() => handleBranchButtonClick('Malinao')}>
-                    Malinao
-                    </Button>
-                </div> */}
                 <div className="absolute top-[-50px] left-0">
                     <Dropdown label="Branches" dismissOnClick={false}>
                         <Dropdown.Item className='justify-center' onClick={() => handleBranchButtonClick('All Branch')}>All Branch</Dropdown.Item><Dropdown.Divider />

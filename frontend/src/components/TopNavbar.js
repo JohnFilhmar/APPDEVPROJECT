@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import { LiaCartPlusSolid } from "react-icons/lia";
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { FaExpandArrowsAlt, FaCompressArrowsAlt } from "react-icons/fa";
+import Messages from './chat/Messages';
 
 const TopNavbar = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -11,6 +13,7 @@ const TopNavbar = () => {
     const [message,setMessage] = useState("");
     const [cartCount, setCartCount] = useState(0);
     const [cartItems, setCartItems] = useState([]);
+    const [screen, setScreen] = useState(false);
     const uniqueItemNames = Array.from(new Set(cartItems.map(item => item.itemname)));
 
     useEffect(() => {
@@ -61,19 +64,36 @@ const TopNavbar = () => {
         setWarningModal(true);
     }
 
+    const handleFullscreen = () => {
+        const element = document.documentElement;
+        if(screen === true){
+            setScreen(false);
+        } else {
+            setScreen(true);
+        }
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            element.requestFullscreen().catch((err) => {
+            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        }
+    };
     return (
         <>
-            <Navbar className='sticky top-0 z-50'>
+            <Navbar className='sticky top-0 z-50 bg-slate-300'>
                 <Navbar.Brand as={NavLink} to="/">
                     <img src="http://localhost:8080/jms.png" className="mr-3 w-7 sm:w-10 md:w-15 lg:w-20 h-7 sm:h-10 md:h-15 lg:h-20" alt="JMS"/>
                     <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Multi-Hub System</span>
                 </Navbar.Brand>
-                <Navbar.Toggle />
+                <Navbar.Toggle className='ml-12'/>
+                <button onClick={handleFullscreen}  className='block md:hidden lg:hidden'>
+                    {!screen && <FaExpandArrowsAlt/>}
+                    {screen && <FaCompressArrowsAlt/>}
+                </button>
                 <Navbar.Collapse>
                     <Navbar.Link as={NavLink} to="/dashboard" active>Dashboard</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/ecomm">E-Shop</Navbar.Link>
-                    <Navbar.Link as={NavLink} to="/messaging">Messaging</Navbar.Link>
-                    <Navbar.Link as={NavLink} to="/">Pricing</Navbar.Link>
                     <Navbar.Link
                         onClick={() => setOpenModal(true)}
                         className="relative flex items-center"
@@ -90,12 +110,14 @@ const TopNavbar = () => {
                         </Badge>
                         )}
                     </Navbar.Link>
-                    <Navbar.Link> 
-                        <Dropdown label={`Welcome ${sessionStorage.getItem('username')}`} inline>
-                            <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
-                            <Dropdown.Item>Settings</Dropdown.Item>
-                            <Dropdown.Item onClick={logout} style={{color: 'red'}}>Sign out</Dropdown.Item>
-                        </Dropdown>
+                    <Dropdown label={`Welcome ${sessionStorage.getItem('username')}`} inline>
+                        <Dropdown.Item as={Link} to="/profile/account">Profile</Dropdown.Item>
+                        <Dropdown.Item>Settings</Dropdown.Item>
+                        <Dropdown.Item onClick={logout} style={{color: 'red'}}>Sign out</Dropdown.Item>
+                    </Dropdown>
+                    <Navbar.Link onClick={handleFullscreen} className='shidden md:block lg:block'>
+                        {!screen && <FaExpandArrowsAlt/>}
+                        {screen && <FaCompressArrowsAlt/>}
                     </Navbar.Link>
                 </Navbar.Collapse>
             { message && <Alert color="info"><span className="font-medium">{message}</span></Alert>}
@@ -187,6 +209,7 @@ const TopNavbar = () => {
                 </div>
                 </Modal.Body>
             </Modal>
+            <Messages />
         </>
     );
 }

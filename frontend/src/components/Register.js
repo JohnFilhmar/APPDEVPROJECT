@@ -49,6 +49,9 @@ const Register = () => {
           sessionStorage.setItem('Registered',true);
           window.location.href = response.data.redirect;
         }
+        if (response.data && response.data.fail) {
+          setError(response.data.fail);
+        }
       } catch(error) {
         setError(error.message);
       }
@@ -115,7 +118,7 @@ const Register = () => {
                 <Button type="submit">Register</Button>
             </form>
             <Link to="/login" className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-lg focus:ring-2">Go Back</Link>
-            {error && <p style={{ color: 'red' }}>{error}. Try Again.</p>}<br/>
+            {error && <p style={{ color: 'red' }}>{error}! Try Again.</p>}<br/>
           </Card>
       </div>
     </>

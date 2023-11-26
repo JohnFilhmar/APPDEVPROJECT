@@ -7,7 +7,7 @@ import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import NotFound from './components/NotFound';
 import ECommerce from './components/ECommerce';
-import Messages from './components/Messages';
+// import Messages from './components/Messages';
 import Footer from './components/Footer';
 import ItemForm from './components/ItemForm';
 import Bayanan from './components/about/Bayanan';
@@ -30,18 +30,18 @@ const AppContent = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
-        <div className="container mx-auto bg-slate-300">
+        {isLoggedIn && <TopNavbar />}
+        <div className="container mx-auto">
 
-          {isLoggedIn && <TopNavbar />}
-          
           <Switch>
 
             {/* Public Routes */}
             {!isLoggedIn && (
               <Switch>
+                <Redirect exact from="/" to="/login"/>
                 <Redirect from="/dashboard" to="/login"/>
                 <Redirect from="/ecomm" to="/login"/>
-                <Redirect from="/messaging" to="/login"/>
+                {/* <Redirect from="/messaging" to="/login"/> */}
                 <Redirect from="/itemform" to="/login"/>
                 <Redirect from="/profile" to="/login"/>
                 <Redirect from="/Canubing1_2" to="/login"/>
@@ -61,7 +61,7 @@ const AppContent = () => {
                 <Route path="/profile" component={Profile}/>
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/ecomm" component={ECommerce}/>
-                <Route path="/messaging" component={Messages}/>
+                {/* <Route path="/messaging" component={Messages}/> */}
                 <Route path="/itemform" component={ItemForm}/>
                 <Route path="/Canubing1_2" component={Canubing1_2}/>
                 <Route path="/Bayanan" component={Bayanan}/>

@@ -1,11 +1,19 @@
+import { Button } from 'flowbite-react';
 import React, { useState } from 'react';
 
 const Messages = () => {
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState([
-    { id: 1, text: 'Hello!', sender: 'user' },
-    { id: 2, text: 'Hi there!', sender: 'other' },
-    // Add more messages as needed
+    { 
+      id: 1, 
+      text: 'Hello!', 
+      sender: 'user' 
+    },
+    { 
+      id: 2, 
+      text: 'Hi there!', 
+      sender: 'other' 
+    },
   ]);
 
   const handleSendMessage = () => {
@@ -25,6 +33,15 @@ const Messages = () => {
     <>
         <div className="bg-gray-800 text-white p-4">
             <h1 className="text-2xl font-semibold">Multi-Hub Communication</h1>
+        </div>
+
+        <div className="flex justify-center mt-5">
+          <Button.Group>
+            <Button color="gray">Canubing Main</Button>
+            <Button color="gray">Canubing 1.2</Button>
+            <Button color="gray">Baynanan II</Button>
+            <Button color="gray">Malinao</Button>
+          </Button.Group>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 sm:text-base md:text-lg lg:text-xl">

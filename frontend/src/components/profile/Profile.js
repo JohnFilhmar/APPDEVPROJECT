@@ -13,31 +13,31 @@ const Profile = () => {
     return (
         <>
         <BrowserRouter basename="/profile">
-            <div className="bg-gray-100 h-auto container mx-auto grid grid-cols-2 gap-5 px-20 py-20 rounded-lg">
-                <div className="grid grid-cols-2 gap-5">
+            <div className="bg-gray-100 h-auto container mx-auto md:flex lg:flex md:flex-row lg:flex-row gap-5 px-20 py-20 rounded-lg mt-5 mb-5">
+                <div className="basis-1/5 grid grid-cols-1 gap-5">
                     <div>
                         <p className='text-lg font-bold text-slate-400 pl-1'>Account</p>
                         <div className="h-auto mt-5 text-slate-900">
                             <Link to="/account" className="flex py-4">
-                                <FaUser  className="w-5 h-5"/>
-                                <p className="flex-none pl-5 text-base">Account Details</p>
+                                <FaUser  className="w-5 h-5 mr-3"/>
+                                <p className="text-base hover:font-bold active:font-extrabold">Account Details</p>
                             </Link>
                             <Link to="/edit" className="flex py-4">
-                                <FaUserEdit  className="w-5 h-5"/>
-                                <p className="flex-none pl-5 text-base">Edit Account</p>
+                                <FaUserEdit  className="w-5 h-5 mr-3"/>
+                                <p className="text-base hover:font-bold active:font-extrabold">Edit Account</p>
                             </Link>
                             <Link to="/purchases" className="flex py-4">
-                                <FaShoppingBag  className="w-5 h-5"/>
-                                <p className="flex-none pl-5 text-base">Purchases</p>
+                                <FaShoppingBag  className="w-5 h-5 mr-3"/>
+                                <p className="text-base hover:font-bold active:font-extrabold">Purchases</p>
                             </Link>
                             <Link to="/notifications" className="flex py-4">
-                                <IoNotifications className="w-5 h-5"/>
-                                <p className="flex-none pl-5 text-base">Notifications</p>
+                                <IoNotifications className="w-5 h-5 mr-3"/>
+                                <p className="text-base hover:font-bold active:font-extrabold">Notifications</p>
                             </Link>
                         </div>
                     </div>
                 </div>
-                <div>
+                <div className="basis-4/5">
                         <Switch>
                             <Route path="/account" component={Account}/>
                             <Route path="/edit" component={EditAccount}/>

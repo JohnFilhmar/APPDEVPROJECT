@@ -17,7 +17,9 @@ class Users extends ResourceController
     use ResponseTrait;
     public function index()
     {
-        //
+        $main = new UserModel();
+        $data = $main->findAll();
+        return $this->respond($data);
     }
     /**
      * Authenticate a user based on provided credentials
@@ -95,6 +97,17 @@ class Users extends ResourceController
             'userRole' => 'required',
             'userAccess' => 'required',
         ];
+
+        $userModel = new UserModel();
+        $user = $userModel->where('userName', $this->request->getVar('userName'))->first();
+        if($user){
+            $response = [
+                'status' => 409,
+                'error' => null,
+                'fail' => 'Username already exists!',
+            ];
+            return $this->respondCreated($response);
+        }
 
         $data = [
             'userName' => $this->request->getVar('userName'),
