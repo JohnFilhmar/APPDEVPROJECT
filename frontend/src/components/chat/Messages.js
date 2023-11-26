@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import './style.css';
 import { IoChatbox } from "react-icons/io5";
@@ -16,8 +17,11 @@ const FloatingButton = () => {
   const [receiver, setCurrentChat] = useState("");
   const [userMessage, setMessage] = useState("");
   const [conversations, setConversations] = useState(false);
+// eslint-disable-next-line
   const { fetchData, response: data, loading: loadingMessages, error: errorMessages } = useGetMessages();
+// eslint-disable-next-line
   const { response, loading, error, addMessage } = useChats(sessionStorage.getItem('username'), receiver, userMessage);
+// eslint-disable-next-line
   const { response: userData, loading: loadingUsers, error: errorUsers } = useGetUsers();
   const [chats, setChats] = useState([...userData]);
   const chatboxRef = useRef();
@@ -26,7 +30,7 @@ const FloatingButton = () => {
     if (chatboxRef.current) {
       chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
     }
-  }, [isTransformed,receiver]);
+  }, [isTransformed,receiver,addMessage]);
 
   useEffect(() => {
     setChats([...userData]);
@@ -40,10 +44,8 @@ const FloatingButton = () => {
   //   return () => clearInterval(intervalId);
   // }, [fetchData]);
 
-
   const handleSendMessage = (e) => {
     e.preventDefault();
-    
     if (userMessage.trim() !== '') {
       fetchData();
       addMessage();
@@ -59,12 +61,13 @@ const FloatingButton = () => {
   const handleChatBox = () => {
     fetchData();
     setIsTransformed(!isTransformed);
-  };
+    if(!isTransformed){
 
-  const handleConversations = () => {
-    setConversations(!conversations);
-  };
+    } else {
 
+    }
+  };
+  
   const searchChat = (query) => {
     const results = userData.filter((users) => 
       users.userName.toLowerCase().includes(query.toLowerCase())
@@ -72,37 +75,44 @@ const FloatingButton = () => {
     setChats(results);
   }
 
+  // const clearChat = async () => {
+  //   console.log('Chat Cleared');
+  //   try {
+  //     const response = await axios.delete('Chats')
+  //   } catch(error) {
+
+  //   }
+  // }
+
   return (
     <div className={`floating-button ${isTransformed ? 'transformed' : ''}`}>
       <button onClick={handleChatBox}>
         {isTransformed ?
           <div className="flex">
-            <MdOutlineCloseFullscreen className='lg:w-5 lg:h-5 lg:mt-1 mr-1 sm:mr-1'/>
-            <p className='font-medium text-xs md:text-sm lg:text-base'>Close Chat</p>
+            <MdOutlineCloseFullscreen className='lg:w-5 lg:h-5 lg:mt-1'/>
           </div>
           :
           <div className="flex">
-            <IoChatbox className='lg:w-5 lg:h-5 lg:mt-1 mr-1 sm:mr-1'/>
-            <p className='font-medium text-xs md:text-sm lg:text-base'>Open Chat</p>
+            <IoChatbox className='lg:w-5 lg:h-5 lg:mt-1'/>
           </div>
         }
       </button>
       {isTransformed && (
         <div className='w-300 h-auto border-solid chat-box text-xs max-w-[90vw] md:max-w-[500px] lg:max-w-[500px]'>
-        <h5 className="flex font-bold tracking-tight text-base text-gray-900 dark:text-white p-3 justify-between border-b border-gray-500 border-t-1 border-r-1 border-l-1 border-gray-200">
-          <div className="flex items-center">
-            <IoMdChatboxes className='w-5 h-5 mr-1 mt-1'/>
-            Chat
-          </div>
-          <div className="mt-1 ml-auto items-last hover:cursor-pointer flex gap-4">
-            <p onClick={handleConversations}>
-              <IoMenu />
-            </p>
-            <p onClick={handleChatBox}>
-              <IoMdCloseCircle />
-            </p>
-          </div>
-        </h5>
+          <h5 className="flex font-bold tracking-tight text-base text-gray-900 dark:text-white p-3 justify-between border-b border-gray-500 border-t-1 border-r-1 border-l-1 border-gray-200">
+            <div className="flex items-center">
+              <IoMdChatboxes className='w-5 h-5 mr-1 mt-1'/>
+              Chat
+            </div>
+            <div className="mt-1 ml-auto items-last hover:cursor-pointer flex gap-4">
+              <p onClick={() => setConversations(!conversations)}>
+                <IoMenu />
+              </p>
+              <p onClick={handleChatBox}>
+                <IoMdCloseCircle />
+              </p>
+            </div>
+          </h5>
           <div className="flex min-h-[40.37328094302554vh] max-h-[40.37328094302554vh]">
             <div className="sm:grow md:basis-9/12 lg:basis-9/12 h-auto bg-slate-100 w-96 overflow-auto scroll-smooth chatbox"ref={chatboxRef}>
               <div className="flex flex-col">
@@ -145,6 +155,9 @@ const FloatingButton = () => {
               </div>
             </div>
             <div className={`${ conversations ? "block" : "hidden" } basis-3/12 h-auto bg-slate-200 w-full text-center`}>
+              {/* <button onClick={clearChat} className="m-1 bg-red-500 text-white py-2 w-fit">
+                Clear Chat
+              </button> */}
               { conversations && (
                 <>
                   <TextInput
@@ -184,6 +197,7 @@ const FloatingButton = () => {
               sizing="lg"
               className='w-full'
               autoComplete="off"
+              maxLength={255}
             />
             <Button type="submit"><IoSend /></Button>
           </form>

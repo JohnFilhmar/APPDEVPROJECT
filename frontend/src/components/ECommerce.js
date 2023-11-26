@@ -49,13 +49,16 @@ const ProductGrid = () => {
   const addToCart = () => {
     const existingItems = localStorage.getItem('cart');
     const cartItems = existingItems ? JSON.parse(existingItems) : [];
-    if (selectedProduct) {
-      cartItems.push(selectedProduct);
+    const existingProductIndex = cartItems.findIndex(item => item.id === selectedProduct.id);
+    if (existingProductIndex !== -1) {
+      cartItems[existingProductIndex].quantity = (cartItems[existingProductIndex].quantity || 1) + 1;
+    } else {
+      cartItems.push({ ...selectedProduct, quantity: 1 });
     }
     const updatedCart = JSON.stringify(cartItems);
     localStorage.setItem('cart', updatedCart);
     setOpenModal(false);
-  };
+  };  
 
   if (loading) {
     return <Loading />;

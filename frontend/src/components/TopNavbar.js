@@ -5,6 +5,7 @@ import { Link, NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import { LiaCartPlusSolid } from "react-icons/lia";
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { FaExpandArrowsAlt, FaCompressArrowsAlt } from "react-icons/fa";
+import { TiPlus, TiMinus } from "react-icons/ti";
 import Messages from './chat/Messages';
 
 const TopNavbar = () => {
@@ -19,21 +20,41 @@ const TopNavbar = () => {
     useEffect(() => {
         const cartFromLocalStorage = localStorage.getItem('cart');
         const cartArray = cartFromLocalStorage ? JSON.parse(cartFromLocalStorage) : [];
+        
         setCartItems(prevCartItems => {
-          // Use a callback to avoid infinite loop
-          if (JSON.stringify(prevCartItems) !== JSON.stringify(cartArray)) {
-            return cartArray;
-          }
-          return prevCartItems;
+            if (JSON.stringify(prevCartItems) !== JSON.stringify(cartArray)) {
+                return cartArray;
+            }
+            return prevCartItems;
         });
+    
         setCartCount(cartArray.length);
-      }, [openModal,cartItems]);
+    }, [openModal]);
 
     const removeFromCart = (itemId) => {
         const updatedCart = cartItems.filter(item => item.id !== itemId);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
         setCartItems(updatedCart);
     };
+
+    const updateQuantity = (itemId, increment) => {
+        const updatedCart = cartItems.map(item => {
+            if (item.id === itemId) {
+                const newQuantity = parseInt(item.quantity || 1, 10) + increment;
+                return { ...item, quantity: newQuantity };
+            }
+            return item;
+        });
+
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        console.log("Updated Cart", updatedCart);
+        setCartItems(updatedCart);
+    };
+
+    const handleCheckout = () => {
+        setOpenModal(false);
+        console.log(localStorage.getItem('cart'));
+    }
 
     const logout = async (e) => {
         try {
@@ -126,51 +147,58 @@ const TopNavbar = () => {
                 <Modal.Header>Cart</Modal.Header>
                 <Modal.Body>
                     <div className="grid grid-cols-1 gap-4">
-                        {cartItems.length > 0 ? (
-                            uniqueItemNames.map(itemName => {
-                                const sameItems = cartItems.filter(cartItem => cartItem.itemname === itemName);
-                                const totalQuantity = sameItems.reduce((total, cartItem) => total + parseInt(cartItem.quantity || 1, 10), 0);
-                                const totalPrice = sameItems.reduce((total, cartItem) => total + parseFloat(cartItem.sellingprice), 0);
-                              
-                                const item = sameItems[0]; // Take the first item for other details
-                              
-                                return (
-                                    <div key={item.id}>
-                                        <div className="bg-white p-4 rounded-lg shadow-md">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <h2 className="text-xl font-semibold">
+                    {cartItems.length > 0 ? (
+                        uniqueItemNames.map(itemName => {
+                            const sameItems = cartItems.filter(cartItem => cartItem.itemname === itemName);
+                            const totalQuantity = sameItems.reduce((total, cartItem) => total + parseInt(cartItem.quantity || 1, 10), 0);
+                            
+                            const item = sameItems[0]; // Take the first item for other details
+
+                            return (
+                                <div key={item.id}>
+                                    <div className="bg-white p-4 rounded-lg shadow-md relative">
+                                        <div className="flex justify-between items-center mb-2">
+                                            <h2 className="text-xl font-semibold">
                                                 {itemName} {totalQuantity > 1 ? `(${totalQuantity})` : ''}
-                                                </h2>
-                                                <Button
+                                            </h2>
+                                            <Button
                                                 color="failure"
                                                 onClick={() => removeFromCart(item.id)}
-                                                >
+                                            >
                                                 Remove
-                                                </Button>
-                                            </div>
-                                            <div>
-                                                <p className="text-gray-600 mb-2">
-                                                    <span className="font-semibold">Category:</span> {item.category}
-                                                </p>
-                                                <p className="text-gray-600 mb-2">
-                                                    <span className="font-semibold">Compatibility:</span> {item.compatibility}
-                                                </p>
-                                                <p className="text-gray-600 mb-2">
-                                                    <span className="font-semibold">Total Price:</span> ₱{totalPrice.toFixed(2)}
-                                                </p>
-                                                <p className="text-gray-600 mb-2">
-                                                    <span className="font-semibold">Branch:</span> {item.branch}
-                                                </p>
-                                            </div>
+                                            </Button>
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-600 mb-2">
+                                                <span className="font-semibold">Category:</span> {item.category}
+                                            </p>
+                                            <p className="text-gray-600 mb-2">
+                                                <span className="font-semibold">Compatibility:</span> {item.compatibility}
+                                            </p>
+                                            <p className="text-gray-600 mb-2">
+                                                <span className="font-semibold">Total Price:</span> ₱{item.sellingprice}
+                                            </p>
+                                            <p className="text-gray-600 mb-2">
+                                                <span className="font-semibold">Branch:</span> {item.branch}
+                                            </p>
+                                        </div>
+                                        <div className="absolute bottom-0 right-0 flex gap-3 mr-2 mb-2">
+                                            <button onClick={() => updateQuantity(item.id, 1)}>
+                                                <TiPlus className='w-5 h-5'/>
+                                            </button>
+                                            <button onClick={() => updateQuantity(item.id, -1)} disabled={totalQuantity <= 1}>
+                                                <TiMinus className='w-5 h-5'/>
+                                            </button>
                                         </div>
                                     </div>
-                                );
-                            })
-                        ) : (
-                            <Alert color="success">
-                              <span className="font-medium">Cart Empty!</span>
-                            </Alert>
-                        )}
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <Alert color="success">
+                            <span className="font-medium">Cart Empty!</span>
+                        </Alert>
+                    )}
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="justify-end">
@@ -180,13 +208,13 @@ const TopNavbar = () => {
                                 Clear Cart
                             </Button>
                         }
-                        <Button color="success" onClick={() => setOpenModal(false)}>Checkout</Button>
+                        <Button color="success" onClick={handleCheckout}>Checkout</Button>
                         <Button color="gray" onClick={() => setOpenModal(false)}>
                             Back
                         </Button>
                     </div>
                     <h1>
-                        Total: <span className='font-extrabold'>₱{cartItems.reduce((total, item) => total + parseFloat(item.sellingprice), 0)}</span>
+                        Total: <span className='font-extrabold'>₱{cartItems.length > 0 ? cartItems.map(item => parseFloat(item.sellingprice * item.quantity)).reduce((total, value) => total + value, 0).toFixed(2) : 0.00}</span>
                     </h1>
                 </Modal.Footer>
             </Modal>

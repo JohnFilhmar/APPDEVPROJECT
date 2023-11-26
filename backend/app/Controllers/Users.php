@@ -82,6 +82,7 @@ class Users extends ResourceController
     {
         //
     }
+    
     /**
      * Create a new resource object, from "posted" parameters
      * 
