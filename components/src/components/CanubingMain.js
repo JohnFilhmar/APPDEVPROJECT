@@ -12,7 +12,7 @@ const Branch = () => {
       </p>
       </div>
                 {/* Bayanan II Branch */}
-                <div className="mt-4 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
+                <div className="mt-2 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
                 <div className="mt-6">
                     <h3 className="text-3xl font-bold mb-4 text-center  text-white hover:text-black">Canubing Main</h3>
                     <ul className="ml-6 mr-6  text-white hover:text-black">
@@ -30,7 +30,7 @@ const Branch = () => {
                 </div>
                 </div>
                 {/* Our Story */}
-                <div className="mt-4 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
+                <div className="mt-2 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
                 <div className="mt-6">
                     <h3 className="text-3xl font-bold mb-4 text-center  text-white hover:text-black">Our Story</h3>
                     <p className="text-justify ml-4 mr-4 text-white hover:text-black ">
@@ -42,7 +42,7 @@ const Branch = () => {
                 </div>
                 </div>
                 {/* What Sets Us Apart */}
-                <div className="mt-4 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
+                <div className="mt-2 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
                 <div className="mt-6">
                     <h3 className="text-3xl font-bold mb-4 text-center  text-white hover:text-black">What Sets Us Apart?</h3>
                     <ul className="text-justify ml-6 mr-6 text-white hover:text-black">
