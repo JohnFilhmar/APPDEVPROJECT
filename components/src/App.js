@@ -13,6 +13,7 @@ function App() {
       <Router>
         <Home/>
         <Switch>
+          
           <Route path="/canubingmain" component={CanubingMain}/>
           <Route path="/canubing1_2" component={Canubing1_2}/>
           <Route path="/bayanan" component={Bayanan}/>
