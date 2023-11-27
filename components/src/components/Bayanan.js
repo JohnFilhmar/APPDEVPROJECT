@@ -2,9 +2,9 @@
 const Branch = () => {
     return (
         <>
-         <div className="bg-sky-500 min-h-screen">
+         <div className="bg-sky-100 min-h-screen">
       
-          <div className="mt-4 container mx-auto bg-white hover:bg-sky-400">
+          <div className="mt-2 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
             
       <h2 className="text-3xl font-bold mb-4 text-center  text-white hover:text-black">About Us – JoeMar Motorshop</h2>
       <p className="text-justify text-white hover:text-black">
@@ -12,7 +12,7 @@ const Branch = () => {
       </p>
       </div>
                 {/* Bayanan II Branch */}
-                <div className="mt-4 container mx-auto bg-white hover:bg-sky-400">
+                <div className="mt-4 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
                 <div className="mt-6">
                     <h3 className="text-3xl font-bold mb-4 text-center  text-white hover:text-black">Bayanan II Branch</h3>
                     <ul className="ml-6 mr-6  text-white hover:text-black">
@@ -30,7 +30,7 @@ const Branch = () => {
                 </div>
                 </div>
                 {/* Our Story */}
-                <div className="mt-4 container mx-auto bg-white hover:bg-sky-400">
+                <div className="mt-4 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
                 <div className="mt-6">
                     <h3 className="text-3xl font-bold mb-4 text-center  text-white hover:text-black">Our Story</h3>
                     <p className="text-justify ml-4 mr-4 text-white hover:text-black ">
@@ -42,7 +42,7 @@ const Branch = () => {
                 </div>
                 </div>
                 {/* What Sets Us Apart */}
-                <div className="mt-4 container mx-auto bg-white hover:bg-sky-400">
+                <div className="mt-4 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
                 <div className="mt-6">
                     <h3 className="text-3xl font-bold mb-4 text-center  text-white hover:text-black">What Sets Us Apart?</h3>
                     <ul className="text-justify ml-6 mr-6 text-white hover:text-black">
@@ -63,9 +63,9 @@ const Branch = () => {
                 </div>
 
                 {/* Our Commitment to Sustainability */}
-                <div className="mt-4 container mx-auto bg-white hover:bg-sky-400">
+                <div className="mt-4 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
                 <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-2 text-center">Our Commitment to Sustainability</h3>
+                    <h3 className="text-xl font-semibold mb-2 text-center text-white hover:text-black">Our Commitment to Sustainability</h3>
                     <p className="text-justify ml-4 mr-4 text-white hover:text-black">
                         At JoeMar Motorshop, we are committed to reducing our environmental footprint. We strive to work with eco-friendly manufacturers and implement sustainable practices in our operations. By choosing us, you're not only getting quality motor parts but also supporting a commitment to a greener future.
                     </p>
@@ -73,9 +73,9 @@ const Branch = () => {
                 </div>
 
                 {/* Connect with Us */}
-                <div className="mt-4 container mx-auto bg-white hover:bg-sky-400">
+                <div className="mt-4 container mx-auto bg-slate-700 hover:bg-sky-400 rounded-md">
                 <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-2 text-center">Connect with Us</h3>
+                    <h3 className="text-xl font-semibold mb-2 text-center text-white hover:text-black">Connect with Us</h3>
                     <p className="text-justify ml-4 mr-4 text-white hover:text-black">
                         Join our community of motor enthusiasts on social media. Follow us on [Facebook, Instagram, Twitter] to stay updated on the latest products, promotions, and automotive trends. We love hearing from our customers and seeing how our products enhance your driving experience.
                     </p>
@@ -83,7 +83,7 @@ const Branch = () => {
 
                 {/* Thank You Message */}
                 <div className="mt-6">
-                    <p className="text-justify ml-4 mr-4 text-center">
+                    <p className="text-justify ml-4 mr-4 text-center text-white hover:text-black">
                         Thank you for choosing JoeMar Motorshop. We look forward to being your trusted partner in all your motor part needs. Drive with confidence!
                     </p>
                 </div>
