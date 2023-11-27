@@ -7,6 +7,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { FaExpandArrowsAlt, FaCompressArrowsAlt } from "react-icons/fa";
 import { TiPlus, TiMinus } from "react-icons/ti";
 import Messages from './chat/Messages';
+import Checkout from './checkout/CheckOut';
 
 const TopNavbar = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -15,6 +16,7 @@ const TopNavbar = () => {
     const [cartCount, setCartCount] = useState(0);
     const [cartItems, setCartItems] = useState([]);
     const [screen, setScreen] = useState(false);
+    const [checkOutModal, setCheckOutModal] = useState(false);
     const uniqueItemNames = Array.from(new Set(cartItems.map(item => item.itemname)));
 
     useEffect(() => {
@@ -27,9 +29,8 @@ const TopNavbar = () => {
             }
             return prevCartItems;
         });
-    
         setCartCount(cartArray.length);
-    }, [openModal]);
+    }, [openModal,checkOutModal]);
 
     const removeFromCart = (itemId) => {
         const updatedCart = cartItems.filter(item => item.id !== itemId);
@@ -52,11 +53,21 @@ const TopNavbar = () => {
     };
 
     const handleCheckout = () => {
+        const toCheckOut = localStorage.getItem('cart');
+        const cartItems = JSON.parse(toCheckOut);
+        const checkedOutItems = toCheckOut && cartItems.map(item => {
+            const { id, itemname, sellingprice, quantity } = item;
+            const processedItem = { id, itemname, sellingprice, quantity };
+            return processedItem;
+        });
+        
+        localStorage.removeItem('cart');
+        localStorage.setItem('toCheckOutItems', JSON.stringify(checkedOutItems));
+        setCheckOutModal(true);
         setOpenModal(false);
-        console.log(localStorage.getItem('cart'));
     }
 
-    const logout = async (e) => {
+    const logout = async () => {
         try {
             const response = await axios.get('logout');
             console.log(response);
@@ -73,18 +84,15 @@ const TopNavbar = () => {
             setMessage('An error occurred during logout');
         }
     };
-    
     const ClearCart = () => {
         localStorage.removeItem('cart');
         setCartItems([]);
         setWarningModal(false);
     }
-
     const clearWarning =() => {
         setOpenModal(false);
         setWarningModal(true);
     }
-
     const handleFullscreen = () => {
         const element = document.documentElement;
         if(screen === true){
@@ -100,8 +108,10 @@ const TopNavbar = () => {
             });
         }
     };
+
     return (
         <>
+            <Checkout data = {localStorage.getItem('toCheckOutItems')} state = {checkOutModal}/>
             <Navbar className='sticky top-0 z-50 bg-slate-300'>
                 <Navbar.Brand as={NavLink} to="/">
                     <img src="http://localhost:8080/jms.png" className="mr-3 w-7 sm:w-10 md:w-15 lg:w-20 h-7 sm:h-10 md:h-15 lg:h-20" alt="JMS"/>
@@ -116,7 +126,7 @@ const TopNavbar = () => {
                     <Navbar.Link as={NavLink} to="/dashboard" active>Dashboard</Navbar.Link>
                     <Navbar.Link as={NavLink} to="/ecomm">E-Shop</Navbar.Link>
                     <Navbar.Link
-                        onClick={() => setOpenModal(true)}
+                        onClick={() => {setCheckOutModal(false);setOpenModal(true);}}
                         className="relative flex items-center"
                         style={{cursor:'pointer'}}
                     >
@@ -208,7 +218,9 @@ const TopNavbar = () => {
                                 Clear Cart
                             </Button>
                         }
-                        <Button color="success" onClick={handleCheckout}>Checkout</Button>
+                        {cartItems.length > 0 && 
+                            <Button color="success" onClick={handleCheckout}>Checkout</Button>
+                        }
                         <Button color="gray" onClick={() => setOpenModal(false)}>
                             Back
                         </Button>

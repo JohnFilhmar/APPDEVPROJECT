@@ -30,6 +30,7 @@ const FloatingButton = () => {
     if (chatboxRef.current) {
       chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
     }
+    setCurrentChat(localStorage.getItem('lastchat'));
   }, [isTransformed,receiver,addMessage]);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ const FloatingButton = () => {
   const handleChat = (chat) => {
     fetchData();
     setCurrentChat(chat);
+    localStorage.setItem('lastchat', chat);
   }
 
   const handleChatBox = () => {
@@ -172,13 +174,14 @@ const FloatingButton = () => {
                   {chats.slice(0, 8).map((user) => 
                     sessionStorage.getItem('username') !== user.userName ? 
                       (
-                        <p
-                          onClick={() => handleChat(`${user.userName}`)}
-                          key={user.id}
-                          className='font-bold text-slate-800 p-2 bg-red-300 rounded-lg m-1 hover:cursor-pointer'
-                        >
-                          {user.userName}
-                        </p>
+                        <div key={user.id}>
+                          <p
+                            onClick={() => handleChat(`${user.userName}`)}
+                            className='font-bold text-slate-800 p-2 bg-red-300 rounded-lg m-1 hover:cursor-pointer'
+                          >
+                            {user.userName}
+                          </p>
+                        </div>
                       )
                     : ""
                   )}
