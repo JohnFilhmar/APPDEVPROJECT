@@ -59,19 +59,19 @@ const EditAccount = () => {
                                 <div className="mb-2 block">
                                     <Label htmlFor="username" value="Your username" />
                                 </div>
-                                <TextInput value={userName} onChange={(e) => setUserName(e.target.value)} id="username" name="username" type="text" placeholder="gamer123" shadow />
+                                <TextInput autoComplete="true" value={userName} onChange={(e) => setUserName(e.target.value)} id="username" name="username" type="text" placeholder="gamer123" shadow />
                             </div>
                             <div>
                                 <div className="mb-2 block">
                                     <Label htmlFor="email" value="Your email" />
                                 </div>
-                                <TextInput value={userEmail} onChange={(e) => setUserEmail(e.target.value)} id="email" name="email" type="email" placeholder="name@gmail.com" shadow />
+                                <TextInput autoComplete="true" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} id="email" name="email" type="email" placeholder="name@gmail.com" shadow />
                             </div>
                             <div>
                                 <div className="mb-2 block">
                                     <Label htmlFor="address" value="Enter address" />
                                 </div>
-                                <TextInput value={userAddress} onChange={(e) => setUserAddress(e.target.value)} id="address" name="address" type="text" placeholder="Canubing 1 Proper, Calapan City" shadow />
+                                <TextInput autoComplete="true" value={userAddress} onChange={(e) => setUserAddress(e.target.value)} id="address" name="address" type="text" placeholder="Canubing 1 Proper, Calapan City" shadow />
                             </div>
                             <Button type="submit">Save</Button>
                         </form>
