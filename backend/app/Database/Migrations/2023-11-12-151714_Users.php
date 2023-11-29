@@ -23,13 +23,29 @@ class Users extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'userImage' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+            ],
+            'userAddress' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+            ],
+            'userEmail' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => true,
+            ],
             'userRole' => [
                 'type' => 'VARCHAR',
                 'constraint' => 50,
             ],
-            'userAccess' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+            'date_added DATETIME DEFAULT CURRENT_TIMESTAMP',
+            'date_updated' => [
+                'type' => 'DATE',
+                'null' => true,
             ],
         ]);
 

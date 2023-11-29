@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ChatsModel extends Model
+class CheckOutModel extends Model
 {
-    protected $table            = 'chat_messages';
-    protected $primaryKey       = 'message_id';
+    protected $table            = 'checkout';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['message_id', 'sender_id', 'receiver_id', 'message', 'datetime_sent'];
+    protected $allowedFields    = ['receiptnumber', 'customer', 'items', 'subtotal','datetime_added', 'datetime_processed', 'is_processed'];
 
     // Dates
     protected $useTimestamps = false;

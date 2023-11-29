@@ -38,11 +38,18 @@ const Login = () => {
         userPassword: userpassword,
       });
 
+      if (response.data && response.data.userId) {
+        sessionStorage.setItem('isLoggedIn',true);
+        sessionStorage.setItem('userId', response.data.userId);
+      }
+
+      if (response.data && response.data.role) {
+        sessionStorage.setItem('role', response.data.role);
+      }
+
       if (response.data && response.data.redirect) 
       {
-        sessionStorage.setItem('isLoggedIn',true);
         sessionStorage.setItem('username',username);
-        sessionStorage.setItem('accessibility',response.data.access);
         window.location.href = response.data.redirect;
       } else if (response.data && response.data.messages && response.data.messages.error){
         setError(response.data.messages.error);

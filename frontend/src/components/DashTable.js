@@ -58,7 +58,6 @@ const DashTable = () => {
                     <Table striped className="min-w-full min-h-[645px] max-h-[645px]">
                         <Table.Head>
                             <Table.HeadCell>Item Name</Table.HeadCell>
-                            <Table.HeadCell>Part Number</Table.HeadCell>
                             <Table.HeadCell>Category</Table.HeadCell>
                             <Table.HeadCell>Branch</Table.HeadCell>
                             <Table.HeadCell>Market Price</Table.HeadCell>
@@ -90,7 +89,6 @@ const DashTable = () => {
                                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {product.itemname}
                                 </Table.Cell>
-                                <Table.Cell>{product.partnumber}</Table.Cell>
                                 <Table.Cell>{product.category}</Table.Cell>
                                 <Table.Cell>{product.branch}</Table.Cell>
                                 <Table.Cell>₱{product.marketprice}</Table.Cell>
@@ -135,7 +133,7 @@ const DashTable = () => {
                         <Button className='mt-5'>
                             <CSVLink
                                 data={filteredBranchData.map(product => Object.values(product))}
-                                headers={['id', 'itemname', 'image', 'category', 'partnumber', 'compatibility', 'marketprice', 'boughtprice', 'sellingprice', 'initialquantity', 'currentquantity', 'branch', 'lastdateupdated', 'supplier']}
+                                headers={['id', 'itemname', 'image', 'category', 'compatibility', 'marketprice', 'boughtprice', 'sellingprice', 'initialquantity', 'currentquantity', 'branch', 'lastdateupdated', 'supplier']}
                                 filename={'inventory.csv'}
                             >
                                 CSV

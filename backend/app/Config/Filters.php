@@ -46,7 +46,6 @@ class Filters extends BaseConfig
             // 'toolbar',
             // 'honeypot',
             // 'secureheaders',
-            'cors',
         ],
     ];
 

@@ -23,10 +23,6 @@ class Products extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'partnumber' => [
-                'type' => 'VARCHAR',
-                'constraint' => 50,
-            ],
             'compatibility' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,

@@ -5,7 +5,6 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UserModel;
-use Config\Encryption;
 
 class Users extends ResourceController
 {
@@ -49,14 +48,14 @@ class Users extends ResourceController
         if ($user && password_verify($userPassword, $user['userPassword'])) {
 
             $session->set('isLoggedIn',true);
-            $session->set('accessibility',$user['userAccess']);
             $session->set('role',$user['userRole']);
+            $session->set('userId',$user['userId']);
 
             $response = [
                 'status' => 200,
                 'error' => null,
                 'redirect' => '/dashboard',
-                'access' => $session->get('accessibility'),
+                'userId' => $session->get('userId'),
                 'role' => $session->get('role'),
             ];
             return $this->respondCreated($response);
@@ -78,9 +77,11 @@ class Users extends ResourceController
      *
      * @return mixed
      */
-    public function show($id = null)
+    public function show($userId = null)
     {
-        //
+        $main = new UserModel();
+        $data = $main->where('userId' , $userId)->first();
+        return $this->respond($data);
     }
     
     /**
@@ -96,7 +97,6 @@ class Users extends ResourceController
             'userName' => 'required',
             'userPassword' => 'required',
             'userRole' => 'required',
-            'userAccess' => 'required',
         ];
 
         $userModel = new UserModel();
@@ -114,8 +114,6 @@ class Users extends ResourceController
             'userName' => $this->request->getVar('userName'),
             'userPassword' => password_hash($this->request->getVar('userPassword'), PASSWORD_DEFAULT),
             'userRole' => $this->request->getVar('userRole'),
-            'userAccess' => $this->request->getVar('userAccess'),
-            'datecreated' => $this->request->getVar('dateCreated'),
         ];
 
         if (!$this->validate($rules)) {
@@ -142,9 +140,53 @@ class Users extends ResourceController
      *
      * @return mixed
      */
+    use ResponseTrait;
     public function update($id = null)
     {
-        //
+        $userModel = new UserModel();
+        $existingUser = $userModel->find($id);
+
+        if (!$existingUser) {
+            $response = [
+                'status' => 404,
+                'error' => 'User not found',
+                'messages' => [
+                    'fail' => 'Resource not found',
+                ],
+            ];
+            return $this->respond($response, 404);
+        }
+
+        $newUsername = $this->request->getVar('userName');
+        $existingUserWithSameUsername = $userModel->where('userName', $newUsername)
+                                                ->where('userId !=', $id)
+                                                ->first();
+
+        if ($existingUserWithSameUsername) {
+            $response = [
+                'status' => 409,
+                'error' => null,
+                'fail' => 'Username already exists!',
+            ];
+            return $this->respond($response, 409);
+        }
+        
+        $data = [
+            'userName' => $this->request->getVar('userName'),
+            'userAddress' => $this->request->getVar('userAddress'),
+            'userEmail' => $this->request->getVar('userEmail'),
+        ];
+
+        $userModel->update($id, $data);
+
+        $response = [
+            'status' => 200,
+            'error' => null,
+            'messages' => [
+                'success' => 'asdfasdf',
+            ],
+        ];
+        return $this->respond($response);
     }
 
     /**
@@ -165,20 +207,5 @@ class Users extends ResourceController
         ];
         $session->destroy();
         return $this->respondCreated($response);
-        // $encrypter = \Config\Services::encrypter();
-        // $encData = $encrypter->encrypt('HELLO');
-        // return $this->respond($encData);
-    }
-
-    public function accessibility()
-    {
-        $session = \Config\Services::session();
-        $encrypter = \Config\Services::encrypter();
-        $access = $session->get('accessibility');
-        $response = [
-            'access' => $access
-        ];
-        $encData = $encrypter->encrypt('HELLO');
-        return $this->respond($encData);
     }
 }

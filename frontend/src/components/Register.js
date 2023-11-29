@@ -7,7 +7,6 @@ const Register = () => {
     const [username, setUsername] = useState("");
     const [userpassword, setPassword] = useState("");
     const [userrole, setRole] = useState("");
-    const [useraccess, setAccess] = useState("");
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -20,17 +19,17 @@ const Register = () => {
       };
     }, [error]);
 
-    function getCurrentDateFormatted() {
-      const currentDate = new Date();
-      const year = currentDate.getFullYear();
-      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-      const day = String(currentDate.getDate()).padStart(2, '0');
-      const formattedDate = `${year}-${month}-${day}`;
+    // function getCurrentDateFormatted() {
+    //   const currentDate = new Date();
+    //   const year = currentDate.getFullYear();
+    //   const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    //   const day = String(currentDate.getDate()).padStart(2, '0');
+    //   const formattedDate = `${year}-${month}-${day}`;
     
-      return formattedDate;
-    }
+    //   return formattedDate;
+    // }
     
-    const formattedDate = getCurrentDateFormatted();
+    // const formattedDate = getCurrentDateFormatted();
     
     const submitForm = async (e) => {
       e.preventDefault();
@@ -39,8 +38,6 @@ const Register = () => {
           userName: username,
           userPassword: userpassword,
           userRole: userrole,
-          userAccess: useraccess,
-          dateCreated: formattedDate
         });
   
         if (response.data && response.data.redirect && response.data.messages && response.data.messages.success) {
@@ -102,19 +99,6 @@ const Register = () => {
                   <option value="Manager">Manager</option>
                   <option value="Employee">Employee</option>
                 </Select>
-                <Label htmlFor='useraccess'>Accesibility:</Label>
-                <Select
-                  id="useraccess"
-                  name="useraccess"
-                  value={useraccess}
-                  onChange={(e) => setAccess(e.target.value)}
-                  required
-                >
-                  <option value="" disabled>Select user access</option>
-                  <option value="FULL">Full Access</option>
-                  <option value="LIMITED">Limited Access</option>
-                  <option value="TEMPORARY">Temporary Access</option>
-                </Select><br/>
                 <Button type="submit">Register</Button>
             </form>
             <Link to="/login" className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-lg focus:ring-2">Go Back</Link>

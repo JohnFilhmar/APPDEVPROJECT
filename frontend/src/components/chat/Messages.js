@@ -116,7 +116,7 @@ const FloatingButton = () => {
             </div>
           </h5>
           <div className="flex min-h-[40.37328094302554vh] max-h-[40.37328094302554vh]">
-            <div className="sm:grow md:basis-9/12 lg:basis-9/12 h-auto bg-slate-100 w-96 overflow-auto scroll-smooth chatbox"ref={chatboxRef}>
+            <div className="sm:grow md:basis-9/12 lg:basis-9/12 h-auto bg-slate-100 w-96 overflow-auto scroll-smooth overflow-x-hidden chatbox"ref={chatboxRef}>
               <div className="flex flex-col">
               {
                 data.map((msg) => (

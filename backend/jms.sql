@@ -130,7 +130,6 @@ CREATE TABLE `products` (
   `itemname` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
   `category` varchar(255) NOT NULL,
-  `partnumber` varchar(50) NOT NULL,
   `compatibility` varchar(255) NOT NULL,
   `marketprice` decimal(10,2) NOT NULL,
   `boughtprice` decimal(10,2) NOT NULL,
@@ -146,7 +145,7 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `itemname`, `image`, `category`, `partnumber`, `compatibility`, `marketprice`, `boughtprice`, `sellingprice`, `initialquantity`, `currentquantity`, `branch`, `lastdateupdated`, `supplier`) VALUES
+INSERT INTO `products` (`id`, `itemname`, `image`, `category`, `compatibility`, `marketprice`, `boughtprice`, `sellingprice`, `initialquantity`, `currentquantity`, `branch`, `lastdateupdated`, `supplier`) VALUES
 (11, 'Clutch Kit', 'ampel.jpg', 'Clutch', '5244', 'Honda CV110', '50.00', '30.00', '60.00', 50, 35, 'Canubing I', '2021-01-15', 'AM Merchandise'),
 (12, 'Brake Pads', 'ampel.jpg', 'Brakes', '6544', 'Raider150', '25.00', '15.00', '35.00', 40, 28, 'Canubing I.2', '2022-03-22', 'Edward Merchandise'),
 (13, 'Oil Filter', 'ampel.jpg', 'Engine', '6987', 'Barako', '10.00', '5.00', '15.00', 30, 22, 'Bayanan II', '2021-06-10', 'Kristal Merchandise'),

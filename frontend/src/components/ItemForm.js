@@ -7,7 +7,6 @@ import PromptError from './PromptError';
 
 const ItemForm = () => {
     const [ItemName, setItemName] = useState("");
-    const [PartNumber, setPartNumber] = useState("");
     const [MarketPrice, setMarketPrice] = useState("");
     const [BoughtPrice, setBoughtPrice] = useState("");
     const [SellingPrice, setSellingPrice] = useState("");
@@ -82,11 +81,6 @@ const ItemForm = () => {
         setSellingPrice(val);
     };
     
-    const parsePartNum = (e) => {
-        const partval = Math.min(99999, parseInt(e.target.value.replace(/\D/g, '').slice(0, 5), 10) || 1);
-        setPartNumber(partval);
-    };
-    
     const parseQuantity = (e) => {
         const quantityValue = Math.min(999, parseInt(e.target.value.replace(/\D/g, '').slice(0, 3), 10) || 1);
         setInitialQuantity(quantityValue);
@@ -108,7 +102,6 @@ const ItemForm = () => {
         formData.append('itemname', ItemName);
         formData.append('image', selectedFile); // Use the same field name expected by the backend
         formData.append('category', categoryOptions);
-        formData.append('partnumber', PartNumber);
         formData.append('compatibility', compatibilityOptions);
         formData.append('marketprice', MarketPrice);
         formData.append('boughtprice', BoughtPrice);
@@ -165,17 +158,6 @@ const ItemForm = () => {
                             placeholder="Enter new item's name. . . "
                             value={ ItemName }
                             onChange={ (e) => setItemName(e.target.value) }
-                            required
-                        />
-                    </div>
-                    <div className="partnumber">
-                        <Label htmlFor="partnumber">Item Partnumber:</Label>
-                        <TextInput
-                            type="number"
-                            id="partnumber"
-                            placeholder="Unique item's part number. . . "
-                            value={ PartNumber }
-                            onChange={ parsePartNum }
                             required
                         />
                     </div>

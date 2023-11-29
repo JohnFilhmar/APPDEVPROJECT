@@ -30,7 +30,7 @@ const TopNavbar = () => {
             return prevCartItems;
         });
         setCartCount(cartArray.length);
-    }, [openModal,checkOutModal]);
+    }, [openModal]);
 
     const removeFromCart = (itemId) => {
         const updatedCart = cartItems.filter(item => item.id !== itemId);
@@ -60,21 +60,21 @@ const TopNavbar = () => {
             const processedItem = { id, itemname, sellingprice, quantity };
             return processedItem;
         });
-        
-        localStorage.removeItem('cart');
         localStorage.setItem('toCheckOutItems', JSON.stringify(checkedOutItems));
         setCheckOutModal(true);
         setOpenModal(false);
     }
 
     const logout = async () => {
+        setCheckOutModal(false);
         try {
             const response = await axios.get('logout');
             console.log(response);
             if (response.data.redirect) {
               sessionStorage.setItem('isLoggedIn', false);
+              sessionStorage.removeItem('userId');
               sessionStorage.removeItem('username');
-              sessionStorage.removeItem('accessibility');
+              sessionStorage.removeItem('role');
               window.location.href = response.data.redirect;
             } else {
               setMessage('Something may have gone wrong');
@@ -84,6 +84,7 @@ const TopNavbar = () => {
             setMessage('An error occurred during logout');
         }
     };
+
     const ClearCart = () => {
         localStorage.removeItem('cart');
         setCartItems([]);
@@ -94,6 +95,7 @@ const TopNavbar = () => {
         setWarningModal(true);
     }
     const handleFullscreen = () => {
+setCheckOutModal(false);
         const element = document.documentElement;
         if(screen === true){
             setScreen(false);
@@ -123,8 +125,8 @@ const TopNavbar = () => {
                     {screen && <FaCompressArrowsAlt/>}
                 </button>
                 <Navbar.Collapse>
-                    <Navbar.Link as={NavLink} to="/dashboard" active>Dashboard</Navbar.Link>
-                    <Navbar.Link as={NavLink} to="/ecomm">E-Shop</Navbar.Link>
+                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/dashboard" active>Dashboard</Navbar.Link>
+                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/ecomm">E-Shop</Navbar.Link>
                     <Navbar.Link
                         onClick={() => {setCheckOutModal(false);setOpenModal(true);}}
                         className="relative flex items-center"
@@ -142,11 +144,11 @@ const TopNavbar = () => {
                         )}
                     </Navbar.Link>
                     <Dropdown label={`Welcome ${sessionStorage.getItem('username')}`} inline>
-                        <Dropdown.Item as={Link} to="/profile/account">Profile</Dropdown.Item>
-                        <Dropdown.Item>Settings</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCheckOutModal(false)} as={Link} to="/profile/account">Profile</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCheckOutModal(false)}>Settings</Dropdown.Item>
                         <Dropdown.Item onClick={logout} style={{color: 'red'}}>Sign out</Dropdown.Item>
                     </Dropdown>
-                    <Navbar.Link onClick={handleFullscreen} className='shidden md:block lg:block'>
+                    <Navbar.Link onClick={handleFullscreen} className='hidden md:block lg:block'>
                         {!screen && <FaExpandArrowsAlt/>}
                         {screen && <FaCompressArrowsAlt/>}
                     </Navbar.Link>
@@ -154,7 +156,7 @@ const TopNavbar = () => {
             { message && <Alert color="info"><span className="font-medium">{message}</span></Alert>}
             </Navbar>
             <Modal show={openModal} size='4xl' onClose={() => setOpenModal(false)}>
-                <Modal.Header>Cart</Modal.Header>
+                <Modal.Header>Cart<span className='text-xs text-slate-400 cart'><span className='text-red-600'>!</span>(The Cart is stored on your device and is not accessible on other devices)</span></Modal.Header>
                 <Modal.Body>
                     <div className="grid grid-cols-1 gap-4">
                     {cartItems.length > 0 ? (

@@ -28,14 +28,12 @@ class ChatBox extends Migration
             'message' => [
                 'type' => 'TEXT',
             ],
-            'datetime_sent' => [
-                'type' => 'DATETIME',
-            ],
+            'datetime_sent DATETIME DEFAULT CURRENT_TIMESTAMP',
         ]);
 
         $this->forge->addKey('message_id', true);
-        $this->forge->addForeignKey('sender_id', 'users', 'userId');
-        $this->forge->addForeignKey('receiver_id', 'users', 'userId');
+        $this->forge->addForeignKey('sender_id', 'users', 'userId', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('receiver_id', 'users', 'userId', 'CASCADE', 'CASCADE');
         $this->forge->createTable('chat_messages');
     }
 
