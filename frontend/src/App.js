@@ -41,7 +41,6 @@ const AppContent = () => {
                 <Redirect exact from="/" to="/login"/>
                 <Redirect from="/dashboard" to="/login"/>
                 <Redirect from="/ecomm" to="/login"/>
-                {/* <Redirect from="/messaging" to="/login"/> */}
                 <Redirect from="/itemform" to="/login"/>
                 <Redirect from="/profile" to="/login"/>
                 <Redirect from="/Canubing1_2" to="/login"/>
@@ -61,7 +60,6 @@ const AppContent = () => {
                 <Route path="/profile" component={Profile}/>
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/ecomm" component={ECommerce}/>
-                {/* <Route path="/messaging" component={Messages}/> */}
                 <Route path="/itemform" component={ItemForm}/>
                 <Route path="/Canubing1_2" component={Canubing1_2}/>
                 <Route path="/Bayanan" component={Bayanan}/>

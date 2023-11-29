@@ -83,6 +83,20 @@ const All = () => {
         return '';
     }
 
+    const filterPendingReceipts = (receiptItems) => {
+        return receiptItems.filter((item) => getStatus(item.receiptNumber) === 'PROCESSED');
+    };
+
+    const getTimeProcessed = (receiptNumber) => {
+        const foundReceipt = response.find((item) => item.receiptnumber === receiptNumber)
+        if (foundReceipt) {
+            const rawDateTime = new Date(foundReceipt.datetime_processed);
+            const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+            return rawDateTime.toLocaleDateString('en-US', options);
+        }
+        return '';
+    }
+
     return (
         <>
         <div className="w-full mb-3">
@@ -123,7 +137,7 @@ const All = () => {
                                 ₱{item.productInfo?.sellingprice}
                             </div>
                             <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                                Quantity: {item.quantity}pc
+                                Quantity: {item.quantity}{item.quantity > 1 ? "pcs" : "pc"}
                             </div>
                             </div>
                         </div>
@@ -157,7 +171,7 @@ const All = () => {
                                                     ₱{item.productInfo?.sellingprice}
                                                 </div>
                                                 <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                                                    Quantity: {item.quantity}pc
+                                                    Quantity: {item.quantity}{item.quantity > 1 ? "pcs" : "pc"}
                                                 </div>
                                             </div>
                                         </div>
@@ -170,6 +184,7 @@ const All = () => {
                         </div>
                         <div className="flex justify-center border-solid border-t-4">
                             <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white mr-5 border-x-4 border-solid px-4">Status : {getStatus(receiptNumber)}</h2>
+                            {filterPendingReceipts(receiptItems).length > 0 ? (<h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white mr-5 border-x-4 border-solid px-4">Date & Time Processed : {getTimeProcessed(receiptNumber)}</h2>) : ""}
                             <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white mr-5 border-x-4 border-solid px-4">Date & Time Added : {getDateTimeAdded(receiptNumber)}</h2>
                             <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white mr-5 border-x-4 border-solid px-4">Overall Total : ₱{calculateReceiptTotal(receiptItems)}</h2>
                         </div>

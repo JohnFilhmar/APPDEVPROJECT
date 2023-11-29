@@ -127,7 +127,7 @@ const Pending = () => {
                                 ₱{item.productInfo?.sellingprice}
                             </div>
                             <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                                Quantity: {item.quantity}pc
+                                Quantity: {item.quantity}{item.quantity > 1 ? "pcs" : "pc"}
                             </div>
                             </div>
                         </div>
@@ -140,8 +140,8 @@ const Pending = () => {
                         <div>
                             <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white border-solid border-b-4">Receipt Number: {receiptNumber}</h2>
                             {receiptItems.map((item) => (
-                                <>
-                                    <div key={item.id} className="grid grid-cols-4 h-full text-center p-4">
+                                <div key={item.id}>
+                                    <div className="grid grid-cols-4 h-full text-center p-4">
                                         <div className="col-span-1 flex items-center justify-center">
                                             <img
                                             src={`http://localhost:8080/uploads/${item.productInfo?.image}`}
@@ -163,7 +163,7 @@ const Pending = () => {
                                                     ₱{item.productInfo?.sellingprice}
                                                 </div>
                                                 <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                                                    Quantity: {item.quantity}pc
+                                                    Quantity: {item.quantity}{item.quantity > 1 ? "pcs" : "pc"}
                                                 </div>
                                             </div>
                                         </div>
@@ -171,7 +171,7 @@ const Pending = () => {
                                     <div className="flex justify-end">
                                         <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white mr-5">Total : ₱{item.productInfo?.sellingprice * item.quantity}</h2>
                                     </div>
-                                </>
+                                </div>
                             ))}
                         </div>
                         <div className="flex justify-center border-solid border-t-4">

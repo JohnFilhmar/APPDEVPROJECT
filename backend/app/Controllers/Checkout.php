@@ -128,7 +128,7 @@ class Checkout extends ResourceController
             'customer' => $this->request->getVar('customer'),
             'items' => $this->request->getVar('items'),
             'subtotal' => $this->request->getVar('subtotal'),
-            'is_processed' => 'NO',
+            'is_processed' => 'PROCESSING',
         ];
         $main = new CheckOutModel();
         $main->save($data);
