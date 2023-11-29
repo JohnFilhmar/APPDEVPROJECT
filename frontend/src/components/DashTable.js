@@ -98,8 +98,8 @@ const DashTable = () => {
                                 <Table.Cell>{product.currentquantity}pc/s</Table.Cell>
                                 <Table.Cell>
                                     <Link
-                                    to={`/edit/${product.id}`}
-                                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                                        to={`/itemform/${product.id}`}
+                                        className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                     >
                                     Edit
                                     </Link>

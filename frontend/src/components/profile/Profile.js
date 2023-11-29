@@ -26,7 +26,7 @@ const Profile = () => {
                                 <FaUserEdit  className="w-5 h-5 mr-3"/>
                                 <p className="text-base hover:font-bold active:font-extrabold">Edit Account</p>
                             </Link>
-                            <Link to="/purchases" className="flex py-4">
+                            <Link to="/purchases/all" className="flex py-4">
                                 <FaShoppingBag  className="w-5 h-5 mr-3"/>
                                 <p className="text-base hover:font-bold active:font-extrabold">Purchases</p>
                             </Link>
@@ -41,7 +41,7 @@ const Profile = () => {
                         <Switch>
                             <Route path="/account" component={Account}/>
                             <Route path="/edit" component={EditAccount}/>
-                            <Route path="/purchases" component={Purchases}/>
+                            <Route path="/purchases/all" component={Purchases}/>
                             <Route path="/notifications" component={Notifs}/>
                             <Redirect from="*" to="/" />
                         </Switch>
