@@ -48,7 +48,9 @@ class Checkout extends ResourceController
                 ];
             }
         }
-        return $this->respond($combinedData);
+        $item = $combinedData[0]['items'];
+
+        return $this->respond($item);
     }
 
     /**
