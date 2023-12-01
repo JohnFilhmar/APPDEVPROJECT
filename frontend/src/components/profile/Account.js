@@ -30,7 +30,7 @@ const AccountDetailsPage = () => {
     ),
     dateCreated: usersResponse.datetime_added,
     dateModified: usersResponse.date_updated || usersResponse.datetime_added ,
-    orderCount: checkoutResponse.length,
+    orderCount: checkoutResponse && JSON.stringify(checkoutResponse.length),
   };
 
   return (

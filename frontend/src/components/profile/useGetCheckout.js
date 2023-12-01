@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const useGetUsers = () => {
-    const [response, setResponse] = useState([]);
+    const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 

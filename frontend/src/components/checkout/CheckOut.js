@@ -33,18 +33,23 @@ const Checkout = ({ data, state }) => {
     const proceedCheckOut = async (e) => {
         e.preventDefault();
         try {
-            const formData = {
-                customer : sessionStorage.getItem('userId'),
-                items : JSON.stringify(localStorage.getItem('toCheckOutItems')),
-                subtotal : calculateOverallTotal(),
-            }
+            // const formData = {
+            //     customer : sessionStorage.getItem('userId'),
+            //     items : localStorage.getItem('toCheckOutItems'),
+            //     subtotal : calculateOverallTotal(),
+            // }
+            const formData = new FormData();
+            formData.append('customer',sessionStorage.getItem('userId'));
+            formData.append('items',(localStorage.getItem('toCheckOutItems')));
+            formData.append('subtotal',calculateOverallTotal());
+
             const response = await postRequest(formData);
         
             localStorage.removeItem('cart');
             setReceipt([]);
             setOpenModal(false);
-            console.log("Checkout Successful", response);
-            console.log('Check out clicked', localStorage.getItem('toCheckOutItems'));
+            // console.log("Checkout Successful", JSON.stringify(response.data));
+            console.log('Check out clicked', localStorage.getItem('toCheckOutItems'), formData, response);
             localStorage.removeItem('toCheckOutItems');
         }catch(error){
             console.error("Checkout Failed", checkoutError, error);

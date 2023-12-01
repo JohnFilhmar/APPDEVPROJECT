@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const gridItems = (products, click) => {
   return products.map((product, index) => {
-    return (
+    return product.currentquantity > 0 ? (
       <Card
         key={index}
         className={`mb-4 text-sm lg:text-lg md:text-base`}
@@ -18,10 +18,10 @@ const gridItems = (products, click) => {
         <div className="flex justify-end pt-4">
         </div>
         <h1 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          {product.compatibility} - {product.itemname}
+          {product.compatibility} - {product.itemname} <br/>Available: {product.currentquantity} {product.currentquantity > 1 ? "pieces" : "piece left"}
         </h1>
       </Card>
-    );
+    ) : null;
   });
 };
 

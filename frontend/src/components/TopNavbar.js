@@ -61,6 +61,7 @@ const TopNavbar = () => {
             return processedItem;
         });
         localStorage.setItem('toCheckOutItems', JSON.stringify(checkedOutItems));
+        // console.log(localStorage.getItem('toCheckOutItems'));
         setCheckOutModal(true);
         setOpenModal(false);
     }

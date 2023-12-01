@@ -13,9 +13,10 @@ const Pending = () => {
     const [groupedItems, setGroupedItems] = useState({});
 
     useEffect(() => {
+        response && 
         // Combine response items and product information, grouped by receipt number
         setGroupedItems(response.reduce((acc, item) => {
-            const itemsInReceipt = JSON.parse(item.items);
+            const itemsInReceipt = item.items;
             itemsInReceipt.forEach((receiptItem) => {
                 const productInfo = products.find((product) => product.id === receiptItem.id);
                 const newItem = {

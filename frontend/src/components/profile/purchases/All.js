@@ -3,6 +3,8 @@ import { CiSearch } from "react-icons/ci";
 import { useState, useEffect } from "react";
 import useGetCheckOut from "../useGetCheckout";
 import useProducts from "../../../hooks/useProducts";
+import { MdDelete } from "react-icons/md";
+import axios from "axios";
 
 const All = () => {
     // eslint-disable-next-line
@@ -13,9 +15,10 @@ const All = () => {
     const [groupedItems, setGroupedItems] = useState({});
 
     useEffect(() => {
+        response && 
         // Combine response items and product information, grouped by receipt number
         setGroupedItems(response.reduce((acc, item) => {
-            const itemsInReceipt = JSON.parse(item.items);
+            const itemsInReceipt = item.items;
             itemsInReceipt.forEach((receiptItem) => {
                 const productInfo = products.find((product) => product.id === receiptItem.id);
                 const newItem = {
@@ -25,7 +28,7 @@ const All = () => {
                 };
 
                 // Group items by receipt number
-                if (!acc[item.receiptnumber]) {
+                if (!acc[item.receiptnumber]) { 
                 acc[item.receiptnumber] = [];
                 }
                 acc[item.receiptnumber].push(newItem);
@@ -97,6 +100,15 @@ const All = () => {
         return '';
     }
 
+    const handleDelete = async (receiptNumber) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/Checkout/${receiptNumber}`);
+            console.log(response);
+        } catch(error) {
+            console.error(error);
+        }
+    } 
+
     return (
         <>
         <div className="w-full mb-3">
@@ -146,7 +158,10 @@ const All = () => {
                 : Object.entries(list).map(([receiptNumber, receiptItems]) => (
                     <div className="border-solid border-4 rounded-md border-gray-950">
                         <div key={receiptNumber}>
-                            <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white border-solid border-b-4">Receipt Number: {receiptNumber}</h2>
+                            <div className="flex justify-between">
+                                <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">Receipt Number: {receiptNumber}</h2>
+                                <button onClick={(e) => handleDelete(receiptNumber)}><MdDelete className="w-5 h-5"/></button>
+                            </div>
                             {receiptItems.map((item) => (
                                 <>
                                     <div key={item.id} className="grid grid-cols-4 h-full text-center p-4">
