@@ -68,7 +68,7 @@ class Users extends ResourceController
                     'error' => 'Invalid username or password',
                 ],
             ];
-            return $this->respondCreated($response);
+            return $this->respond($response);
         }
     }
 
@@ -196,7 +196,14 @@ class Users extends ResourceController
      */
     public function delete($id = null)
     {
-        //
+        $response = [
+            'status' => 204,
+            'error' => null,
+            'messages' => [
+                'success' => 'Removed User Successfully!',
+            ],
+        ];
+        return $this->respond($response);        
     }
 
     public function logout()
@@ -206,6 +213,6 @@ class Users extends ResourceController
             'redirect' => '/login',
         ];
         $session->destroy();
-        return $this->respondCreated($response);
+        return $this->respond($response);
     }
 }
