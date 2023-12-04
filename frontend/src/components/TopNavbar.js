@@ -127,7 +127,8 @@ setCheckOutModal(false);
                 </button>
                 <Navbar.Collapse>
                     <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/dashboard" active>Dashboard</Navbar.Link>
-                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/ecomm">E-Shop</Navbar.Link>
+                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/ecomm" active>E-Shop</Navbar.Link>
+                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/transac" active>Transactions</Navbar.Link>
                     <Navbar.Link
                         onClick={() => {setCheckOutModal(false);setOpenModal(true);}}
                         className="relative flex items-center"

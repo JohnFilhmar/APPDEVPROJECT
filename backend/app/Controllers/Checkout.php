@@ -66,10 +66,6 @@ class Checkout extends ResourceController
                 ];
             }
         }
-        // $item = $combinedData[0]['items'];
-        // $items = json_decode($item, true);
-        // return $this->respond($items[0]['id']);
-        // return $this->respond($items);
         return $this->respond($combinedData);
     }
 

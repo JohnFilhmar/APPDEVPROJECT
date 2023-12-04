@@ -115,7 +115,7 @@ const All = () => {
             <div className="relative">
             <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
             <TextInput
-                type="text"
+                type="number"
                 id="search"
                 onChange={(e) => search(e.target.value)}
                 placeholder="You can search by item name, branch, order ID, or category"
@@ -124,37 +124,37 @@ const All = () => {
             </div>
         </div>
         <div className="container bg-slate-50">
-            <div className="h-auto flex flex-col gap-2">
-            {list.searchResults
-                ? list.searchResults.map((item) => (
-                    <div key={item.id} className="grid grid-cols-4 h-full text-center p-4">
-                        <div className="col-span-1 flex items-center justify-center">
-                            <img
-                            src={`http://localhost:8080/uploads/${item.productInfo?.image}`}
-                            alt={item.productInfo?.itemname}
-                            className="object-cover w-20 h-20 rounded-full"
-                            />
-                        </div>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <div>
-                            <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                                {item.productInfo?.itemname}
-                            </h5>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Compatibility: {item.productInfo?.compatibility}
-                            </p>
+            <div className="h-auto flex flex-col gap-2 ">
+                {list.searchResults
+                    ? list.searchResults.map((item) => (
+                            <div key={item.id} className="grid grid-cols-4 h-full text-center p-4">
+                                <div className="col-span-1 flex items-center justify-center">
+                                    <img
+                                    src={`http://localhost:8080/uploads/${item.productInfo?.image}`}
+                                    alt={item.productInfo?.itemname}
+                                    className="object-cover w-20 h-20 rounded-full"
+                                    />
+                                </div>
+                                <div className="col-span-3 flex flex-col justify-between">
+                                    <div>
+                                    <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
+                                        {item.productInfo?.itemname}
+                                    </h5>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        Compatibility: {item.productInfo?.compatibility}
+                                    </p>
+                                    </div>
+                                    <div className="flex justify-between mt-2">
+                                    <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
+                                        ₱{item.productInfo?.sellingprice}
+                                    </div>
+                                    <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
+                                        Quantity: {item.quantity}{item.quantity > 1 ? "pcs" : "pc"}
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex justify-between mt-2">
-                            <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                                ₱{item.productInfo?.sellingprice}
-                            </div>
-                            <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                                Quantity: {item.quantity}{item.quantity > 1 ? "pcs" : "pc"}
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                ))
+                    ))
                 : Object.entries(list).map(([receiptNumber, receiptItems]) => (
                     <div className="border-solid border-4 rounded-md border-gray-950">
                         <div key={receiptNumber}>

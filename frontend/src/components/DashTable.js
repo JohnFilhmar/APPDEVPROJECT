@@ -55,7 +55,7 @@ const DashTable = () => {
             {/* Table */}
             <div className="relative sm:text-sm md:text-base lg:text-lg">
                 <div className="static overflow-x-auto">
-                    <Table striped className="min-w-full min-h-[645px] max-h-[645px]">
+                    <Table className="min-w-full min-h-[645px] max-h-[645px]">
                         <Table.Head>
                             <Table.HeadCell>Item Name</Table.HeadCell>
                             <Table.HeadCell>Category</Table.HeadCell>
@@ -84,7 +84,22 @@ const DashTable = () => {
                         displayedProducts.map((product) => (
                             <Table.Row
                                 key={product.id}
-                                className="bg-white dark:border-gray-700 dark:bg-gray-800 divide-x font-semibold"
+                                className={`divide-x ${ 
+                                    product.currentquantity / product.initialquantity >= 0 &&
+                                    product.currentquantity / product.initialquantity <= 0.10
+                                        ? "bg-red-200"
+                                        : product.currentquantity / product.initialquantity > 0.10 &&
+                                        product.currentquantity / product.initialquantity <= 0.50
+                                        ? "bg-orange-200"
+                                        : product.currentquantity / product.initialquantity > 0.50 &&
+                                        product.currentquantity / product.initialquantity <= 0.80
+                                        ? "bg-green-200"
+                                        : product.currentquantity / product.initialquantity > 0.80 &&
+                                        product.currentquantity / product.initialquantity <= 1.0
+                                        ? "bg-blue-200"
+                                        :
+                                        "bg-white"
+                                }`}
                             >
                                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {product.itemname}
@@ -95,22 +110,7 @@ const DashTable = () => {
                                 <Table.Cell>₱{product.boughtprice}</Table.Cell>
                                 <Table.Cell>₱{product.sellingprice}</Table.Cell>
                                 <Table.Cell>{product.initialquantity}{product.initialquantity > 1 ? "pcs" : "pc"}</Table.Cell>
-                                <Table.Cell className={`${
-                                    product.currentquantity / product.initialquantity >= 0 &&
-                                    product.currentquantity / product.initialquantity <= 0.10
-                                        ? "text-red-600"
-                                        : product.currentquantity / product.initialquantity > 0.10 &&
-                                        product.currentquantity / product.initialquantity <= 0.50
-                                        ? "text-orange-600"
-                                        : product.currentquantity / product.initialquantity > 0.50 &&
-                                        product.currentquantity / product.initialquantity <= 0.80
-                                        ? "text-green-600"
-                                        : product.currentquantity / product.initialquantity > 0.80 &&
-                                        product.currentquantity / product.initialquantity <= 1.0
-                                        ? "text-blue-800"
-                                        : // default styles if none of the conditions are met
-                                        ""
-                                }`}>{product.currentquantity}{product.currentquantity > 1 ? "pcs" : "pc"}</Table.Cell>
+                                <Table.Cell>{product.currentquantity}{product.currentquantity > 1 ? "pcs" : "pc"}</Table.Cell>
                                 <Table.Cell>
                                     <Link
                                         to={`/itemform/${product.id}`}
