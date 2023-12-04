@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 29, 2023 at 04:34 PM
+-- Generation Time: Dec 04, 2023 at 12:08 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -66,14 +66,9 @@ CREATE TABLE `checkout` (
 --
 
 INSERT INTO `checkout` (`receiptnumber`, `customer`, `items`, `subtotal`, `datetime_added`, `datetime_processed`, `is_processed`) VALUES
-(4, 14, '\"[{\\\"id\\\":\\\"14\\\",\\\"itemname\\\":\\\"Chain Set\\\",\\\"sellingprice\\\":\\\"50.00\\\",\\\"quantity\\\":1},{\\\"id\\\":\\\"19\\\",\\\"itemname\\\":\\\"Brake Disk\\\",\\\"sellingprice\\\":\\\"45.00\\\",\\\"quantity\\\":1}]\"', '95.00', '2023-11-29 10:10:07', NULL, 'PROCESSING'),
-(5, 15, '\"[{\\\"id\\\":\\\"14\\\",\\\"itemname\\\":\\\"Chain Set\\\",\\\"sellingprice\\\":\\\"50.00\\\",\\\"quantity\\\":1},{\\\"id\\\":\\\"19\\\",\\\"itemname\\\":\\\"Brake Disk\\\",\\\"sellingprice\\\":\\\"45.00\\\",\\\"quantity\\\":1}]\"', '95.00', '2023-11-29 10:12:06', NULL, 'PROCESSING'),
-(6, 15, '\"[{\\\"id\\\":\\\"14\\\",\\\"itemname\\\":\\\"Chain Set\\\",\\\"sellingprice\\\":\\\"50.00\\\",\\\"quantity\\\":1}]\"', '50.00', '2023-11-29 10:36:14', '2023-11-30 00:16:21', 'PROCESSED'),
-(7, 15, '\"[{\\\"id\\\":\\\"14\\\",\\\"itemname\\\":\\\"Chain Set\\\",\\\"sellingprice\\\":\\\"50.00\\\",\\\"quantity\\\":1},{\\\"id\\\":\\\"19\\\",\\\"itemname\\\":\\\"Brake Disk\\\",\\\"sellingprice\\\":\\\"45.00\\\",\\\"quantity\\\":1},{\\\"id\\\":\\\"20\\\",\\\"itemname\\\":\\\"Handle Grip\\\",\\\"sellingprice\\\":\\\"12.00\\\",\\\"quantity\\\":4}]\"', '143.00', '2023-11-29 10:36:52', NULL, 'PROCESSING'),
-(8, 15, '\"[{\\\"id\\\":\\\"15\\\",\\\"itemname\\\":\\\"Spark Plug\\\",\\\"sellingprice\\\":\\\"8.00\\\",\\\"quantity\\\":1}]\"', '8.00', '2023-11-29 12:18:29', NULL, 'PROCESSING'),
-(9, 15, '\"[{\\\"id\\\":\\\"14\\\",\\\"itemname\\\":\\\"Chain Set\\\",\\\"sellingprice\\\":\\\"50.00\\\",\\\"quantity\\\":1}]\"', '50.00', '2023-11-29 12:22:11', NULL, 'PROCESSING'),
-(10, 15, '\"[{\\\"id\\\":\\\"19\\\",\\\"itemname\\\":\\\"Brake Disk\\\",\\\"sellingprice\\\":\\\"45.00\\\",\\\"quantity\\\":2},{\\\"id\\\":\\\"27\\\",\\\"itemname\\\":\\\"Turn Signal Lights\\\",\\\"sellingprice\\\":\\\"15.00\\\",\\\"quantity\\\":2},{\\\"id\\\":\\\"30\\\",\\\"itemname\\\":\\\"Wheel Bearings\\\",\\\"sellingprice\\\":\\\"15.00\\\",\\\"quantity\\\":1},{\\\"id\\\":\\\"29\\\",\\\"itemname\\\":\\\"Battery\\\",\\\"sellingprice\\\":\\\"30.00\\\",\\\"quantity\\\":1}]\"', '165.00', '2023-11-29 23:09:22', NULL, 'PROCESSING'),
-(11, 15, '\"[{\\\"id\\\":\\\"63\\\",\\\"itemname\\\":\\\"TRY\\\",\\\"sellingprice\\\":\\\"12.44\\\",\\\"quantity\\\":1}]\"', '12.44', '2023-11-29 23:13:51', NULL, 'PROCESSING');
+(1, 15, '[{\"id\": \"14\", \"itemname\": \"Chain Set\", \"quantity\": 1, \"sellingprice\": \"50.00\"}]', '50.00', '2023-12-01 08:04:26', NULL, 'PROCESSING'),
+(2, 1, '[{\"id\": \"12\", \"itemname\": \"Brake Pads\", \"quantity\": 1, \"sellingprice\": \"35.00\"}]', '35.00', '2023-12-01 08:52:28', NULL, 'PROCESSING'),
+(3, 14, '[{\"id\": \"14\", \"itemname\": \"Chain Set\", \"quantity\": 1, \"sellingprice\": \"50.00\"}]', '50.00', '2023-12-01 15:42:31', NULL, 'PROCESSING');
 
 -- --------------------------------------------------------
 
@@ -128,15 +123,15 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `itemname`, `image`, `category`, `compatibility`, `marketprice`, `boughtprice`, `sellingprice`, `initialquantity`, `currentquantity`, `branch`, `lastdateupdated`, `supplier`) VALUES
-(11, 'Clutch Kit', 'ampel.jpg', 'Clutch', 'Honda CV110', '50.00', '30.00', '60.00', 50, 35, 'Canubing I', '2021-01-15', 'AM Merchandise'),
-(12, 'Brake Pads', 'ampel.jpg', 'Brakes', 'Raider150', '25.00', '15.00', '35.00', 40, 28, 'Canubing I.2', '2022-03-22', 'Edward Merchandise'),
-(13, 'Oil Filter', 'ampel.jpg', 'Engine', 'Barako', '10.00', '5.00', '15.00', 30, 22, 'Bayanan II', '2021-06-10', 'Kristal Merchandise'),
-(14, 'Chain Set', 'ampel.jpg', 'Drive', 'Sniper', '40.00', '25.00', '50.00', 25, 18, 'Malinao', '2023-01-05', 'Soriano Merchandise'),
+(11, 'Clutch Kit', 'ampel.jpg', 'Clutch', 'Honda CV110', '50.00', '30.00', '60.00', 50, 23, 'Canubing I', '2021-01-15', 'AM Merchandise'),
+(12, 'Brake Pads', 'ampel.jpg', 'Brakes', 'Raider150', '25.00', '15.00', '35.00', 40, 0, 'Canubing I.2', '2022-03-22', 'Edward Merchandise'),
+(13, 'Oil Filter', 'ampel.jpg', 'Engine', 'Barako', '10.00', '5.00', '15.00', 30, 18, 'Bayanan II', '2021-06-10', 'Kristal Merchandise'),
+(14, 'Chain Set', 'ampel.jpg', 'Drive', 'Sniper', '40.00', '25.00', '50.00', 25, 8, 'Malinao', '2023-01-05', 'Soriano Merchandise'),
 (15, 'Spark Plug', 'ampel.jpg', 'Electrical', 'Raider150', '5.00', '2.50', '8.00', 60, 45, 'Canubing I', '2022-12-18', 'AM Merchandise'),
 (16, 'Air Filter', 'ampel.jpg', 'Air Intake', 'Honda CV110', '15.00', '8.00', '20.00', 35, 30, 'Canubing I.2', '2022-02-07', 'Edward Merchandise'),
 (17, 'Tire Tube', 'ampel.jpg', 'Tires', 'Barako', '20.00', '12.00', '30.00', 50, 40, 'Bayanan II', '2021-09-14', 'Kristal Merchandise'),
 (18, 'Battery', 'pogi.jpg', 'Electrical', 'Sniper', '30.00', '18.00', '40.00', 20, 15, 'Malinao', '2023-03-30', 'Soriano Merchandise'),
-(19, 'Brake Disk', 'pogi.jpg', 'Brakes', 'Honda CV110', '35.00', '20.00', '45.00', 45, 38, 'Canubing I', '2022-11-03', 'AM Merchandise'),
+(19, 'Brake Disk', 'pogi.jpg', 'Brakes', 'Honda CV110', '35.00', '20.00', '45.00', 45, 33, 'Canubing I', '2022-11-03', 'AM Merchandise'),
 (20, 'Handle Grip', 'pogi.jpg', 'Handlebars', 'Raider150', '8.00', '4.50', '12.00', 55, 48, 'Canubing I.2', '2021-04-25', 'Edward Merchandise'),
 (21, 'Brake Pad', 'pogi.jpg', 'Brakes', 'Yamaha MT-09', '20.00', '12.00', '25.00', 30, 28, 'Canubing I.2', '2023-06-10', 'AM Merchandise'),
 (22, 'Air Filter', 'pogi.jpg', 'Air Filters', 'Kawasaki Ninja 650', '10.00', '5.00', '15.00', 40, 38, 'Bayanan II', '2022-11-28', 'Edward Merchandise'),
@@ -187,7 +182,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userId`, `userName`, `userPassword`, `userImage`, `userAddress`, `userEmail`, `userRole`, `datetime_added`, `date_updated`) VALUES
-(1, 'ADMIN', '$2y$10$8fVeBYOUpwZ5FME/4BzITe7c38jM6aO33KtrVOu9biISs0Tgdm.9y', 'pogi.jpg', 'ijasdf', 'aionsdf@gmail.com', 'Manager', '2023-11-15 00:00:00', NULL),
+(1, 'ADMIN', '$2y$10$8fVeBYOUpwZ5FME/4BzITe7c38jM6aO33KtrVOu9biISs0Tgdm.9y', 'pogi.jpg', NULL, NULL, 'Manager', '2023-11-15 00:00:00', NULL),
 (14, 'Elizabeth', '$2y$10$psGaKoNb6SzBp4hCCoJQJusRWdz7csC2TXA11.EHsJPyDqbPh3wLK', NULL, 'Canubing 1, Calapan City, Oriental Mindoro', 'elizabethgeronaga@gmail.com', 'User', '2023-11-28 00:00:00', '2023-11-29 12:15:15'),
 (15, 'Filhmar', '$2y$10$KN9Zq.WKbh1DJGxJSVyc/.PWcaECfiRMIpSCMeJGsvnJ7Le58PEUa', NULL, NULL, NULL, 'Manager', '2023-11-29 10:11:35', NULL);
 
@@ -242,7 +237,7 @@ ALTER TABLE `chat_messages`
 -- AUTO_INCREMENT for table `checkout`
 --
 ALTER TABLE `checkout`
-  MODIFY `receiptnumber` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `receiptnumber` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `migrations`
