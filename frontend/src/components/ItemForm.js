@@ -4,6 +4,7 @@ import useCacheOptions from "../hooks/useCacheOptions";
 import useAddProduct from "../hooks/useAddProduct";
 import Loading from "./Loading";
 import PromptError from './PromptError';
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const ItemForm = () => {
     const [ItemName, setItemName] = useState("");
@@ -12,6 +13,7 @@ const ItemForm = () => {
     const [SellingPrice, setSellingPrice] = useState("");
     const [InitialQuantity, setInitialQuantity] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
+    const { userId } = useParams();
     const { error, loading, postRequest } = useAddProduct('Products');
 
     // supplier input
@@ -131,7 +133,6 @@ const ItemForm = () => {
             if(response && response.redirect){
                 window.location.href = response.redirect;
             }
-            
             localStorage.setItem("supplierSuggestions", JSON.stringify(supplierSuggestion));
             localStorage.setItem("categorySuggestion", JSON.stringify(categorySuggestion));
             localStorage.setItem("compatibilityOptions", JSON.stringify(compatibilityOptions));
@@ -145,11 +146,11 @@ const ItemForm = () => {
         <>
             <div className="grid grid-cols-1 mb-4 mt-5">
                 <div className="col-span-1 bg-gray-200 p-4 relative">
-                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white inline-block">Add New Item</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white inline-block" onClick={(e) => console.log(userId)}>{userId === 0 ? "Edit Item" : "Add New Item"}</h2>
                 </div>
             </div>
             <div className="mb-10">
-                <form method="post" enctype="multipart/form-data" onSubmit={SubmitForm}className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4">
+                <form method="post" encType="multipart/form-data" onSubmit={SubmitForm}className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4">
                     <div className="itemname">
                         <Label htmlFor="itemname">Item Name:</Label>
                         <TextInput
@@ -333,7 +334,7 @@ const ItemForm = () => {
                         )}
                     </div>
                     <div className="submitbutton flex justify-end lg:items-center mt-5">
-                        <Button type="submit" size="xl" style={{ width: '30vw' }}>Add Item</Button>
+                        <Button type="submit" size="xl" style={{ width: '30vw' }}>{userId === 0 ? "Submit Edit" : "Add New Item"}</Button>
                     </div>
                 </form>
             </div>

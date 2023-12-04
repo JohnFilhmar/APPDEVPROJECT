@@ -162,7 +162,7 @@ const DashTable = () => {
                             <Pagination layout="table" currentPage={currentPage} totalPages={pageCount} onPageChange={onPageChange} />
                         </div>
                         <div className='mt-7'>
-                            <Button as={Link} to="/itemform">Add New Item</Button>
+                            <Button as={Link} to="/itemform/0">Add New Item</Button>
                         </div>
                     </div>
                 </div>

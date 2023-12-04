@@ -29,11 +29,21 @@ class Cors implements FilterInterface
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PATCH, PUT, DELETE");
         header('Access-Control-Allow-Credentials: true');
-        $method = $_SERVER['REQUEST_METHOD'];
-        if($method == "OPTIONS"){
-            die();
+        header('content-type: application/json; charset=utf-8');
+
+        if ($request->getMethod(true) === 'OPTIONS') {
+            // If the request is an OPTIONS request, return the proper headers and status code
+            return $this->optionsResponse();
         }
+
         return $request;
+    }
+
+    private function optionsResponse()
+    {
+        $response = service('response');
+        $response->setStatusCode(200);
+        return $response;
     }
 
     /**

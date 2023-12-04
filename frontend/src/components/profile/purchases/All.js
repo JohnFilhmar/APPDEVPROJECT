@@ -15,7 +15,7 @@ const All = () => {
     const [groupedItems, setGroupedItems] = useState({});
 
     useEffect(() => {
-        response && 
+        response !== null && 
         // Combine response items and product information, grouped by receipt number
         setGroupedItems(response.reduce((acc, item) => {
             const itemsInReceipt = item.items;
@@ -102,12 +102,12 @@ const All = () => {
 
     const handleDelete = async (receiptNumber) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/Checkout/${receiptNumber}`);
-            console.log(response);
+            const checkout = await axios.delete(`http://localhost:8080/Checkout/${receiptNumber}`);
+            console.log(checkout);
         } catch(error) {
             console.error(error);
         }
-    } 
+    }
 
     return (
         <>

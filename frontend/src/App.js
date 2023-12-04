@@ -60,7 +60,7 @@ const AppContent = () => {
                 <Route path="/profile" component={Profile}/>
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/ecomm" component={ECommerce}/>
-                <Route path="/itemform" component={ItemForm}/>
+                <Route path="/itemform/:userId" component={ItemForm}/>
                 <Route path="/Canubing1_2" component={Canubing1_2}/>
                 <Route path="/Bayanan" component={Bayanan}/>
                 {/* Fallback for unknown routes */}
