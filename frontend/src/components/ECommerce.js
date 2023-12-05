@@ -11,7 +11,7 @@ const gridItems = (products, click) => {
       <Card
         key={index}
         className={`mb-4 text-sm lg:text-lg md:text-base`}
-        imgSrc={`http://localhost:8080/uploads/${product.image}`}
+        imgSrc={`http://localhost:8080/public/uploads/uploads/${product.image}`}
         imgAlt='NoImageToShow'
         onClick={() => click(product)}
       >
@@ -90,7 +90,7 @@ const ProductGrid = () => {
           <div className="space-y-6">
             {selectedProduct && (
               <>
-                <img src={`http://localhost:8080/uploads/${selectedProduct.image}`} alt="Selected Product" />
+                <img src={`http://localhost:8080/public/uploads/uploads/${selectedProduct.image}`} alt="Selected Product" />
                 <p className='text-base/6'>
                   Compatibility: {selectedProduct.compatibility}<br/>
                   Price: ₱{selectedProduct.sellingprice}<br/>

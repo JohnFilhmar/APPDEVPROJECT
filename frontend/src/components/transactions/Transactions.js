@@ -51,7 +51,7 @@ const Transactions = () => {
 
   const handleDelete = async (order) => {
     try {
-      const checkout = await axios.delete(`http://localhost:8080/Checkout/${order.receiptnumber}`);
+      const checkout = await axios.delete(`Checkout/${order.receiptnumber}`);
       console.log(checkout);
     } catch (error) {
       console.error(error);
@@ -78,8 +78,8 @@ const Transactions = () => {
       </div>
       <div className="container bg-slate-50">
         <div className="h-auto flex flex-col gap-2 ">
-          {filteredOrders.map((order) => (
-            <div key={order.receiptnumber} className="border-solid border-4 rounded-md border-gray-950">
+          {filteredOrders.map((order,index) => (
+            <div key={index} className="border-solid border-4 rounded-md border-gray-950">
               <div className="flex justify-between border-solid border-b-4 rounded-md border-gray-950">
                 <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
                   Requester : {order.userName}
@@ -96,7 +96,7 @@ const Transactions = () => {
                   <div key={item.id} className="grid grid-cols-4 h-full text-center p-4">
                     <div className="col-span-1 flex items-center justify-center">
                         <img
-                        src={`http://localhost:8080/uploads/${item.image}`}
+                        src={`http://localhost:8080/public/uploads/uploads/${item.image}`}
                         alt={item.itemname}
                         className="object-cover w-20 h-20 rounded-full"
                         />

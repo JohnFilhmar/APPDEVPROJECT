@@ -81,7 +81,7 @@ const EditAccount = () => {
                             {userLoading ? (
                                 <Spinner size="lg" />
                             ) : (
-                                <Avatar img={userImage ? `http://localhost:8080/uploads/${userImage}` : `http://localhost:8080/uploads/profile.png`} size="lg" rounded />
+                                <Avatar img={userImage ? `http://localhost:8080/public/uploads/uploads/${userImage}` : `http://localhost:8080/public/uploads/uploads/profile.png`} size="lg" rounded />
                             )}
                             <Label htmlFor="file" className="mt-2">
                                 Upload a new image
