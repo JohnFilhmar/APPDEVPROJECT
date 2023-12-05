@@ -15,4 +15,3 @@ $routes->resource('Products');
 $routes->resource('Chats');
 
 $routes->resource('Checkout');
-$routes->options('checkout', 'Checkout::options');
