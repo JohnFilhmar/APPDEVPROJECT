@@ -2,17 +2,12 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\RESTful\ResourceController;
+use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\ProductModel;
 
-class Products extends ResourceController
+class ProductController extends BaseController
 {
-    /**
-     * Return an array of resource objects, themselves in array format
-     *
-     * @return mixed
-     */
     use ResponseTrait;
     public function index()
     {
@@ -20,12 +15,6 @@ class Products extends ResourceController
         $data = $main->findAll();
         return $this->respond($data);
     }
-
-    /**
-     * Return the properties of a resource object
-     *
-     * @return mixed
-     */
     public function show($id = null)
     {
         $main = new ProductModel();
@@ -33,12 +22,6 @@ class Products extends ResourceController
         if(!$data) return $this->failNotFound('No record found');
         return $this->respond($data[0]);
     }
-
-    /**
-     * Create a new resource object, from "posted" parameters
-     *
-     * @return mixed
-     */
     public function create()
     {
         helper(['form']);
@@ -92,13 +75,6 @@ class Products extends ResourceController
 
         return $this->fail('File upload failed.');
     }
-
-
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
     public function update($id = null)
     {
         helper(['form']);
@@ -145,12 +121,6 @@ class Products extends ResourceController
         ];
         return $this->respondCreated($response);
     }
-
-    /**
-     * Delete the designated resource object from the model
-     *
-     * @return mixed
-     */
     public function delete($id = null)
     {
         $main = new ProductModel();

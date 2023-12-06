@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import { Button, Card, Label, Select, TextInput } from 'flowbite-react';
+import { Button, Card, Label, TextInput } from 'flowbite-react';
 
 const Register = () => {
     const [username, setUsername] = useState("");
     const [userpassword, setPassword] = useState("");
-    const [userrole, setRole] = useState("");
+    const [secretkey, setSecretKey] = useState("");
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -34,10 +34,10 @@ const Register = () => {
     const submitForm = async (e) => {
       e.preventDefault();
       try {
-        const response = await axios.postForm('Users',{
+        const response = await axios.postForm('createUser',{
           userName: username,
           userPassword: userpassword,
-          userRole: userrole,
+          userRole: secretkey,
         });
   
         if (response.data && response.data.redirect && response.data.messages && response.data.messages.success) {
@@ -86,19 +86,18 @@ const Register = () => {
                     minLength={8}
                     autoComplete=""
                 />
-                <Label htmlFor="userrole">Role:</Label>
-                <Select
-                  id="userrole"
-                  name="userrole"
-                  value={userrole}
-                  onChange={(e) => setRole(e.target.value)}
-                  required
-                >
-                  <option value="" disabled>Select user role</option>
-                  <option value="User">User</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Employee">Employee</option>
-                </Select>
+                <Label htmlFor="secretkey">Secret Key:</Label>
+                <TextInput
+                    type="password"
+                    name="secretkey"
+                    className="form-control mb-2"
+                    id="secretkey"
+                    placeholder="Enter secretkey"
+                    value={secretkey}
+                    onChange={(e) => setSecretKey(e.target.value)}
+                    required
+                    autoComplete=""
+                />
                 <Button type="submit">Register</Button>
             </form>
             <Link to="/login" className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-lg focus:ring-2">Go Back</Link>

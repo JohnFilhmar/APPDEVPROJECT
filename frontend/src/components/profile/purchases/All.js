@@ -102,7 +102,7 @@ const All = () => {
 
     const handleDelete = async (receiptNumber) => {
         try {
-            const checkout = await axios.delete(`http://localhost:8080/public/uploads/Checkout/${receiptNumber}`);
+            const checkout = await axios.delete(`http://localhost:8080/uploads/Checkout/${receiptNumber}`);
             console.log(checkout);
         } catch(error) {
             console.error(error);
@@ -130,7 +130,7 @@ const All = () => {
                             <div key={item.id} className="grid grid-cols-4 h-full text-center p-4">
                                 <div className="col-span-1 flex items-center justify-center">
                                     <img
-                                    src={`http://localhost:8080/public/uploads/uploads/${item.productInfo?.image}`}
+                                    src={`http://localhost:8080/uploads/${item.productInfo?.image}`}
                                     alt={item.productInfo?.itemname}
                                     className="object-cover w-20 h-20 rounded-full"
                                     />
@@ -167,7 +167,7 @@ const All = () => {
                                     <div key={item.id} className="grid grid-cols-4 h-full text-center p-4">
                                         <div className="col-span-1 flex items-center justify-center">
                                             <img
-                                            src={`http://localhost:8080/public/uploads/uploads/${item.productInfo?.image}`}
+                                            src={`http://localhost:8080/uploads/${item.productInfo?.image}`}
                                             alt={item.productInfo?.itemname}
                                             className="object-cover w-20 h-20 rounded-full"
                                             />

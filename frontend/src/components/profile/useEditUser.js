@@ -7,7 +7,7 @@ const useEditUser = () => {
 
     const submitEdit = async (formData) => {
         try {
-            const response = await axios.put(`Users/${sessionStorage.getItem('userId')}`, formData);
+            const response = await axios.post(`updateUser/${sessionStorage.getItem('userId')}`, formData);
             return response.data;
         } catch (error) {
             console.error("Error editing user:", error);

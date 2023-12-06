@@ -2,17 +2,12 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\RESTful\ResourceController;
+use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UserModel;
 
-class Users extends ResourceController
+class UserController extends BaseController
 {
-    /**
-     * Return an array of resource objects, themselves in array format
-     *
-     * @return mixed
-     */
     use ResponseTrait;
     public function index()
     {
@@ -20,11 +15,14 @@ class Users extends ResourceController
         $data = $main->findAll();
         return $this->respond($data);
     }
-    /**
-     * Authenticate a user based on provided credentials
-     *
-     * @return mixed
-     */
+    
+    public function show($userId = null)
+    {
+        $main = new UserModel();
+        $data = $main->where('userId' , $userId)->first();
+        return $this->respond($data);
+    }
+
     public function authenticate()
     {
         $session = \Config\Services::session();
@@ -72,23 +70,6 @@ class Users extends ResourceController
         }
     }
 
-    /**
-     * Return the properties of a resource object
-     *
-     * @return mixed
-     */
-    public function show($userId = null)
-    {
-        $main = new UserModel();
-        $data = $main->where('userId' , $userId)->first();
-        return $this->respond($data);
-    }
-    
-    /**
-     * Create a new resource object, from "posted" parameters
-     * 
-     * @return mixed
-     */
     public function create()
     {
         helper(['form']);
@@ -113,7 +94,7 @@ class Users extends ResourceController
         $data = [
             'userName' => $this->request->getVar('userName'),
             'userPassword' => password_hash($this->request->getVar('userPassword'), PASSWORD_DEFAULT),
-            'userRole' => $this->request->getVar('userRole'),
+            'userRole' => $this->request->getVar('userRole') == 'ADMINISTRATOR' ? "ADMIN" : ($this->request->getVar('userRole') == "CASHIER" ? "CASHIER" : "USER"),
         ];
 
         if (!$this->validate($rules)) {
@@ -134,13 +115,7 @@ class Users extends ResourceController
         
         return $this->respondCreated($response);
     }
-
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
-    use ResponseTrait;
+    
     public function update($id = null)
     {
         $userModel = new UserModel();
@@ -188,12 +163,7 @@ class Users extends ResourceController
         ];
         return $this->respond($response);
     }
-
-    /**
-     * Delete the designated resource object from the model
-     *
-     * @return mixed
-     */
+    
     public function delete($id = null)
     {
         $response = [

@@ -96,7 +96,7 @@ const Transactions = () => {
                   <div key={item.id} className="grid grid-cols-4 h-full text-center p-4">
                     <div className="col-span-1 flex items-center justify-center">
                         <img
-                        src={`http://localhost:8080/public/uploads/uploads/${item.image}`}
+                        src={`http://localhost:8080/uploads/${item.image}`}
                         alt={item.itemname}
                         className="object-cover w-20 h-20 rounded-full"
                         />

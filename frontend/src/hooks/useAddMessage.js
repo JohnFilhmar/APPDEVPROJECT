@@ -8,7 +8,7 @@ const useChats = (sender, receiver, message) => {
 
   const addMessage = async () => {
     try {
-      const response = await axios.postForm('Chats', {
+      const response = await axios.postForm('createChat', {
         sender,
         receiver,
         message,

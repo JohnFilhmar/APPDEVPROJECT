@@ -14,7 +14,7 @@ const ItemForm = () => {
     const [InitialQuantity, setInitialQuantity] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const { userId } = useParams();
-    const { error, loading, postRequest } = useAddProduct('Products');
+    const { error, loading, postRequest } = useAddProduct('createProduct');
 
     // supplier input
     const {

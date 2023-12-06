@@ -8,7 +8,7 @@ const useGetMessages = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('Chats');
+            const response = await axios.get('getChats');
             setResponse(response.data);
         } catch (error) {
             setError(error);

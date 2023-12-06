@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard";
 import NotFound from './components/NotFound';
 import ECommerce from './components/ECommerce';
 import Transactions from './components/transactions/Transactions';
+import UserProfiles from './components/userprofiles/UserProfiles';
 import Footer from './components/Footer';
 import ItemForm from './components/ItemForm';
 import Profile from "./components/profile/Profile";
@@ -34,6 +35,7 @@ const AppContent = () => {
               <Redirect from="/dashboard" to="/login"/>
               <Redirect from="/ecomm" to="/login"/>
               <Redirect from="/transac" to="/login"/>
+              <Redirect from="/userprofiles" to="/login"/>
               <Redirect from="/itemform" to="/login"/>
               <Redirect from="/profile" to="/login"/>
               <Redirect from="/Canubing1_2" to="/login"/>
@@ -60,10 +62,10 @@ const AppContent = () => {
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/ecomm" component={ECommerce} />
                 <Route path="/transac" component={Transactions} />
+                <Route path="/userprofiles" component={UserProfiles} />
                 <Route path="/itemform/:userId" component={ItemForm} />
               </>
             )}
-            <Route path="*" component={NotFound} />
           </Switch>
         </div>
       </div>

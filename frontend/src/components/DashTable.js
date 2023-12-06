@@ -36,7 +36,7 @@ const DashTable = () => {
         if (branch === 'All Branch') {
             setFilteredBranchData([...products]);
         } else {
-            const response = await axios.get('Products');
+            const response = await axios.get('getProducts');
             const branchResults = response.data.filter((product) => 
             product.branch.toLowerCase().includes(branch.toLowerCase()));
             setFilteredBranchData(branchResults);
