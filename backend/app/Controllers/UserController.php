@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UserModel;
+// use \Firebase\JWT\JWT;
 
 class UserController extends BaseController
 {
@@ -48,6 +49,21 @@ class UserController extends BaseController
             $session->set('isLoggedIn',true);
             $session->set('role',$user['userRole']);
             $session->set('userId',$user['userId']);
+ 
+            // $key = getenv('JWT_SECRET');
+            // $iat = time();
+            // // $exp = $iat + 300;
+            // $exp = $iat + 3600;
+     
+            // $payload = array(
+            //     "iss" => "Issuer of the JWT",
+            //     "aud" => "Audience that the JWT",
+            //     "sub" => "Subject of the JWT",
+            //     "iat" => $iat,
+            //     "exp" => $exp,
+            // );
+            
+            // $token = JWT::encode($payload, $key, 'HS256');
 
             $response = [
                 'status' => 200,
@@ -181,6 +197,7 @@ class UserController extends BaseController
         $session = \Config\Services::session();
         $response = [
             'redirect' => '/login',
+            'invalidateToken' => true
         ];
         $session->destroy();
         return $this->respond($response);

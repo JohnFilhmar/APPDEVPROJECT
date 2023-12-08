@@ -5,8 +5,10 @@ namespace App\Filters;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
-class Cors implements FilterInterface
+class AuthFilter implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -25,17 +27,32 @@ class Cors implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if ($request->getMethod(true) === 'OPTIONS') {
-            $response = service('response');
-            $response->setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-            $response->setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            $response->setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-            $response->setHeader('Access-Control-Allow-Credentials', 'true');
-            return $response;
+        $key = getenv('JWT_SECRET');
+
+        if (empty($key)) {
+            throw new \RuntimeException('JWT_SECRET environment variable is not set.');
         }
-    
-        return $request;
-    }   
+
+        $header = $request->getHeaderLine("Authorization");
+        $token = null;
+        if (!empty($header)) {
+            if (preg_match('/Bearer\s(\S+)/', $header, $matches)) {
+                $token = $matches[1];
+            }
+        }
+        if (is_null($token) || empty($token)) {
+            return service('response')->setStatusCode(401)->setBody('Access denied');
+        }
+
+        try {
+            $decoded = JWT::decode($token, new Key($key, 'HS256'));
+        } catch (\Exception $ex) {
+            log_message('error', 'JWT decoding error: ' . $ex->getMessage());
+        
+            return service('response')->setStatusCode(401)->setJSON(['error' => 'Session Expired', 'redirect' => '/login']);
+        }
+    }
+
 
     /**
      * Allows After filters to inspect and modify the response
@@ -51,12 +68,6 @@ class Cors implements FilterInterface
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        // Set CORS headers for non-preflight responses
-        $response->setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        $response->setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        $response->setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-        $response->setHeader('Access-Control-Allow-Credentials', 'true');
-
-        return $response;
+        //
     }
 }

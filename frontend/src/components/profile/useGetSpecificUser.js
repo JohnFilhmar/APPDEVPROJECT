@@ -7,7 +7,7 @@ const useGetUsers = () => {
     const [error, setError] = useState(null);
     const fetchData = async () => {
         try {
-            const response = await axios.get(`Users/${sessionStorage.getItem('userId')}`);
+            const response = await axios.get(`showUser/${localStorage.getItem('userId')}`);
             setResponse(response.data);
         } catch (error) {
             setError(error);

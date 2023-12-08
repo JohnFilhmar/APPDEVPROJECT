@@ -20,7 +20,7 @@ const FloatingButton = () => {
 // eslint-disable-next-line
   const { fetchData, response: data, loading: loadingMessages, error: errorMessages } = useGetMessages();
 // eslint-disable-next-line
-  const { response, loading, error, addMessage } = useChats(sessionStorage.getItem('username'), receiver, userMessage);
+  const { response, loading, error, addMessage } = useChats(localStorage.getItem('username'), receiver, userMessage);
 // eslint-disable-next-line
   const { response: userData, loading: loadingUsers, error: errorUsers } = useGetUsers();
   const [chats, setChats] = useState([...userData]);
@@ -120,23 +120,23 @@ const FloatingButton = () => {
               <div className="flex flex-col">
               {
                 data.map((msg) => (
-                  receiver === msg.receiver && msg.sender === sessionStorage.getItem('username') ? 
+                  receiver === msg.receiver && msg.sender === localStorage.getItem('username') ? 
                     <div
                       key={msg.message_id}
                       className={`flex p-2 ${
-                        msg.sender === sessionStorage.getItem('username') ? 'justify-end' : 'justify-start'
+                        msg.sender === localStorage.getItem('username') ? 'justify-end' : 'justify-start'
                       }`}
                     >
                       <p
                         className={`font-bold text-slate p-2 rounded-lg ${
-                          msg.sender === sessionStorage.getItem('username') ? 'bg-blue-200' : 'bg-gray-200'
+                          msg.sender === localStorage.getItem('username') ? 'bg-blue-200' : 'bg-gray-200'
                         }`}
                       >
                         {msg.message}
                       </p>
                     </div>
                   : 
-                  msg.receiver === sessionStorage.getItem('username') && msg.sender === receiver ? 
+                  msg.receiver === localStorage.getItem('username') && msg.sender === receiver ? 
                     <div
                       key={msg.message_id}
                       className={`flex p-2 ${
@@ -172,7 +172,7 @@ const FloatingButton = () => {
                     className='w-full p-1'
                   />
                   {chats.slice(0, 8).map((user) => 
-                    sessionStorage.getItem('username') !== user.userName ? 
+                    localStorage.getItem('username') !== user.userName ? 
                       (
                         <div key={user.id}>
                           <p

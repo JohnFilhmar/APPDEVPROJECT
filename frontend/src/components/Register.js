@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Button, Card, Label, TextInput } from 'flowbite-react';
+import { IoKey } from "react-icons/io5";
 
 const Register = () => {
+    const history = useHistory();
     const [username, setUsername] = useState("");
+    const [KeyVisibility, setKeyVisibility] = useState(false);
     const [userpassword, setPassword] = useState("");
-    const [secretkey, setSecretKey] = useState("");
+    const [secretkey, setSecretKey] = useState("NOVALUE");
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -18,18 +21,6 @@ const Register = () => {
         clearTimeout(timeoutId);
       };
     }, [error]);
-
-    // function getCurrentDateFormatted() {
-    //   const currentDate = new Date();
-    //   const year = currentDate.getFullYear();
-    //   const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    //   const day = String(currentDate.getDate()).padStart(2, '0');
-    //   const formattedDate = `${year}-${month}-${day}`;
-    
-    //   return formattedDate;
-    // }
-    
-    // const formattedDate = getCurrentDateFormatted();
     
     const submitForm = async (e) => {
       e.preventDefault();
@@ -42,9 +33,8 @@ const Register = () => {
   
         if (response.data && response.data.redirect && response.data.messages && response.data.messages.success) {
           console.log(response.data.messages.success);
-          // redirect user to login page if user's authenticated
-          sessionStorage.setItem('Registered',true);
-          window.location.href = response.data.redirect;
+          localStorage.setItem('Registered',true);
+          history.push(response.data.redirect);
         }
         if (response.data && response.data.fail) {
           setError(response.data.fail);
@@ -57,6 +47,12 @@ const Register = () => {
     <>
       <div className="flex items-center justify-center h-screen text-center">
           <Card className="w-96">
+            <div className="flex justify-end">
+              <IoKey 
+                className={`w-7 h-7 border-2 rounded-lg ${(KeyVisibility)? 'border-gray-900 bg-gray-900 text-gray-400' : 'border-gray-500 bg-gray-500 text-gray-800'}`}
+                onClick={() => setKeyVisibility(!KeyVisibility)}
+              />
+            </div>
             <div className="p-4 border-solid">
               <h2 className="text-lg font-semibold">REGISTER</h2>
             </div>
@@ -71,7 +67,7 @@ const Register = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
-                    autoComplete=""
+                    autoComplete="true"
                 />
                 <Label htmlFor="password">Password:</Label>
                 <TextInput
@@ -84,21 +80,23 @@ const Register = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={8}
-                    autoComplete=""
+                    autoComplete="true"
                 />
-                <Label htmlFor="secretkey">Secret Key:</Label>
-                <TextInput
-                    type="password"
-                    name="secretkey"
-                    className="form-control mb-2"
-                    id="secretkey"
-                    placeholder="Enter secretkey"
-                    value={secretkey}
-                    onChange={(e) => setSecretKey(e.target.value)}
-                    required
-                    autoComplete=""
-                />
-                <Button type="submit">Register</Button>
+                <div className={((KeyVisibility)? "block" : "hidden")}>
+                  <Label htmlFor="secretkey">Secret Key:</Label>
+                  <TextInput
+                      type="password"
+                      name="secretkey"
+                      className="form-control mb-2"
+                      id="secretkey"
+                      placeholder="Enter secretkey"
+                      value={secretkey}
+                      onChange={(e) => setSecretKey(e.target.value)}
+                      required
+                      autoComplete="true"
+                  />
+                </div>
+                <Button className='mt-5' type="submit">Register</Button>
             </form>
             <Link to="/login" className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-lg focus:ring-2">Go Back</Link>
             {error && <p style={{ color: 'red' }}>{error}! Try Again.</p>}<br/>

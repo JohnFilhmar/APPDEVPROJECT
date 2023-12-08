@@ -102,7 +102,7 @@ const All = () => {
 
     const handleDelete = async (receiptNumber) => {
         try {
-            const checkout = await axios.delete(`http://localhost:8080/uploads/Checkout/${receiptNumber}`);
+            const checkout = await axios.post(`deleteCheckout/${receiptNumber}`);
             console.log(checkout);
         } catch(error) {
             console.error(error);

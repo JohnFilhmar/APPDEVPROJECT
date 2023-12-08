@@ -38,7 +38,7 @@ const EditAccount = () => {
         try {
             const response = await submitEdit(formData);
             if (response.data && response.data.userName) {
-                sessionStorage.setItem('userName', response.data.userName);
+                localStorage.setItem('userName', response.data.userName);
             }
         } catch (error) {
             console.log(error);

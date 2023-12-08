@@ -51,7 +51,7 @@ const Transactions = () => {
 
   const handleDelete = async (order) => {
     try {
-      const checkout = await axios.delete(`Checkout/${order.receiptnumber}`);
+      const checkout = await axios.post(`deleteCheckout/${order.receiptnumber}`);
       console.log(checkout);
     } catch (error) {
       console.error(error);

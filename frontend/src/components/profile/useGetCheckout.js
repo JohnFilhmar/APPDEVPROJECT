@@ -9,7 +9,7 @@ const useGetUsers = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`Checkout/${sessionStorage.getItem('userId')}`);
+                const response = await axios.get(`showCheckout/${localStorage.getItem('userId')}`);
                 setResponse(response.data);
             } catch (error) {
                 setError(error);

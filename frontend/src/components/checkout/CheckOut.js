@@ -34,12 +34,12 @@ const Checkout = ({ data, state }) => {
         e.preventDefault();
         try {
             // const formData = {
-            //     customer : sessionStorage.getItem('userId'),
+            //     customer : localStorage.getItem('userId'),
             //     items : localStorage.getItem('toCheckOutItems'),
             //     subtotal : calculateOverallTotal(),
             // }
             const formData = new FormData();
-            formData.append('customer',sessionStorage.getItem('userId'));
+            formData.append('customer',localStorage.getItem('userId'));
             formData.append('items',(localStorage.getItem('toCheckOutItems')));
             formData.append('subtotal',calculateOverallTotal());
 

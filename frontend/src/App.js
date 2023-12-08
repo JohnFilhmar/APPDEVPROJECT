@@ -4,7 +4,6 @@ import Login from "./components/Login";
 import TopNavbar from "./components/TopNavbar";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
-import NotFound from './components/NotFound';
 import ECommerce from './components/ECommerce';
 import Transactions from './components/transactions/Transactions';
 import UserProfiles from './components/userprofiles/UserProfiles';
@@ -22,7 +21,7 @@ const AppContent = () => {
   const location = useLocation();
   const isLoginPath = location.pathname === '/login';
   const isRegisterPath = location.pathname === '/register';
-  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   
   return (
     <div className="flex flex-col min-h-screen">

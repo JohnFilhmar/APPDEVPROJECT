@@ -8,7 +8,7 @@ const useAddCheckOut = () => {
   const postRequest = async (postData) => {
     try {
       setLoading(true);
-      const response = await axios.postForm('Checkout', postData);
+      const response = await axios.postForm('createCheckout', postData);
       return (response.data);
     } catch (err) {
       setError(err);

@@ -4,9 +4,10 @@ import useCacheOptions from "../hooks/useCacheOptions";
 import useAddProduct from "../hooks/useAddProduct";
 import Loading from "./Loading";
 import PromptError from './PromptError';
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const ItemForm = () => {
+    const history = useHistory();
     const [ItemName, setItemName] = useState("");
     const [MarketPrice, setMarketPrice] = useState("");
     const [BoughtPrice, setBoughtPrice] = useState("");
@@ -127,11 +128,11 @@ const ItemForm = () => {
             }
         
             if (response && response.messages && response.messages.success) {
-                sessionStorage.setItem('uploadSuccess', response.messages.success);
+                localStorage.setItem('uploadSuccess', response.messages.success);
             }
             
             if(response && response.redirect){
-                window.location.href = response.redirect;
+                history.push(response.redirect);
             }
             localStorage.setItem("supplierSuggestions", JSON.stringify(supplierSuggestion));
             localStorage.setItem("categorySuggestion", JSON.stringify(categorySuggestion));

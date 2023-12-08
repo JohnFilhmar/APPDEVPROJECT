@@ -9,7 +9,7 @@ const useGetUsers = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('Checkout');
+                const response = await axios.get('getCheckout');
                 setResponse(response.data);
             } catch (error) {
                 setError(error);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Navbar,Alert,Dropdown, Button, Modal, Badge } from 'flowbite-react';
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link, NavLink, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { LiaCartPlusSolid } from "react-icons/lia";
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { FaExpandArrowsAlt, FaCompressArrowsAlt } from "react-icons/fa";
@@ -10,6 +10,7 @@ import Messages from './chat/Messages';
 import Checkout from './checkout/CheckOut';
 
 const TopNavbar = () => {
+    const history = useHistory();
     const [openModal, setOpenModal] = useState(false);
     const [warningModal, setWarningModal] = useState(false);
     const [message,setMessage] = useState("");
@@ -31,6 +32,16 @@ const TopNavbar = () => {
         });
         setCartCount(cartArray.length);
     }, [openModal]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setMessage(null);
+        }, 5000);
+    
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    },[message]);
 
     const removeFromCart = (itemId) => {
         const updatedCart = cartItems.filter(item => item.id !== itemId);
@@ -62,21 +73,22 @@ const TopNavbar = () => {
         });
         localStorage.setItem('toCheckOutItems', JSON.stringify(checkedOutItems));
         // console.log(localStorage.getItem('toCheckOutItems'));
-        setCheckOutModal(true);
+        setCheckOutModal(true); 
         setOpenModal(false);
     }
 
     const logout = async () => {
         setCheckOutModal(false);
         try {
-            const response = await axios.post('logoutUser');
+            const response = await axios.get('logoutUser');
             console.log(response);
             if (response.data.redirect) {
-              sessionStorage.setItem('isLoggedIn', false);
-              sessionStorage.removeItem('userId');
-              sessionStorage.removeItem('username');
-              sessionStorage.removeItem('role');
-              window.location.href = response.data.redirect;
+              localStorage.setItem('isLoggedIn', false);
+              localStorage.removeItem('userId');
+              localStorage.removeItem('username');
+              localStorage.removeItem('role');
+              localStorage.removeItem('token');
+              history.push(response.data.redirect);
             } else {
               setMessage('Something may have gone wrong');
             }
@@ -146,7 +158,7 @@ setCheckOutModal(false);
                         </Badge>
                         )}
                     </Navbar.Link>
-                    <Dropdown label={`Welcome ${sessionStorage.getItem('username')}`} inline>
+                    <Dropdown label={`Welcome ${localStorage.getItem('username')}`} inline>
                         <Dropdown.Item onClick={() => setCheckOutModal(false)} as={Link} to="/profile/account">Profile</Dropdown.Item>
                         <Dropdown.Item onClick={() => setCheckOutModal(false)}>Settings</Dropdown.Item>
                         <Dropdown.Item onClick={logout} style={{color: 'red'}}>Sign out</Dropdown.Item>
