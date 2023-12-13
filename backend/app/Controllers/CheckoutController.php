@@ -136,7 +136,7 @@ class CheckoutController extends BaseController
         return $this->respondCreated($response);
     }    
     
-    public function delete($id = null)
+    public function delete($id)
     {
         $main = new CheckOutModel();
         $main->delete($id);

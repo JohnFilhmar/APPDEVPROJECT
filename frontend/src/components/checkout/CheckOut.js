@@ -23,38 +23,66 @@ const Checkout = ({ data, state }) => {
     }, [state, receiptData]);
 
     const calculateOverallTotal = () => {
-        return receiptData.reduce((total, item) => total + item.sellingprice * item.quantity, 0);
+        return JSON.parse(localStorage.getItem('toCheckOutItems')).reduce((total, item) => total + item.sellingprice * item.quantity, 0);
     };
 
     const closeModal = () => {
         setOpenModal(false);
     };
 
+    const handleCheckboxClick = (index) => {
+        setCheckboxStates((prev) => {
+            const newStates = [...prev];
+            newStates[index] = !newStates[index];
+            const itemsInLocalStorage = JSON.parse(localStorage.getItem('toCheckOutItems')) || [];
+        
+            if (newStates[index]) {
+                // Item is checked, remove it from the cart
+                const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+                const cartItemIndexToRemove = cartItems.findIndex(item => item.id === receiptData[index].id);
+                if (cartItemIndexToRemove !== -1) {
+                cartItems.splice(cartItemIndexToRemove, 1);
+                localStorage.setItem('cart', JSON.stringify(cartItems));
+                }
+            } else {
+                // Item is unchecked, add it to the cart
+                itemsInLocalStorage.push(receiptData[index]);
+            }
+        
+            localStorage.setItem('toCheckOutItems', JSON.stringify(itemsInLocalStorage));
+            return newStates;
+        });
+    };
+    
     const proceedCheckOut = async (e) => {
         e.preventDefault();
         try {
-            // const formData = {
-            //     customer : localStorage.getItem('userId'),
-            //     items : localStorage.getItem('toCheckOutItems'),
-            //     subtotal : calculateOverallTotal(),
-            // }
             const formData = new FormData();
-            formData.append('customer',localStorage.getItem('userId'));
-            formData.append('items',(localStorage.getItem('toCheckOutItems')));
-            formData.append('subtotal',calculateOverallTotal());
-
+            formData.append('customer', localStorage.getItem('userId'));
+            formData.append('items', localStorage.getItem('toCheckOutItems'));
+            formData.append('subtotal', calculateOverallTotal());
             const response = await postRequest(formData);
-        
-            localStorage.removeItem('cart');
             setReceipt([]);
             setOpenModal(false);
-            // console.log("Checkout Successful", JSON.stringify(response.data));
             console.log('Check out clicked', localStorage.getItem('toCheckOutItems'), formData, response);
+        
+            // Remove checked items from the cart
+            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            const checkedItemIds = checkboxStates.reduce((ids, isChecked, index) => {
+                if (isChecked) {
+                ids.push(receiptData[index].id);
+                }
+                return ids;
+            }, []);
+        
+            const updatedCart = cartItems.filter(item => !checkedItemIds.includes(item.id));
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+        
             localStorage.removeItem('toCheckOutItems');
-        }catch(error){
+        } catch (error) {
             console.error("Checkout Failed", checkoutError, error);
         }
-    }
+    };
 
     return (
         <>
@@ -76,20 +104,14 @@ const Checkout = ({ data, state }) => {
                     <React.Fragment key={index}>
                     <div className="grid grid-cols-5 gap-4 py-2 border-b ">
                         <button
-                            onClick={() =>
-                            setCheckboxStates((prev) => {
-                                const newStates = [...prev];
-                                newStates[index] = !newStates[index];
-                                return newStates;
-                            })
-                            }
-                            className="flex items-center justify-center"
+                        onClick={() => handleCheckboxClick(index)}
+                        className="flex items-center justify-center"
                         >
-                            {checkboxStates[index] ? (
+                        {checkboxStates[index] ? (
                             <ImCheckboxChecked />
-                            ) : (
+                        ) : (
                             <ImCheckboxUnchecked />
-                            )}
+                        )}
                         </button>
                         <div>{item.itemname}</div>
                         <div>₱{item.sellingprice}</div>

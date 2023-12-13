@@ -103,7 +103,7 @@ const ItemForm = () => {
         
         const formData = new FormData();
         formData.append('itemname', ItemName);
-        formData.append('image', selectedFile); // Use the same field name expected by the backend
+        formData.append('image', selectedFile);
         formData.append('category', categoryOptions);
         formData.append('compatibility', compatibilityOptions);
         formData.append('marketprice', MarketPrice);
@@ -335,7 +335,7 @@ const ItemForm = () => {
                         )}
                     </div>
                     <div className="submitbutton flex justify-end lg:items-center mt-5">
-                        <Button type="submit" size="xl" style={{ width: '30vw' }}>{userId === 0 ? "Submit Edit" : "Add New Item"}</Button>
+                        <Button type="submit" size="xl" style={{ width: '30vw' }}>{userId === '0' ? "Submit Edit" : "Add New Item"}</Button>
                     </div>
                 </form>
             </div>

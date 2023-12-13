@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 04, 2023 at 12:08 AM
+-- Generation Time: Dec 13, 2023 at 12:21 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -35,16 +35,6 @@ CREATE TABLE `chat_messages` (
   `datetime_sent` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
---
--- Dumping data for table `chat_messages`
---
-
-INSERT INTO `chat_messages` (`message_id`, `sender_id`, `receiver_id`, `message`, `datetime_sent`) VALUES
-(5, 14, 1, 'hi love', '2023-11-28 19:15:18'),
-(6, 1, 14, 'adsf', '2023-11-29 18:50:49'),
-(7, 15, 1, 'HELLO ADMIN', '2023-11-30 00:31:55'),
-(8, 15, 14, 'HELLO BB', '2023-11-30 00:31:59');
-
 -- --------------------------------------------------------
 
 --
@@ -61,14 +51,20 @@ CREATE TABLE `checkout` (
   `is_processed` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `checkout`
+-- Table structure for table `financial_transactions`
 --
 
-INSERT INTO `checkout` (`receiptnumber`, `customer`, `items`, `subtotal`, `datetime_added`, `datetime_processed`, `is_processed`) VALUES
-(1, 15, '[{\"id\": \"14\", \"itemname\": \"Chain Set\", \"quantity\": 1, \"sellingprice\": \"50.00\"}]', '50.00', '2023-12-01 08:04:26', NULL, 'PROCESSING'),
-(2, 1, '[{\"id\": \"12\", \"itemname\": \"Brake Pads\", \"quantity\": 1, \"sellingprice\": \"35.00\"}]', '35.00', '2023-12-01 08:52:28', NULL, 'PROCESSING'),
-(3, 14, '[{\"id\": \"14\", \"itemname\": \"Chain Set\", \"quantity\": 1, \"sellingprice\": \"50.00\"}]', '50.00', '2023-12-01 15:42:31', NULL, 'PROCESSING');
+CREATE TABLE `financial_transactions` (
+  `transaction_id` int UNSIGNED NOT NULL,
+  `user_id` int UNSIGNED DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `transaction_type` enum('income','expense','refund') NOT NULL,
+  `datetime_added` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -123,18 +119,18 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `itemname`, `image`, `category`, `compatibility`, `marketprice`, `boughtprice`, `sellingprice`, `initialquantity`, `currentquantity`, `branch`, `lastdateupdated`, `supplier`) VALUES
-(11, 'Clutch Kit', 'ampel.jpg', 'Clutch', 'Honda CV110', '50.00', '30.00', '60.00', 50, 23, 'Canubing I', '2021-01-15', 'AM Merchandise'),
+(11, 'Clutch Kit', 'ampel.jpg', 'Clutch', 'Honda CV110', '50.00', '30.00', '60.00', 50, 13, 'Canubing I', '2021-01-15', 'AM Merchandise'),
 (12, 'Brake Pads', 'ampel.jpg', 'Brakes', 'Raider150', '25.00', '15.00', '35.00', 40, 0, 'Canubing I.2', '2022-03-22', 'Edward Merchandise'),
-(13, 'Oil Filter', 'ampel.jpg', 'Engine', 'Barako', '10.00', '5.00', '15.00', 30, 18, 'Bayanan II', '2021-06-10', 'Kristal Merchandise'),
-(14, 'Chain Set', 'ampel.jpg', 'Drive', 'Sniper', '40.00', '25.00', '50.00', 25, 8, 'Malinao', '2023-01-05', 'Soriano Merchandise'),
-(15, 'Spark Plug', 'ampel.jpg', 'Electrical', 'Raider150', '5.00', '2.50', '8.00', 60, 45, 'Canubing I', '2022-12-18', 'AM Merchandise'),
-(16, 'Air Filter', 'ampel.jpg', 'Air Intake', 'Honda CV110', '15.00', '8.00', '20.00', 35, 30, 'Canubing I.2', '2022-02-07', 'Edward Merchandise'),
-(17, 'Tire Tube', 'ampel.jpg', 'Tires', 'Barako', '20.00', '12.00', '30.00', 50, 40, 'Bayanan II', '2021-09-14', 'Kristal Merchandise'),
-(18, 'Battery', 'pogi.jpg', 'Electrical', 'Sniper', '30.00', '18.00', '40.00', 20, 15, 'Malinao', '2023-03-30', 'Soriano Merchandise'),
-(19, 'Brake Disk', 'pogi.jpg', 'Brakes', 'Honda CV110', '35.00', '20.00', '45.00', 45, 33, 'Canubing I', '2022-11-03', 'AM Merchandise'),
-(20, 'Handle Grip', 'pogi.jpg', 'Handlebars', 'Raider150', '8.00', '4.50', '12.00', 55, 48, 'Canubing I.2', '2021-04-25', 'Edward Merchandise'),
-(21, 'Brake Pad', 'pogi.jpg', 'Brakes', 'Yamaha MT-09', '20.00', '12.00', '25.00', 30, 28, 'Canubing I.2', '2023-06-10', 'AM Merchandise'),
-(22, 'Air Filter', 'pogi.jpg', 'Air Filters', 'Kawasaki Ninja 650', '10.00', '5.00', '15.00', 40, 38, 'Bayanan II', '2022-11-28', 'Edward Merchandise'),
+(13, 'Oil Filter', 'ampel.jpg', 'Engine', 'Barako', '10.00', '5.00', '15.00', 30, 14, 'Bayanan II', '2021-06-10', 'Kristal Merchandise'),
+(14, 'Chain Set', 'ampel.jpg', 'Drive', 'Sniper', '40.00', '25.00', '50.00', 25, 0, 'Malinao', '2023-01-05', 'Soriano Merchandise'),
+(15, 'Spark Plug', 'ampel.jpg', 'Electrical', 'Raider150', '5.00', '2.50', '8.00', 60, 27, 'Canubing I', '2022-12-18', 'AM Merchandise'),
+(16, 'Air Filter', 'ampel.jpg', 'Air Intake', 'Honda CV110', '15.00', '8.00', '20.00', 35, 6, 'Canubing I.2', '2022-02-07', 'Edward Merchandise'),
+(17, 'Tire Tube', 'ampel.jpg', 'Tires', 'Barako', '20.00', '12.00', '30.00', 50, 34, 'Bayanan II', '2021-09-14', 'Kristal Merchandise'),
+(18, 'Battery', 'pogi.jpg', 'Electrical', 'Sniper', '30.00', '18.00', '40.00', 20, 14, 'Malinao', '2023-03-30', 'Soriano Merchandise'),
+(19, 'Brake Disk', 'pogi.jpg', 'Brakes', 'Honda CV110', '35.00', '20.00', '45.00', 45, 27, 'Canubing I', '2022-11-03', 'AM Merchandise'),
+(20, 'Handle Grip', 'pogi.jpg', 'Handlebars', 'Raider150', '8.00', '4.50', '12.00', 55, 44, 'Canubing I.2', '2021-04-25', 'Edward Merchandise'),
+(21, 'Brake Pad', 'pogi.jpg', 'Brakes', 'Yamaha MT-09', '20.00', '12.00', '25.00', 30, 23, 'Canubing I.2', '2023-06-10', 'AM Merchandise'),
+(22, 'Air Filter', 'pogi.jpg', 'Air Filters', 'Kawasaki Ninja 650', '10.00', '5.00', '15.00', 40, 36, 'Bayanan II', '2022-11-28', 'Edward Merchandise'),
 (23, 'Handlebar Grips', 'pogi.jpg', 'Handlebars', 'Suzuki GSX-R750', '7.00', '3.50', '10.00', 50, 48, 'Canubing I', '2021-09-15', 'Kristal Merchandise'),
 (24, 'Spark Plug', 'pogi.jpg', 'Ignition', 'Ducati Panigale V4', '5.00', '2.00', '8.00', 60, 58, 'Malinao', '2023-04-22', 'Soriano Merchandise'),
 (25, 'Brake Fluid', 'pogi.jpg', 'Brakes', 'Honda CBR1000RR', '15.00', '8.00', '20.00', 35, 32, 'Bayanan II', '2022-02-03', 'AM Merchandise'),
@@ -157,7 +153,9 @@ INSERT INTO `products` (`id`, `itemname`, `image`, `category`, `compatibility`, 
 (63, 'TRY', '393156695_1428338707713134_3132963233536261848_n.jpg', 'TRY', 'TRY', '86.86', '424.20', '12.44', 12, 12, 'TRY', '2023-11-28', 'TRY'),
 (64, 'asdf', '393156695_1428338707713134_3132963233536261848_n.jpg', '321', 'asdf', '231.00', '321.00', '321.00', 321, 321, '321', '2023-11-28', '321'),
 (65, 'asdfasdf', 'WIN_20231128_15_30_20_Pro.jpg', '321', 'asdf', '321.00', '123.00', '213.00', 321, 321, '231', '2023-11-29', '123'),
-(66, 'asdf', 'WIN_20231128_15_30_20_Pro.jpg', '312', '123', '3213.00', '321.00', '321.00', 321, 321, '321', '2023-11-29', '321');
+(66, 'asdf', 'WIN_20231128_15_30_20_Pro.jpg', '312', '123', '3213.00', '321.00', '321.00', 321, 321, '321', '2023-11-29', '321'),
+(67, 'cvvcvc', 'WIN_20230421_21_09_32_Pro.jpg', 'cvvc', 'cvvcvc', '66.00', '66.00', '66.00', 66, 66, 'bnbnvvb', '2023-12-12', '66'),
+(68, 'aAAAAAA', 'WIN_20231117_16_14_08_Pro.jpg', 'AAAAAAA', 'AAAAAAAA', '51.23', '55.23', '51.55', 44, 44, 'ASDFASFD', '2023-12-13', 'AAAAA');
 
 -- --------------------------------------------------------
 
@@ -174,17 +172,21 @@ CREATE TABLE `users` (
   `userEmail` varchar(255) DEFAULT NULL,
   `userRole` varchar(50) NOT NULL,
   `datetime_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_updated` datetime DEFAULT NULL
+  `date_updated` datetime DEFAULT NULL,
+  `state` tinyint(1) NOT NULL,
+  `last_activity` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userId`, `userName`, `userPassword`, `userImage`, `userAddress`, `userEmail`, `userRole`, `datetime_added`, `date_updated`) VALUES
-(1, 'ADMIN', '$2y$10$8fVeBYOUpwZ5FME/4BzITe7c38jM6aO33KtrVOu9biISs0Tgdm.9y', 'pogi.jpg', NULL, NULL, 'Manager', '2023-11-15 00:00:00', NULL),
-(14, 'Elizabeth', '$2y$10$psGaKoNb6SzBp4hCCoJQJusRWdz7csC2TXA11.EHsJPyDqbPh3wLK', NULL, 'Canubing 1, Calapan City, Oriental Mindoro', 'elizabethgeronaga@gmail.com', 'User', '2023-11-28 00:00:00', '2023-11-29 12:15:15'),
-(15, 'Filhmar', '$2y$10$KN9Zq.WKbh1DJGxJSVyc/.PWcaECfiRMIpSCMeJGsvnJ7Le58PEUa', NULL, NULL, NULL, 'Manager', '2023-11-29 10:11:35', NULL);
+INSERT INTO `users` (`userId`, `userName`, `userPassword`, `userImage`, `userAddress`, `userEmail`, `userRole`, `datetime_added`, `date_updated`, `state`, `last_activity`) VALUES
+(21, 'user2', '$2y$10$6i/sxHGZt3nKyXlCxO/JK.SR8jNORcRcC0UPC2TCILu0L9gzGieaq', 'WIN_20231024_16_59_26_Pro.jpg', 'Canubing 1', 'olajohnfilhmar@gmail.com', 'ADMIN', '2023-12-12 19:54:46', NULL, 1, '2023-12-13 02:39:43'),
+(25, 'ADMINISTRATOR', '$2y$10$shy2MhS/FZqH7vY8TxUV5OrptHwnSLpeA.iBibLo1lKffQWZZue9e', NULL, NULL, NULL, 'ADMIN', '2023-12-12 22:21:30', NULL, 1, '2023-12-13 07:50:23'),
+(28, 'asdf', '$2y$10$2Mv20hy//rrC5RA9O7VtYeeRR9250/tth3e3r74Eu8Y6jdNGer9oC', NULL, NULL, NULL, 'USER', '2023-12-13 07:43:46', NULL, 0, NULL),
+(29, 'ADMINISTRATOR4', '$2y$10$b3KSyCCKRGjizTmnDSU82eJgrxIv6jreirD4t.WXein.VoW2u9zlm', NULL, NULL, NULL, 'USER', '2023-12-13 07:48:27', NULL, 0, NULL),
+(30, 'adsfasdfa', '$2y$10$DhvA6o5nk0ZyWsMV9901puwdBIbnfSslZSWJuYCoMGuM2MHHHG/qu', NULL, NULL, NULL, 'USER', '2023-12-13 07:50:14', NULL, 0, NULL);
 
 --
 -- Indexes for dumped tables
@@ -204,6 +206,13 @@ ALTER TABLE `chat_messages`
 ALTER TABLE `checkout`
   ADD PRIMARY KEY (`receiptnumber`),
   ADD KEY `checkout_customer_foreign` (`customer`);
+
+--
+-- Indexes for table `financial_transactions`
+--
+ALTER TABLE `financial_transactions`
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `migrations`
@@ -231,13 +240,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `chat_messages`
 --
 ALTER TABLE `chat_messages`
-  MODIFY `message_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `message_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `checkout`
 --
 ALTER TABLE `checkout`
-  MODIFY `receiptnumber` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `receiptnumber` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `financial_transactions`
+--
+ALTER TABLE `financial_transactions`
+  MODIFY `transaction_id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -249,13 +264,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `userId` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Constraints for dumped tables
@@ -273,6 +288,12 @@ ALTER TABLE `chat_messages`
 --
 ALTER TABLE `checkout`
   ADD CONSTRAINT `checkout_customer_foreign` FOREIGN KEY (`customer`) REFERENCES `users` (`userId`);
+
+--
+-- Constraints for table `financial_transactions`
+--
+ALTER TABLE `financial_transactions`
+  ADD CONSTRAINT `financial_transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

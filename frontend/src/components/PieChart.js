@@ -7,7 +7,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const PieChart = ({title,data}) => {
     const options = {
         plugins: {
-            legend: false,
+            legend: true,
         }
     };
     return (

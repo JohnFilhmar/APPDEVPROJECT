@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class CheckOutModel extends Model
 {
     protected $table            = 'checkout';
-    protected $primaryKey       = 'id';
+    protected $primaryKey       = 'receiptnumber';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;

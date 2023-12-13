@@ -8,16 +8,19 @@ import { FaExpandArrowsAlt, FaCompressArrowsAlt } from "react-icons/fa";
 import { TiPlus, TiMinus } from "react-icons/ti";
 import Messages from './chat/Messages';
 import Checkout from './checkout/CheckOut';
+import PopupMessage from './PopupMessage';
 
 const TopNavbar = () => {
     const history = useHistory();
     const [openModal, setOpenModal] = useState(false);
     const [warningModal, setWarningModal] = useState(false);
-    const [message,setMessage] = useState("");
+    const [fmessage,setfMessage] = useState("");
+    const [smessage,setSMessage] = useState("");
     const [cartCount, setCartCount] = useState(0);
     const [cartItems, setCartItems] = useState([]);
     const [screen, setScreen] = useState(false);
     const [checkOutModal, setCheckOutModal] = useState(false);
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const uniqueItemNames = Array.from(new Set(cartItems.map(item => item.itemname)));
 
     useEffect(() => {
@@ -33,20 +36,11 @@ const TopNavbar = () => {
         setCartCount(cartArray.length);
     }, [openModal]);
 
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setMessage(null);
-        }, 5000);
-    
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    },[message]);
-
     const removeFromCart = (itemId) => {
         const updatedCart = cartItems.filter(item => item.id !== itemId);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
         setCartItems(updatedCart);
+        setSMessage("Removed from cart successfully!");
     };
 
     const updateQuantity = (itemId, increment) => {
@@ -80,21 +74,18 @@ const TopNavbar = () => {
     const logout = async () => {
         setCheckOutModal(false);
         try {
-            const response = await axios.get('logoutUser');
+            const response = await axios.post('logoutUser');
             console.log(response);
             if (response.data.redirect) {
-              localStorage.setItem('isLoggedIn', false);
-              localStorage.removeItem('userId');
-              localStorage.removeItem('username');
-              localStorage.removeItem('role');
-              localStorage.removeItem('token');
-              history.push(response.data.redirect);
+                sessionStorage.setItem('message','Logout successful!');
+                localStorage.clear();
+                history.push(response.data.redirect);
             } else {
-              setMessage('Something may have gone wrong');
+              setfMessage('Something may have gone wrong');
             }
         } catch (error) {
             console.error('Logout error:', error);
-            setMessage('An error occurred during logout');
+            setfMessage('An error occurred during logout');
         }
     };
 
@@ -102,24 +93,29 @@ const TopNavbar = () => {
         localStorage.removeItem('cart');
         setCartItems([]);
         setWarningModal(false);
+        setSMessage("Cart Cleared!");
     }
+
     const clearWarning =() => {
         setOpenModal(false);
         setWarningModal(true);
     }
+
     const handleFullscreen = () => {
-setCheckOutModal(false);
+        setCheckOutModal(false);
         const element = document.documentElement;
         if(screen === true){
+            setSMessage("Fullscreen Disabled");
             setScreen(false);
         } else {
+            setSMessage("Fullscreen Enabled");
             setScreen(true);
         }
         if (document.fullscreenElement) {
             document.exitFullscreen();
         } else {
             element.requestFullscreen().catch((err) => {
-            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            console.error(`Error attempting to enable full-screen mode: ${err.fmessage}`);
             });
         }
     };
@@ -128,7 +124,7 @@ setCheckOutModal(false);
         <>
             <Checkout data = {localStorage.getItem('toCheckOutItems')} state = {checkOutModal}/>
             <Navbar className='sticky top-0 z-50 bg-slate-300'>
-                <Navbar.Brand as={NavLink} to="/">
+                <Navbar.Brand as={NavLink} to="#">
                     <img src="http://localhost:8080/jms.png" className="mr-3 w-7 sm:w-10 md:w-15 lg:w-20 h-7 sm:h-10 md:h-15 lg:h-20" alt="JMS"/>
                     <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Multi-Hub System</span>
                 </Navbar.Brand>
@@ -138,37 +134,75 @@ setCheckOutModal(false);
                     {screen && <FaCompressArrowsAlt/>}
                 </button>
                 <Navbar.Collapse>
-                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/dashboard" active>Dashboard</Navbar.Link>
-                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/ecomm" active>E-Shop</Navbar.Link>
-                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/transac" active>Transactions</Navbar.Link>
-                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/userprofiles" active>User Management</Navbar.Link>
-                    <Navbar.Link
-                        onClick={() => {setCheckOutModal(false);setOpenModal(true);}}
-                        className="relative flex items-center"
-                        style={{cursor:'pointer'}}
-                    >
-                        <LiaCartPlusSolid style={{ width: '20px', height: '20px' }} />
-                        <span className="ml-1">Cart</span>
-                        {cartCount > 0 && (
-                        <Badge
-                            color="warning"
-                            className="absolut top-0 left-0 lg:absolute lg:top-0 lg:left-10 transform translate-x-1/2 -translate-y-1/2"
-                        >
-                            {cartCount}
-                        </Badge>
-                        )}
-                    </Navbar.Link>
-                    <Dropdown label={`Welcome ${localStorage.getItem('username')}`} inline>
-                        <Dropdown.Item onClick={() => setCheckOutModal(false)} as={Link} to="/profile/account">Profile</Dropdown.Item>
-                        <Dropdown.Item onClick={() => setCheckOutModal(false)}>Settings</Dropdown.Item>
-                        <Dropdown.Item onClick={logout} style={{color: 'red'}}>Sign out</Dropdown.Item>
-                    </Dropdown>
+                {
+                    !isLoggedIn && (
+                        <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/login" active>Login</Navbar.Link>
+                    )
+                }
+                {
+                    isLoggedIn && (
+                        <>
+                            {
+                                localStorage.getItem('userRole') === 'ADMIN' ? (
+                                    <>
+                                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/dashboard" active>Dashboard</Navbar.Link>
+                                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/ecomm" active>E-Shop</Navbar.Link>
+                                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/transac" active>Transactions</Navbar.Link>
+                                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/userprofiles" active>User Management</Navbar.Link>
+                                    <Navbar.Link
+                                        onClick={() => {setCheckOutModal(false);setOpenModal(true);}}
+                                        className="relative flex items-center"
+                                        style={{cursor:'pointer'}}
+                                    >
+                                        <LiaCartPlusSolid style={{ width: '20px', height: '20px' }} />
+                                        <span className="ml-1">Cart</span>
+                                        {cartCount > 0 && (
+                                        <Badge
+                                            color="warning"
+                                            className="absolut top-0 left-0 lg:absolute lg:top-0 lg:left-10 transform translate-x-1/2 -translate-y-1/2"
+                                        >
+                                            {cartCount}
+                                        </Badge>
+                                        )}
+                                    </Navbar.Link>
+                                    </>
+                                ) : (
+                                    <>
+                                    <Navbar.Link onClick={() => setCheckOutModal(false)} as={NavLink} to="/ecomm" active>E-Shop</Navbar.Link>
+                                    <Navbar.Link
+                                        onClick={() => {setCheckOutModal(false);setOpenModal(true);}}
+                                        className="relative flex items-center"
+                                        style={{cursor:'pointer'}}
+                                    >
+                                        <LiaCartPlusSolid style={{ width: '20px', height: '20px' }} />
+                                        <span className="ml-1">Cart</span>
+                                        {cartCount > 0 && (
+                                        <Badge
+                                            color="warning"
+                                            className="absolut top-0 left-0 lg:absolute lg:top-0 lg:left-10 transform translate-x-1/2 -translate-y-1/2"
+                                        >
+                                            {cartCount}
+                                        </Badge>
+                                        )}
+                                    </Navbar.Link>
+                                    </>
+                                )
+                            }
+                            <Dropdown label={`Welcome ${localStorage.getItem('userName')}`} inline>
+                                <Dropdown.Item onClick={() => setCheckOutModal(false)} as={Link} to="/profile/account">Profile</Dropdown.Item>
+                                {/* <Dropdown.Item onClick={() => setCheckOutModal(false)}>Settings</Dropdown.Item> */}
+                                <Dropdown.Item onClick={logout} style={{color: 'red'}}>Sign out</Dropdown.Item>
+                            </Dropdown>
+                        </>
+                    )
+                }
                     <Navbar.Link onClick={handleFullscreen} className='hidden md:block lg:block'>
                         {!screen && <FaExpandArrowsAlt/>}
                         {screen && <FaCompressArrowsAlt/>}
                     </Navbar.Link>
                 </Navbar.Collapse>
-            { message && <Alert color="info"><span className="font-medium">{message}</span></Alert>}
+                { fmessage && <PopupMessage type="fail" message={fmessage}/> }
+                { smessage && <PopupMessage type="success" message={smessage}/> }
             </Navbar>
             <Modal show={openModal} size='4xl' onClose={() => setOpenModal(false)}>
                 <Modal.Header>Cart<span className='text-xs text-slate-400 cart'><span className='text-red-600'>!</span>(The Cart is stored on your device and is not accessible on other devices)</span></Modal.Header>
@@ -256,12 +290,12 @@ setCheckOutModal(false);
                     Are you sure you want to clear your cart?
                     </h3>
                     <div className="flex justify-center gap-4">
-                    <Button color="failure" onClick={() => ClearCart(false)}>
-                        {"Yes, I'm sure"}
-                    </Button>
-                    <Button color="gray" onClick={() => setWarningModal(false)}>
-                        No, cancel
-                    </Button>
+                        <Button color="failure" onClick={() => ClearCart(false)}>
+                            {"Yes, I'm sure"}
+                        </Button>
+                        <Button color="gray" onClick={() => setWarningModal(false)}>
+                            No, cancel
+                        </Button>
                     </div>
                 </div>
                 </Modal.Body>

@@ -40,37 +40,40 @@ class ChatController extends BaseController
             'receiver' => 'required',
             'message' => 'required',
         ];
-
         if (!$this->validate($rules)) {
             return $this->fail($this->validator->getErrors());
         }
-
         $main = new ChatsModel();
         $userModel = new UserModel();
-
+    
         $senderName = $this->request->getVar('sender');
         $receiverName = $this->request->getVar('receiver');
         $message = $this->request->getVar('message');
-
+    
         $sender = $userModel->where('userName', $senderName)->first();
-        $sender_id = $sender['userId'];
         $receiver = $userModel->where('userName', $receiverName)->first();
+        if (!$sender || !$receiver) {
+            $response = [
+                'status' => 404,
+                'error' => 'Sender or receiver not found',
+                'messages' => null,
+            ];
+    
+            return $this->respond($response);
+        }
+        $sender_id = $sender['userId'];
         $receiver_id = $receiver['userId'];
-
         $data = [
             'sender_id' => $sender_id,
             'receiver_id' => $receiver_id,
             'message' => $message,
         ];
-
         $main->save($data);
-
         $response = [
             'status' => 200,
             'error' => null,
             'messages' => 'Message Sent',
         ];
-
         return $this->respond($response);
     }
 }

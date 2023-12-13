@@ -11,6 +11,7 @@ const Register = () => {
     const [userpassword, setPassword] = useState("");
     const [secretkey, setSecretKey] = useState("NOVALUE");
     const [error, setError] = useState(null);
+    const [prevent, setPrevent] = useState(true);
 
     useEffect(() => {
       const timeoutId = setTimeout(() => {
@@ -22,25 +23,41 @@ const Register = () => {
       };
     }, [error]);
     
+    const handlePasswordChange = (e) => {
+      const newPassword = e.target.value;
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      setPassword(newPassword);
+      if (!passwordRegex.test(newPassword) && newPassword !== '') {
+        setPrevent(true);
+        setError('Password must include at least 1 lowercase letter, 1 uppercase letter, 1 digit, 1 special character, and be at least 8 characters long.');
+      } else {
+        setPrevent(false);
+        setError(null);
+      }
+    };
+
     const submitForm = async (e) => {
       e.preventDefault();
-      try {
-        const response = await axios.postForm('createUser',{
-          userName: username,
-          userPassword: userpassword,
-          userRole: secretkey,
-        });
-  
-        if (response.data && response.data.redirect && response.data.messages && response.data.messages.success) {
-          console.log(response.data.messages.success);
-          localStorage.setItem('Registered',true);
-          history.push(response.data.redirect);
+      if(!prevent){
+        try {
+          const response = await axios.postForm('createUser',{
+            userName: username,
+            userPassword: userpassword,
+            userRole: secretkey,
+          });
+          if (response.data && response.data.redirect && response.data.messages && response.data.messages.success) {
+            console.log(response.data.messages.success);
+            localStorage.setItem('Registered',true);
+            history.push(response.data.redirect);
+          }
+          if (response.data && response.data.fail) {
+            setError(response.data.fail);
+          }
+        } catch(error) {
+          setError(error.message);
         }
-        if (response.data && response.data.fail) {
-          setError(response.data.fail);
-        }
-      } catch(error) {
-        setError(error.message);
+      } else {
+        setError('Password must include at least 1 lowercase letter, 1 uppercase letter, 1 digit, 1 special character, and be at least 8 characters long.');
       }
     }
     return (
@@ -71,16 +88,16 @@ const Register = () => {
                 />
                 <Label htmlFor="password">Password:</Label>
                 <TextInput
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    id="password"
-                    placeholder="Enter password"
-                    value={userpassword}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength={8}
-                    autoComplete="true"
+                  type="password"
+                  name="password"
+                  className="form-control"
+                  id="password"
+                  placeholder="Enter password"
+                  value={userpassword}
+                  onChange={handlePasswordChange}
+                  required
+                  minLength={8}
+                  autoComplete="true"
                 />
                 <div className={((KeyVisibility)? "block" : "hidden")}>
                   <Label htmlFor="secretkey">Secret Key:</Label>

@@ -4,6 +4,7 @@ import { Button, Card, Modal } from 'flowbite-react';
 import Loading from './Loading';
 import PromptError from './PromptError';
 import axios from 'axios';
+import PopupMessage from './PopupMessage';
 
 const gridItems = (products, click) => {
   return products.map((product, index) => {
@@ -30,6 +31,7 @@ const ProductGrid = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const { products, loading, error } = useProducts();
+  const [message,setMessage] = useState("");
 
   const search = async (query) => {
     try {
@@ -56,6 +58,7 @@ const ProductGrid = () => {
       cartItems.push({ ...selectedProduct, quantity: 1 });
     }
     const updatedCart = JSON.stringify(cartItems);
+    setMessage('Added to the cart!');
     localStorage.setItem('cart', updatedCart);
     setOpenModal(false);
   };  
@@ -70,6 +73,7 @@ const ProductGrid = () => {
 
   return (
     <>
+      { message && <PopupMessage type="success" message={message}/> }
       <h1 className='text-center font-black text-lg md:text-xl lg:text-2xl'>Search</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 ml-4 mr-4 mt-5 text-sm lg:text-lg md:text-base sm:text-sm">
         <input
