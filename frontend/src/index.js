@@ -4,7 +4,7 @@ import axios from 'axios';
 import App from './App';
 import './index.css';
 
-axios.defaults.baseURL="https://jmseshop.shop/";
+axios.defaults.baseURL="http://localhost:8080/";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

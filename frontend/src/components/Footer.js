@@ -12,7 +12,7 @@ const Foot = () => {
                     <Footer.Brand
                     as={Link}
                     href="#"
-                    src="https://jmseshop.shop/jms.png"
+                    src="http://localhost:8080/jms.png"
                     alt="JMS Logo"
                     name="Multi-Hub System"
                     style={{position:"static", width:'7vw',height:'7vh'}}

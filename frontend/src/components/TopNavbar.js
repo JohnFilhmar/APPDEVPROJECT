@@ -125,7 +125,7 @@ const TopNavbar = () => {
             <Checkout data = {localStorage.getItem('toCheckOutItems')} state = {checkOutModal}/>
             <Navbar className='sticky top-0 z-50 bg-slate-300'>
                 <Navbar.Brand as={NavLink} to="#">
-                    <img src="https://jmseshop.shop/jms.png" className="mr-3 w-7 sm:w-10 md:w-15 lg:w-20 h-7 sm:h-10 md:h-15 lg:h-20" alt="JMS"/>
+                    <img src="http://localhost:8080/jms.png" className="mr-3 w-7 sm:w-10 md:w-15 lg:w-20 h-7 sm:h-10 md:h-15 lg:h-20" alt="JMS"/>
                     <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Multi-Hub System</span>
                 </Navbar.Brand>
                 <Navbar.Toggle className='ml-12'/>

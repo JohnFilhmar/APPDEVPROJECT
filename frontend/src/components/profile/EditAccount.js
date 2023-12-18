@@ -146,7 +146,7 @@ const EditAccount = () => {
                             {userLoading ? (
                                 <Spinner size="lg" />
                             ) : (
-                                <Avatar img={userImage ? `https://jmseshop.shop/backend/public/users/${userImage}` : `https://jmseshop.shop/backend/public/profile.png`} size="lg" rounded />
+                                <Avatar img={userImage ? `http://localhost:8080/uploads/users/${userImage}` : `http://localhost:8080/profile.png`} size="lg" rounded />
                             )}
                             <Label htmlFor="file" className="mt-2">
                                 Upload a new image
