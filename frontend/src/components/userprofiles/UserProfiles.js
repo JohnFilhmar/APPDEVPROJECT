@@ -7,6 +7,7 @@ import PopupMessage from '../PopupMessage';
 import axios from 'axios';
 
 const UserProfiles = () => {
+    // eslint-disable-next-line
     const { error, loading, changeState:cState } = ChangeState();
     const [users, setUsers] = useState([]);
     const [message, setMessage] = useState("");
@@ -86,7 +87,7 @@ const UserProfiles = () => {
                 <Table.Body className='divide-y'>
                 {users.map((user,index) => (
                     <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                        <Table.Cell>{user.userImage? <img src={`http://localhost:8080/uploads/users/${user.userImage}`}  alt="Not Found"></img> : "No Picture To Show"}</Table.Cell>
+                        <Table.Cell>{user.userImage? <img src={`https://jmseshop.shop/backend/public/users/${user.userImage}`}  alt="Not Found"></img> : "No Picture To Show"}</Table.Cell>
                         <Table.Cell>{user.userId}</Table.Cell>
                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">{user.userName}</Table.Cell>
                         <Table.Cell>{user.userEmail}</Table.Cell>

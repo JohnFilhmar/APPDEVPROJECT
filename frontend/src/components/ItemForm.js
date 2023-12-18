@@ -4,7 +4,7 @@ import useCacheOptions from "../hooks/useCacheOptions";
 import useAddProduct from "../hooks/useAddProduct";
 import Loading from "./Loading";
 import PromptError from './PromptError';
-import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const ItemForm = () => {
     const history = useHistory();
@@ -14,7 +14,6 @@ const ItemForm = () => {
     const [SellingPrice, setSellingPrice] = useState("");
     const [InitialQuantity, setInitialQuantity] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
-    const { userId } = useParams();
     const { error, loading, postRequest } = useAddProduct('createProduct');
 
     // supplier input
@@ -147,7 +146,7 @@ const ItemForm = () => {
         <>
             <div className="grid grid-cols-1 mb-4 mt-5">
                 <div className="col-span-1 bg-gray-200 p-4 relative">
-                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white inline-block" onClick={(e) => console.log(userId)}>{userId === 0 ? "Edit Item" : "Add New Item"}</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white inline-block">Add New Item</h2>
                 </div>
             </div>
             <div className="mb-10">
@@ -335,7 +334,7 @@ const ItemForm = () => {
                         )}
                     </div>
                     <div className="submitbutton flex justify-end lg:items-center mt-5">
-                        <Button type="submit" size="xl" style={{ width: '30vw' }}>{userId === '0' ? "Submit Edit" : "Add New Item"}</Button>
+                        <Button type="submit" size="xl" style={{ width: '30vw' }}>Add New Item</Button>
                     </div>
                 </form>
             </div>

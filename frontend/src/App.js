@@ -83,7 +83,7 @@ const AppContent = () => {
                   <Route path="/ecomm" component={ECommerce} />
                   <Route path="/transac" component={Transactions} />
                   <Route path="/userprofiles" component={UserProfiles} />
-                  <Route path="/itemform/:userId" component={ItemForm} />
+                  <Route path="/itemform" component={ItemForm} />
                 </>
               )
             }

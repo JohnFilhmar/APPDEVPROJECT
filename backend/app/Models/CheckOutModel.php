@@ -12,7 +12,7 @@ class CheckOutModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['receiptnumber', 'customer', 'items', 'subtotal','datetime_added', 'datetime_processed', 'is_processed'];
+    protected $allowedFields    = ['receiptnumber', 'customer', 'items', 'subtotal','datetime_added', 'datetime_processed', 'is_processed','return_reason'];
 
     // Dates
     protected $useTimestamps = false;

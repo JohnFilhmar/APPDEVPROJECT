@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Alert, Spinner } from "flowbite-react";
 import { FcCancel } from "react-icons/fc";
 
-const Pending = () => {
+const Returns = () => {
     const [receipts, setReceipts] = useState(null);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(null);
@@ -12,7 +12,7 @@ const Pending = () => {
             setLoading(true);
             try{
                 const response = await axios.post(`getReceipt/${localStorage.getItem('userId')}`);
-                if(response && response.data && response.data.receipts){
+                if(response && response.data && response.data && response.data.receipts){
                     setReceipts(response.data.receipts);
                 }
             } catch(error) {
@@ -24,8 +24,17 @@ const Pending = () => {
         if(receipts === null){
             fetchReceipts();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+
+    const cancelReturn = async (receiptnumber) => {
+        try {
+            const response = await axios.postForm(`cancelReturn/${receiptnumber}`);
+            console.log(response);
+        } catch(error) {
+            console.log(error.message);
+        }
+    }
 
     return (
         <>
@@ -47,17 +56,17 @@ const Pending = () => {
                 }
                 {
                     receipts !== null && 
-                    receipts.filter(receipt => receipt.is_processed === 'PROCESSING').map((rec, index) => (
+                    receipts.filter(receipt => receipt.is_processed === 'TO RETURN' || receipt.is_processed === 'RETURN DENIED' || receipt.is_processed === 'REPLACED' ).map((rec, index) => (
                     <div key={index} className="border-solid border-4 rounded-md border-gray-950">
                         <div className="flex justify-between border-solid border-b-4 rounded-md border-gray-950">
                             <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
                                 Receipt Number: {rec.receiptnumber}
                             </h2>
-                            <button>
+                            <button onClick={() => cancelReturn(rec.receiptnumber)}>
                                 <FcCancel className="w-5 h-5" />
                             </button>
                         </div>
-                        <div className="grid grid-cols-3 h-full text-center p-4">
+                        <div className="grid grid-cols-3 h-full text-center p-4 divide-y">
                             {
                                 rec.items.map((item,index) => (
                                 <div key={index} className="col-span-3 flex flex-col justify-between">
@@ -81,6 +90,9 @@ const Pending = () => {
                                 </div>
                                 ))
                             }
+                            <div className="col-span-3 text-center m-2 border-2 border-solid border-blue-300 bg-gray-400 rounded-lg">
+                                <p>Return Reason<br/><span className="font-bold text-2xl">{rec.return_reason}</span></p>
+                            </div>
                         </div>
                         <div className="flex justify-center border-solid border-t-4">
                         <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white mr-5 border-x-4 border-solid px-4">
@@ -102,4 +114,4 @@ const Pending = () => {
     );
 }
  
-export default Pending;
+export default Returns;

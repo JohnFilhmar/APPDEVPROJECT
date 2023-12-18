@@ -80,17 +80,12 @@ class ProductController extends BaseController
         helper(['form']);
         $rules = [
             'itemname' => 'required',
-            'image' => 'required',
             'category' => 'required',
             'compatibility' => 'required',
             'marketprice' => 'required',
             'boughtprice' => 'required',
             'sellingprice' => 'required',
-            'initialquantity' => 'required',
             'currentquantity' => 'required',
-            'branch' => 'required',
-            'lastdateupdated' => 'required',
-            'supplier' => 'required',
         ];
 
         $data = [
@@ -100,11 +95,8 @@ class ProductController extends BaseController
             'marketprice' => $this->request->getVar('marketprice'),
             'boughtprice' => $this->request->getVar('boughtprice'),
             'sellingprice' => $this->request->getVar('sellingprice'),
-            'initialquantity' => $this->request->getVar('initialquantity'),
             'currentquantity' => $this->request->getVar('currentquantity'),
-            'branch' => $this->request->getVar('branch'),
-            'lastdateupdated' => $this->request->getVar('lastdateupdated'),
-            'supplier' => $this->request->getVar('supplier'),
+            'lastdateupdated' => date('Y-m-d H:i:s'),
         ];
         if(!$this->validate($rules)) return $this->fail($this->validator->getErrors());
         $main = new ProductModel();
@@ -134,6 +126,39 @@ class ProductController extends BaseController
             'messsages' => [
                 'success' => 'Data Deleted'
             ]
+        ];
+        return $this->respondCreated($response);
+    }
+
+    public function add($id)
+    {
+        $main = new ProductModel();
+        $data = $main->where('id',$id)->first();
+        $main->update(['id' => $id], ['currentquantity' => ((int)$data['currentquantity']) + 1]);
+        $new = $main->where('id',$id)->first();
+        $response = [
+            'status' => 201,
+            'error' => null,
+            'messsages' => [
+                'success' => 'Data Updated'
+            ],
+            'newQuantity' => $new['currentquantity']
+        ];
+        return $this->respondCreated($response);
+    }
+    public function decrease($id)
+    {
+        $main = new ProductModel();
+        $data = $main->where('id',$id)->first();
+        $main->update(['id' => $id], ['currentquantity' => ((int)$data['currentquantity']) - 1]);
+        $new = $main->where('id',$id)->first();
+        $response = [
+            'status' => 201,
+            'error' => null,
+            'messsages' => [
+                'success' => 'Data Updated'
+            ],
+            'newQuantity' => $new['currentquantity']
         ];
         return $this->respondCreated($response);
     }

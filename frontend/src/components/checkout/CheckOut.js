@@ -35,25 +35,20 @@ const Checkout = ({ data, state }) => {
             const newStates = [...prev];
             newStates[index] = !newStates[index];
             const itemsInLocalStorage = JSON.parse(localStorage.getItem('toCheckOutItems')) || [];
-        
+    
             if (newStates[index]) {
-                // Item is checked, remove it from the cart
-                const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-                const cartItemIndexToRemove = cartItems.findIndex(item => item.id === receiptData[index].id);
-                if (cartItemIndexToRemove !== -1) {
-                cartItems.splice(cartItemIndexToRemove, 1);
-                localStorage.setItem('cart', JSON.stringify(cartItems));
-                }
-            } else {
-                // Item is unchecked, add it to the cart
                 itemsInLocalStorage.push(receiptData[index]);
+            } else {    
+                // Item is unchecked, remove it from the toCheckOutItems
+                const itemIndexToRemove = itemsInLocalStorage.findIndex(item => item.id === receiptData[index].id);
+                if (itemIndexToRemove !== -1) {
+                }
             }
-        
             localStorage.setItem('toCheckOutItems', JSON.stringify(itemsInLocalStorage));
             return newStates;
         });
     };
-    
+        
     const proceedCheckOut = async (e) => {
         e.preventDefault();
         try {

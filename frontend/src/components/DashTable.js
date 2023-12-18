@@ -1,27 +1,88 @@
 import { useEffect, useState } from 'react';
-import { Spinner, Table, Pagination, Button, Alert, Dropdown } from 'flowbite-react';
+import { Spinner, Table, Pagination, Button, Alert, Dropdown, Modal, TextInput, Label } from 'flowbite-react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import useProducts from '../hooks/useProducts';
 import { CSVLink } from 'react-csv';
 import { HiInformationCircle } from 'react-icons/hi';
 import axios from 'axios';
+import { TbExposureMinus1, TbExposurePlus1 } from "react-icons/tb";
 
 const ITEMS_PER_PAGE = 10;
 
 const DashTable = () => {
-    const { products, loading, error } = useProducts();
+    const [itemname, setitemname] = useState(null);
+    const [category, setcategory] = useState(null);
+    const [compatibility, setcompatibility] = useState(null);
+    const [marketprice, setmarketprice] = useState(null);
+    const [boughtprice, setboughtprice] = useState(null);
+    const [sellingprice, setsellingprice] = useState(null);
+    const [currentquantity, setcurrentquantity] = useState(null);
+    const [maxQuantity, setMaxQuantity] = useState(null);
+
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [quantityChange, setQuantityChange] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [filteredBranchData, setFilteredBranchData] = useState([...products]);
+    const [openModal, setOpenModal] = useState(false);
+    const [toEdit, setToEdit] = useState(0);
 
     const pageCount = Math.ceil(filteredBranchData.length / ITEMS_PER_PAGE);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('getProducts');
+        setProducts(response.data);
+        setFilteredBranchData(response.data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     const onPageChange = (page) => {
         setCurrentPage(page);
     };
 
+    const addQuantity = async (id) => {
+        try{
+            await axios.postForm(`addQuantity/${id}`);
+            setQuantityChange((prev) => prev + 1)
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    const decreaseQuantity = async (id) => {
+        try{
+            await axios.postForm(`decreaseQuantity/${id}`);
+            setQuantityChange((prev) => prev - 1)
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
-        setFilteredBranchData([...products]);
-    },[products])
+        fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[quantityChange]);
+
+    useEffect(() => {
+        console.log(toEdit);
+        fetchData();
+        if(toEdit){
+            const formEditProduct = products.find((prod) => parseInt(prod.id) === toEdit);
+            setitemname(formEditProduct?.itemname || '');
+            setcategory(formEditProduct?.category || '');
+            setcompatibility(formEditProduct?.compatibility || '');
+            setmarketprice(formEditProduct?.marketprice || null);
+            setboughtprice(formEditProduct?.boughtprice || null);
+            setsellingprice(formEditProduct?.sellingprice || null);
+            setcurrentquantity(formEditProduct?.currentquantity || null);
+            setMaxQuantity(formEditProduct?.initialquantity || null);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[openModal]);
     
     const search = (query) => {
             const results = products.filter((product) =>
@@ -48,6 +109,26 @@ const DashTable = () => {
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
     );
+
+    const submitEdit = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append('itemname', itemname);
+            formData.append('category', category);
+            formData.append('compatibility', compatibility);
+            formData.append('marketprice', marketprice);
+            formData.append('boughtprice', boughtprice);
+            formData.append('sellingprice', sellingprice);
+            formData.append('currentquantity', currentquantity);
+            const response = await axios.postForm(`updateProduct/${toEdit}`,formData);
+            console.log(response);
+            setOpenModal(false);
+        } catch(error) {
+            console.log(error.message);
+            setOpenModal(false);
+        }
+    };
 
     return (
         <>
@@ -110,14 +191,18 @@ const DashTable = () => {
                                 <Table.Cell>₱{product.boughtprice}</Table.Cell>
                                 <Table.Cell>₱{product.sellingprice}</Table.Cell>
                                 <Table.Cell>{product.initialquantity}{product.initialquantity > 1 ? "pcs" : "pc"}</Table.Cell>
-                                <Table.Cell>{product.currentquantity}{product.currentquantity > 1 ? "pcs" : "pc"}</Table.Cell>
+                                <Table.Cell className='flex items-center justify-center gap-3'>
+                                    <button onClick={() => addQuantity(product.id)}><TbExposurePlus1/></button>
+                                        {product.currentquantity}{product.currentquantity > 1 ? "pcs" : "pc"}
+                                    <button onClick={() => decreaseQuantity(product.id)}><TbExposureMinus1/></button>
+                                </Table.Cell>
                                 <Table.Cell>
-                                    <Link
-                                        to={`/itemform/${product.id}`}
+                                    <button
+                                        onClick={() => {setToEdit(parseInt(product.id)); setOpenModal(true);}}
                                         className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                                     >
                                     Edit
-                                    </Link>
+                                    </button>
                                 </Table.Cell>
                             </Table.Row>
                         ))
@@ -162,11 +247,106 @@ const DashTable = () => {
                             <Pagination layout="table" currentPage={currentPage} totalPages={pageCount} onPageChange={onPageChange} />
                         </div>
                         <div className='mt-7'>
-                            <Button as={Link} to="/itemform/0">Add New Item</Button>
+                            <Button as={Link} to="/itemform">Add New Item</Button>
                         </div>
                     </div>
                 </div>
             </div>
+            <Modal dismissible show={openModal} onClose={() => setOpenModal(false)}>
+                <form onSubmit={submitEdit}>
+                    <Modal.Header>Edit Item</Modal.Header>
+                    <Modal.Body>
+                        <div className='mb-3'>
+                            <div className="mb-2 block">
+                                <Label htmlFor="itemname" value="Item Name" />
+                            </div>
+                            <TextInput
+                                type='text'
+                                id='itemname'
+                                value={itemname}
+                                onChange={(e) => setitemname(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <div className="mb-2 block">
+                                <Label htmlFor="category" value="Item Category" />
+                            </div>
+                            <TextInput
+                                type='text'
+                                id='category'
+                                value={category}
+                                onChange={(e) => setcategory(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <div className="mb-2 block">
+                                <Label htmlFor="compatibility" value="Item Compatibility" />
+                            </div>
+                            <TextInput
+                                type='text'
+                                id='compatibility'
+                                value={compatibility}
+                                onChange={(e) => setcompatibility(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <div className="mb-2 block">
+                                <Label htmlFor="marketprice" value="Item Marketprice" />
+                            </div>
+                            <TextInput
+                                type='number'
+                                step="0.01"
+                                id='marketprice'
+                                value={marketprice}
+                                onChange={(e) => setmarketprice(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <div className="mb-2 block">
+                                <Label htmlFor="boughtprice" value="Item Boughtprice" />
+                            </div>
+                            <TextInput
+                                type='number'
+                                step="0.01"
+                                id='boughtprice'
+                                value={boughtprice}
+                                onChange={(e) => setboughtprice(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <div className="mb-2 block">
+                                <Label htmlFor="sellingprice" value="Item Sellingprice" />
+                            </div>
+                            <TextInput
+                                type='number'
+                                step="0.01"
+                                id='sellingprice'
+                                value={sellingprice}
+                                onChange={(e) => setsellingprice(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <div className="mb-2 block">
+                                <Label htmlFor="currentquantity" value="Item Currentquantity" />
+                            </div>
+                            <TextInput
+                                type='number'
+                                id='currentquantity'
+                                min={0}
+                                max={maxQuantity}
+                                value={currentquantity}
+                                onChange={(e) => setcurrentquantity(e.target.value)}
+                            />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button type='submit'>Submit Edit</Button>
+                    <Button color="gray" onClick={() => setOpenModal(false)}>
+                        Cancel
+                    </Button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
         </>
     );
 };

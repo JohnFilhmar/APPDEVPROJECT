@@ -164,17 +164,30 @@ class UserController extends BaseController
             'userAddress' => $this->request->getVar('userAddress'),
             'userEmail' => $this->request->getVar('userEmail'),
         ];
-
-        $userModel->update($id, $data);
-
-        $response = [
-            'status' => 200,
-            'error' => null,
-            'messages' => [
-                'success' => 'asdfasdf',
-            ],
-        ];
-        return $this->respond($response);
+        
+        $user = $userModel->where('userName', $this->request->getVar('userName'))->first();
+        if(password_verify($this->request->getVar('userPassword'), $user['userPassword']))
+        {
+            $userModel->update($id, $data);
+    
+            $response = [
+                'status' => 200,
+                'error' => null,
+                'messages' => [
+                    'success' => 'User Updated',
+                ],
+            ];
+            return $this->respond($response);
+        } else {
+            $response = [
+                'status' => 401,
+                'error' => 'Invalid credentials',
+                'messages' => [
+                    'error' => 'Invalid password',
+                ],
+            ];
+            return $this->respond($response);
+        }
     }
     
     public function delete($id)
@@ -193,11 +206,16 @@ class UserController extends BaseController
         $response = [];    
         $main = new UserModel();
         $fileName = $main->select('userImage')->find($id);
-        if ($fileName) {
+        if ($fileName == null) {
+            $response = [
+                'status' => 404,
+                'error' => 'User not found.',
+            ];
+        } else {
             $filePath = FCPATH . 'uploads\\users\\' . $fileName['userImage'];
             $exists = file_exists($filePath);
     
-            if ($exists) {
+            if ($exists && $fileName['userImage'] != null) {
                 if (unlink($filePath)) {
                     $response = $this->updateUserImage($id);
                 } else {
@@ -206,11 +224,6 @@ class UserController extends BaseController
             } else {
                 $response = $this->updateUserImage($id);
             }
-        } else {
-            $response = [
-                'status' => 404,
-                'error' => 'User not found.',
-            ];
         }
         return $this->respond($response);
     }
@@ -349,6 +362,5 @@ class UserController extends BaseController
             'results' => $yearlyResults
         ];
         return $this->respond($response);
-    }
-    
+    }    
 }
