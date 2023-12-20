@@ -4,6 +4,7 @@ import { CiSearch } from 'react-icons/ci';
 import { MdDelete } from 'react-icons/md';
 import axios from 'axios';
 import PopupMessage from '../PopupMessage';
+import { TiStar } from 'react-icons/ti';
 
 const Transactions = () => {
   const [orders, setOrders] = useState([]);
@@ -144,8 +145,26 @@ const Transactions = () => {
               >
                 Requester: {order.userName}
               </h2>
-              <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
-                Receipt Number: {order.receiptnumber}
+              <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white flex items-center justify-center">
+                <span>Receipt Number: {order.receiptnumber}</span>
+                {
+                  order.is_processed === 'COMPLETE' && (
+                      <div className="flex items-center justify-center p-2">
+                          {[1,2,3,4,5].map((star, index) => (
+                          <p
+                              key={index}
+                              className={`p-1 rounded-md font-bold text-md ${
+                              index + 1 <= order.rate
+                                  ? 'bg-yellow-200 hover:text-gray-700 text-gray-700'
+                                  : 'text-yellow-200 bg-yellow-200'
+                              }`}
+                          >
+                              <TiStar />
+                          </p>
+                          ))}
+                      </div>
+                  )
+              }
               </h2>
               <button onClick={() => handleDelete(order)}>
                 <MdDelete className="w-5 h-5" />
@@ -158,9 +177,24 @@ const Transactions = () => {
                     <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
                       {item.itemname}
                     </h5>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Compatibility: {item.compatibility}
-                    </p>
+                    {
+                      order.is_processed === 'COMPLETE' && (
+                        <div className="flex items-center justify-center p-2">
+                          {[1,2,3,4,5].map((star,index) => (
+                            <p
+                              key={index} 
+                              className={`p-1 rounded-md font-bold text-md ${
+                                index + 1 <= item.rate 
+                                  ? 'bg-yellow-200 hover:text-gray-700 text-gray-700'
+                                  : 'text-yellow-200 bg-yellow-200'
+                              }`}
+                            >
+                              <TiStar />
+                            </p>
+                          ))}
+                        </div>
+                      )
+                    }
                   </div>
                   <div className="flex justify-between mt-2">
                     <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">

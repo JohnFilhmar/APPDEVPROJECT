@@ -23,6 +23,7 @@ $routes->post('updateProduct/(:num)', 'ProductController::update/$1');
 $routes->post('deleteProduct/(:num)', 'ProductController::delete/$1');
 $routes->post('addQuantity/(:num)', 'ProductController::add/$1');
 $routes->post('decreaseQuantity/(:num)', 'ProductController::decrease/$1');
+$routes->post('getHistory/(:num)', 'ProductController::history/$1');
 
 $routes->get('getChats', 'ChatController::index');
 $routes->post('createChat', 'ChatController::create');
@@ -37,6 +38,8 @@ $routes->post('/requestReturn/(:num)', 'CheckoutController::return/$1');
 $routes->post('/cancelReturn/(:num)', 'CheckoutController::cancel/$1');
 $routes->post('/acceptReturn/(:num)', 'CheckoutController::accept/$1');
 $routes->post('/denyReturn/(:num)', 'CheckoutController::deny/$1');
+$routes->post('/rateReceiptCheckout/(:num)', 'CheckoutController::rateReceipt/$1');
+$routes->post('/rateProductCheckout/(:num)', 'CheckoutController::rateProduct/$1');
 // USERS
 // $routes->group("/api", function ($routes) {
 //     $routes->post('login' , 'UserController::authenticate');

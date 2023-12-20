@@ -25,7 +25,7 @@ const Dashboard = () => {
     labels: ['Income', 'Loss'],
     datasets: [
       {
-        data: [66.5,33.5],
+        data: [33.5,66.5],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -42,7 +42,7 @@ const Dashboard = () => {
     labels: ['Income', 'Loss'],
     datasets: [
       {
-        data: [66.5,33.5],
+        data: [23,77],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -67,7 +67,24 @@ const Dashboard = () => {
   return (
     <>
       <div className="min-h-screen bg-gray-100">
-        {/* Main Content */}
+        {/* Table */}
+        <div className="grid grid-cols-1 mt-5">
+          <div className="col-span-1 bg-white p-4">
+            {/* Header */}
+            <div className="grid grid-cols-1 mb-4">
+              <div className="col-span-1 bg-gray-200 p-4">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Inventory</h2>
+              </div>
+            </div>
+            <DashTable />
+          </div>
+        </div>
+        {/* Header */}
+        <div className="grid grid-cols-1 mb-4">
+          <div className="col-span-1 bg-gray-200 p-4">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Sales</h2>
+          </div>
+        </div>
         <div className="p-4 border-x-4">
 
           {/* Grid Layout */}
@@ -84,20 +101,7 @@ const Dashboard = () => {
 
             {/* Second row, third column */}
             <div className="col-span-1 p-4 text-center">
-              <PieChart title="Monthly Sales" data={yearly}/>
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="grid grid-cols-1 mt-5">
-            <div className="col-span-1 bg-white p-4">
-              {/* Header */}
-              <div className="grid grid-cols-1 mb-4">
-                <div className="col-span-1 bg-gray-200 p-4">
-                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Inventory</h2>
-                </div>
-              </div>
-              <DashTable />
+              <PieChart title="Yearly Sales" data={yearly}/>
             </div>
           </div>
         </div>

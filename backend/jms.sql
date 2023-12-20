@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 18, 2023 at 05:40 AM
+-- Generation Time: Dec 20, 2023 at 11:08 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -49,18 +49,19 @@ CREATE TABLE `checkout` (
   `datetime_added` datetime DEFAULT CURRENT_TIMESTAMP,
   `datetime_processed` datetime DEFAULT NULL,
   `is_processed` varchar(20) NOT NULL,
-  `return_reason` varchar(255) DEFAULT NULL
+  `return_reason` varchar(255) DEFAULT NULL,
+  `rate` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `checkout`
 --
 
-INSERT INTO `checkout` (`receiptnumber`, `customer`, `items`, `subtotal`, `datetime_added`, `datetime_processed`, `is_processed`, `return_reason`) VALUES
-(55, 25, '[{\"id\": \"13\", \"itemname\": \"Spark Plug\", \"quantity\": 1, \"sellingprice\": \"8.00\"}, {\"id\": \"12\", \"itemname\": \"Brake Pads\", \"quantity\": 1, \"sellingprice\": \"35.00\"}]', '43.00', '2023-12-18 12:08:53', '2023-12-18 04:09:05', 'COMPLETE', NULL),
-(56, 25, '[{\"id\": \"13\", \"itemname\": \"Spark Plug\", \"quantity\": 1, \"sellingprice\": \"8.00\"}, {\"id\": \"14\", \"itemname\": \"Chain Set\", \"quantity\": 1, \"sellingprice\": \"50.00\"}, {\"id\": \"19\", \"itemname\": \"Brake Disk\", \"quantity\": 1, \"sellingprice\": \"45.00\"}]', '103.00', '2023-12-18 12:09:20', '2023-12-18 04:09:23', 'REPLACED', 'PAKIBALIK NETO KAILANGANG KAILANGNA KO NA NG PERA KAYA ATUPAGIN MO AT GALINGAN MO PAGBABALIK ETO NA PERA MO UGH'),
-(57, 25, '[{\"id\": \"13\", \"itemname\": \"Spark Plug\", \"quantity\": 1, \"sellingprice\": \"8.00\"}]', '8.00', '2023-12-18 12:44:50', '2023-12-18 04:45:22', 'TO PICK UP', NULL),
-(58, 25, '[{\"id\": \"11\", \"itemname\": \"Tire Tube\", \"quantity\": 5, \"sellingprice\": \"30.50\"}]', '152.50', '2023-12-18 12:46:16', NULL, 'PROCESSING', NULL);
+INSERT INTO `checkout` (`receiptnumber`, `customer`, `items`, `subtotal`, `datetime_added`, `datetime_processed`, `is_processed`, `return_reason`, `rate`) VALUES
+(67, 25, '[{\"id\": \"11\", \"rate\": 3, \"itemname\": \"Tire Tube\", \"quantity\": 1, \"sellingprice\": \"30.50\"}, {\"id\": \"12\", \"rate\": 2, \"itemname\": \"Brake Pads\", \"quantity\": 1, \"sellingprice\": \"35.00\"}]', '65.50', '2023-12-19 13:04:14', '2023-12-19 05:08:22', 'COMPLETE', NULL, 4),
+(68, 25, '[{\"id\": \"11\", \"itemname\": \"Tire Tube\", \"quantity\": 1, \"sellingprice\": \"30.50\"}]', '30.50', '2023-12-19 20:29:20', NULL, 'PROCESSING', NULL, NULL),
+(69, 25, '[{\"id\": \"12\", \"itemname\": \"Brake Pads\", \"quantity\": 1, \"sellingprice\": \"35.00\"}]', '35.00', '2023-12-19 20:30:39', NULL, 'PROCESSING', NULL, NULL),
+(70, 25, '[{\"id\": \"11\", \"itemname\": \"Tire Tube\", \"quantity\": 1, \"sellingprice\": \"30.50\"}]', '30.50', '2023-12-19 20:33:48', NULL, 'PROCESSING', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -130,17 +131,17 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `itemname`, `image`, `category`, `compatibility`, `marketprice`, `boughtprice`, `sellingprice`, `initialquantity`, `currentquantity`, `branch`, `lastdateupdated`, `supplier`) VALUES
-(11, 'Tire Tube', 'ampel.jpg', 'Tires', 'Barako', '20.00', '12.00', '30.50', 50, 17, 'Canubing I', '2023-12-18', 'AM Merchandise'),
-(12, 'Brake Pads', 'ampel.jpg', 'Brakes', 'Raider150', '25.00', '15.00', '35.00', 40, 39, 'Canubing I.2', '2023-12-18', 'Edward Merchandise'),
-(13, 'Spark Plug', 'ampel.jpg', 'Electrical', 'Raider150', '5.00', '2.50', '8.00', 30, 5, 'Bayanan II', '2023-12-18', 'Kristal Merchandise'),
-(14, 'Chain Set', 'ampel.jpg', 'Drive', 'Sniper', '40.00', '25.00', '50.00', 25, 5, 'Malinao', '2023-01-05', 'Soriano Merchandise'),
-(15, 'Brake Pads', 'ampel.jpg', 'Brakes', 'Raider150', '25.00', '15.00', '35.00', 60, 60, 'Canubing I', '2023-12-18', 'AM Merchandise'),
+(11, 'Tire Tube', 'ampel.jpg', 'Tires', 'Barako', '20.00', '12.00', '30.50', 50, 19, 'Canubing I', '2023-12-18', 'AM Merchandise'),
+(12, 'Brake Pads', 'ampel.jpg', 'Brakes', 'Raider150', '25.00', '15.00', '35.00', 40, 35, 'Canubing I.2', '2023-12-18', 'Edward Merchandise'),
+(13, 'Spark Plug', 'ampel.jpg', 'Electrical', 'Raider150', '5.00', '2.50', '8.00', 30, 8, 'Bayanan II', '2023-12-18', 'Kristal Merchandise'),
+(14, 'Chain Set', 'ampel.jpg', 'Drive', 'Sniper', '40.00', '25.00', '50.00', 25, 9, 'Malinao', '2023-12-18', 'Soriano Merchandise'),
+(15, 'Brake Pads', 'ampel.jpg', 'Brakes', 'Raider150', '25.00', '15.00', '35.00', 60, 59, 'Canubing I', '2023-12-18', 'AM Merchandise'),
 (16, 'Air Filter', 'ampel.jpg', 'Air Intake', 'Honda CV110', '15.00', '8.00', '20.00', 35, 5, 'Canubing I.2', '2022-02-07', 'Edward Merchandise'),
 (17, 'Tire Tube', 'ampel.jpg', 'Tires', 'Barako', '20.00', '12.00', '30.00', 50, 13, 'Bayanan II', '2021-09-14', 'Kristal Merchandise'),
 (18, 'Battery', 'pogi.jpg', 'Electrical', 'Sniper', '30.00', '18.00', '40.00', 20, 11, 'Malinao', '2023-03-30', 'Soriano Merchandise'),
-(19, 'Brake Disk', 'pogi.jpg', 'Brakes', 'Honda CV110', '35.00', '20.00', '45.00', 45, 26, 'Canubing I', '2022-11-03', 'AM Merchandise'),
+(19, 'Brake Disk', 'pogi.jpg', 'Brakes', 'Honda CV110', '35.00', '20.00', '45.00', 45, 24, 'Canubing I', '2022-11-03', 'AM Merchandise'),
 (20, 'Handle Grip', 'pogi.jpg', 'Handlebars', 'Raider150', '8.00', '4.50', '12.00', 55, 43, 'Canubing I.2', '2021-04-25', 'Edward Merchandise'),
-(21, 'Brake Pad', 'pogi.jpg', 'Brakes', 'Yamaha MT-09', '20.00', '12.00', '25.00', 30, -3, 'Canubing I.2', '2023-06-10', 'AM Merchandise'),
+(21, 'Brake Pad', 'pogi.jpg', 'Brakes', 'Yamaha MT-09', '20.00', '12.00', '25.00', 30, 0, 'Canubing I.2', '2023-06-10', 'AM Merchandise'),
 (22, 'Air Filter', 'pogi.jpg', 'Air Filters', 'Kawasaki Ninja 650', '10.00', '5.00', '15.00', 40, 36, 'Bayanan II', '2022-11-28', 'Edward Merchandise'),
 (23, 'Handlebar Grips', 'pogi.jpg', 'Handlebars', 'Suzuki GSX-R750', '7.00', '3.50', '10.00', 50, 48, 'Canubing I', '2021-09-15', 'Kristal Merchandise'),
 (24, 'Spark Plug', 'pogi.jpg', 'Ignition', 'Ducati Panigale V4', '5.00', '2.00', '8.00', 60, 57, 'Malinao', '2023-04-22', 'Soriano Merchandise'),
@@ -166,7 +167,29 @@ INSERT INTO `products` (`id`, `itemname`, `image`, `category`, `compatibility`, 
 (65, 'asdfasdf', 'WIN_20231128_15_30_20_Pro.jpg', '321', 'asdf', '321.00', '123.00', '213.00', 321, 321, '231', '2023-11-29', '123'),
 (66, 'asdf', 'WIN_20231128_15_30_20_Pro.jpg', '312', '123', '3213.00', '321.00', '321.00', 321, 321, '321', '2023-11-29', '321'),
 (67, 'cvvcvc', 'WIN_20230421_21_09_32_Pro.jpg', 'cvvc', 'cvvcvc', '66.00', '66.00', '66.00', 66, 66, 'bnbnvvb', '2023-12-12', '66'),
-(68, 'aAAAAAA', 'WIN_20231117_16_14_08_Pro.jpg', 'AAAAAAA', 'AAAAAAAA', '51.23', '55.23', '51.55', 44, 44, 'ASDFASFD', '2023-12-13', 'AAAAA');
+(68, 'aAAAAAA', 'WIN_20231117_16_14_08_Pro.jpg', 'AAAAAAA', 'AAAAAAAA', '51.23', '55.23', '51.55', 44, 43, 'ASDFASFD', '2023-12-13', 'AAAAA');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_history`
+--
+
+CREATE TABLE `product_history` (
+  `id` int NOT NULL,
+  `item_id` int UNSIGNED NOT NULL,
+  `prev_quantity` int NOT NULL,
+  `new_quantity` int NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_history`
+--
+
+INSERT INTO `product_history` (`id`, `item_id`, `prev_quantity`, `new_quantity`, `status`, `datetime`) VALUES
+(40, 11, 20, 19, 'OUTBOUND', '2023-12-19 20:33:48');
 
 -- --------------------------------------------------------
 
@@ -194,7 +217,23 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`userId`, `userName`, `userPassword`, `userImage`, `userAddress`, `userEmail`, `userRole`, `datetime_added`, `date_updated`, `state`, `last_activity`) VALUES
 (21, 'user2', '$2y$10$6i/sxHGZt3nKyXlCxO/JK.SR8jNORcRcC0UPC2TCILu0L9gzGieaq', 'WIN_20231024_16_59_26_Pro.jpg', 'Canubing 1', 'olajohnfilhmar@gmail.com', 'ADMIN', '2023-12-12 19:54:46', NULL, 1, '2023-12-13 02:39:43'),
-(25, 'ADMINISTRATOR', '$2y$10$shy2MhS/FZqH7vY8TxUV5OrptHwnSLpeA.iBibLo1lKffQWZZue9e', 'Screenshot 2023-12-12 190735.png', 'Canubing 1, Calapan City, Oriental Mindoro', 'elizabethgeronaga@gmail.com', 'ADMIN', '2023-12-12 22:21:30', NULL, 1, '2023-12-18 11:24:45');
+(25, 'ADMINISTRATOR', '$2y$10$shy2MhS/FZqH7vY8TxUV5OrptHwnSLpeA.iBibLo1lKffQWZZue9e', 'Screenshot 2023-12-12 190735.png', 'Canubing 1, Calapan City, Oriental Mindoro', 'elizabethgeronaga@gmail.com', 'ADMIN', '2023-12-12 22:21:30', NULL, 1, '2023-12-19 21:47:08');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_history`
+--
+
+CREATE TABLE `user_history` (
+  `id` int NOT NULL,
+  `user_id` int UNSIGNED NOT NULL,
+  `latitude` float(10,2) NOT NULL,
+  `longitude` float(10,2) NOT NULL,
+  `action` varchar(155) NOT NULL,
+  `content` json DEFAULT NULL,
+  `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -235,10 +274,23 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `product_history`
+--
+ALTER TABLE `product_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `constraint_item_id_FK_products_item_id` (`item_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userId`);
+
+--
+-- Indexes for table `user_history`
+--
+ALTER TABLE `user_history`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -254,7 +306,7 @@ ALTER TABLE `chat_messages`
 -- AUTO_INCREMENT for table `checkout`
 --
 ALTER TABLE `checkout`
-  MODIFY `receiptnumber` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `receiptnumber` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `financial_transactions`
@@ -275,10 +327,22 @@ ALTER TABLE `products`
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
+-- AUTO_INCREMENT for table `product_history`
+--
+ALTER TABLE `product_history`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `userId` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT for table `user_history`
+--
+ALTER TABLE `user_history`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -302,6 +366,12 @@ ALTER TABLE `checkout`
 --
 ALTER TABLE `financial_transactions`
   ADD CONSTRAINT `financial_transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`);
+
+--
+-- Constraints for table `product_history`
+--
+ALTER TABLE `product_history`
+  ADD CONSTRAINT `constraint_item_id_FK_products_item_id` FOREIGN KEY (`item_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

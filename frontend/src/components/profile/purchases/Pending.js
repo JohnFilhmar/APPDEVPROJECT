@@ -53,9 +53,6 @@ const Pending = () => {
                             <h2 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
                                 Receipt Number: {rec.receiptnumber}
                             </h2>
-                            <button>
-                                <FcCancel className="w-5 h-5" />
-                            </button>
                         </div>
                         <div className="grid grid-cols-3 h-full text-center p-4">
                             {
@@ -65,7 +62,7 @@ const Pending = () => {
                                         <h5 className="text-md font-bold tracking-tight text-gray-900 dark:text-white">
                                             {item.itemname}
                                         </h5>
-                                        {/* <img src={`https://jmseshop.shop/backend/public/items/${}`} alt="" /> */}
+                                        {/* <img src={`http://localhost:8080/items/${}`} alt="" /> */}
                                     </div>
                                     <div className="flex justify-between mt-2">
                                         <div className="text-md font-bold tracking-tight text-gray-900 dark:text-white">

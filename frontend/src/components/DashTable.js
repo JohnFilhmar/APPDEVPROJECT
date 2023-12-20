@@ -25,7 +25,10 @@ const DashTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [filteredBranchData, setFilteredBranchData] = useState([...products]);
     const [openModal, setOpenModal] = useState(false);
+    const [historyModal, setHistoryModal] = useState(false);
     const [toEdit, setToEdit] = useState(0);
+    const [trackHistory, setTrackHistory] = useState([]);
+    const [historyItem,setHistoryItem] = useState("");
 
     const pageCount = Math.ceil(filteredBranchData.length / ITEMS_PER_PAGE);
     const fetchData = async () => {
@@ -83,6 +86,23 @@ const DashTable = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[openModal]);
+
+    const fetchHistory = async (id) => {
+      try {
+        const response = await axios.postForm(`getHistory/${id}`);
+        setTrackHistory(response.data);
+        console.log(response.data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    useEffect(() => {
+        fetchHistory(toEdit);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [historyModal]);
     
     const search = (query) => {
             const results = products.filter((product) =>
@@ -130,6 +150,24 @@ const DashTable = () => {
         }
     };
 
+    const getTimeProcessed = (datetime) => {
+        if(datetime !== null){
+        const rawDateTime = new Date(datetime);
+        const options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true,
+        };
+        return rawDateTime.toLocaleDateString('en-US', options);
+        } else {
+        return null;
+        }
+    };
+    
     return (
         <>
             <br/><br/>
@@ -197,12 +235,20 @@ const DashTable = () => {
                                     <button onClick={() => decreaseQuantity(product.id)}><TbExposureMinus1/></button>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <button
-                                        onClick={() => {setToEdit(parseInt(product.id)); setOpenModal(true);}}
-                                        className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                                    >
-                                    Edit
-                                    </button>
+                                    <div className="divide-x flex gap-2">
+                                        <button
+                                            onClick={() => {setToEdit(parseInt(product.id)); setOpenModal(true);}}
+                                            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                                        >
+                                        Edit
+                                        </button>
+                                        <button
+                                            onClick={() => {setHistoryItem(product.itemname);setToEdit(parseInt(product.id)); setHistoryModal(true);}}
+                                            className="pl-2 font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                                        >
+                                        Audit
+                                        </button>
+                                    </div>
                                 </Table.Cell>
                             </Table.Row>
                         ))
@@ -346,6 +392,37 @@ const DashTable = () => {
                     </Button>
                     </Modal.Footer>
                 </form>
+            </Modal>
+            <Modal dismissible show={historyModal} onClose={() => setHistoryModal(false)}>
+                <Modal.Header>Product History Tracking</Modal.Header>
+                <Modal.Body className='max-h-96 h-96'>
+                    <p className='text-xl font-semibold p-2 mb-2'>Product History : {historyItem}</p>
+                    <Table>
+                        <Table.Head>
+                            <Table.HeadCell>Previous Quantity</Table.HeadCell>
+                            <Table.HeadCell>New Quantity</Table.HeadCell>
+                            <Table.HeadCell>Status</Table.HeadCell>
+                            <Table.HeadCell>Date & Time</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body >
+                            {
+                                trackHistory.map((history, index) => (
+                                    <Table.Row key={index} className={`bg-white dark:border-gray-700 ${history.status === 'INBOUND' ? 'bg-green-200' : 'bg-red-200' }`}>
+                                        <Table.Cell>{history.prev_quantity}</Table.Cell>
+                                        <Table.Cell>{history.new_quantity}</Table.Cell>
+                                        <Table.Cell>{history.status}</Table.Cell>
+                                        <Table.Cell>{getTimeProcessed(history.datetime)}</Table.Cell>
+                                    </Table.Row>
+                                ))
+                            }
+                        </Table.Body>
+                    </Table>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button color="gray" onClick={() => setHistoryModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </>
     );

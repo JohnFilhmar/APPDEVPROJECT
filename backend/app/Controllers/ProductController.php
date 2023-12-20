@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\ProductModel;
+use App\Models\ProductHistoryModel;
 
 class ProductController extends BaseController
 {
@@ -102,7 +103,15 @@ class ProductController extends BaseController
         $main = new ProductModel();
         $findById = $main->find(['id' => $id]);
         if(!$findById) return $this->failNotFound('No record found');
-        $main = new ProductModel();
+        $history = new ProductHistoryModel();
+        $stat = $findById[0]['currentquantity'] > $this->request->getVar('currentquantity') ? "OUTBOUND" : "INBOUND";
+        $bind = [
+            'item_id' => $id,
+            'prev_quantity' => $findById[0]['currentquantity'],
+            'new_quantity' => $this->request->getVar('currentquantity'),
+            'status' => $stat,
+        ];
+        $history->save($bind);
         $main->update($id, $data);
         $response = [
             'status' => 201,
@@ -113,6 +122,7 @@ class ProductController extends BaseController
         ];
         return $this->respondCreated($response);
     }
+
     public function delete($id = null)
     {
         $main = new ProductModel();
@@ -136,6 +146,14 @@ class ProductController extends BaseController
         $data = $main->where('id',$id)->first();
         $main->update(['id' => $id], ['currentquantity' => ((int)$data['currentquantity']) + 1]);
         $new = $main->where('id',$id)->first();
+        $history = new ProductHistoryModel();
+        $bind = [
+            'item_id' => $id,
+            'prev_quantity' => $data['currentquantity'],
+            'new_quantity' => $new['currentquantity'],
+            'status' => "INBOUND",
+        ];
+        $history->save($bind);
         $response = [
             'status' => 201,
             'error' => null,
@@ -152,6 +170,14 @@ class ProductController extends BaseController
         $data = $main->where('id',$id)->first();
         $main->update(['id' => $id], ['currentquantity' => ((int)$data['currentquantity']) - 1]);
         $new = $main->where('id',$id)->first();
+        $history = new ProductHistoryModel();
+        $bind = [
+            'item_id' => $id,
+            'prev_quantity' => $data['currentquantity'],
+            'new_quantity' =>$new['currentquantity'],
+            'status' => "OUTBOUND",
+        ];
+        $history->save($bind);
         $response = [
             'status' => 201,
             'error' => null,
@@ -161,5 +187,12 @@ class ProductController extends BaseController
             'newQuantity' => $new['currentquantity']
         ];
         return $this->respondCreated($response);
+    }
+
+    public function history($id)
+    {
+        $history = new ProductHistoryModel();
+        $data = $history->where(['item_id' => $id])->findAll();
+        return $this->respond($data);
     }
 }

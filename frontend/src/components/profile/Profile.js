@@ -30,10 +30,10 @@ const Profile = () => {
                                 <FaShoppingBag  className="w-5 h-5 mr-3"/>
                                 <p className="text-base hover:font-bold active:font-extrabold">Purchases</p>
                             </Link>
-                            <Link to="/notifications" className="flex py-4">
+                            {/* <Link to="/notifications" className="flex py-4">
                                 <IoNotifications className="w-5 h-5 mr-3"/>
                                 <p className="text-base hover:font-bold active:font-extrabold">Notifications</p>
-                            </Link>
+                            </Link> */}
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@ const Profile = () => {
                             <Route path="/account" component={Account}/>
                             <Route path="/edit" component={EditAccount}/>
                             <Route path="/purchases/all" component={Purchases}/>
-                            <Route path="/notifications" component={Notifs}/>
+                            {/* <Route path="/notifications" component={Notifs}/> */}
                             <Redirect from="*" to="/" />
                         </Switch>
                 </div>

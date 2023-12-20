@@ -7,6 +7,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\CheckOutModel;
 use App\Models\UserModel;
 use App\Models\ProductModel;
+use App\Models\ProductHistoryModel;
 
 class CheckoutController extends BaseController
 {
@@ -41,6 +42,7 @@ class CheckoutController extends BaseController
                     'datetime_added' => $checkout['datetime_added'],
                     'datetime_processed' => $checkout['datetime_processed'],
                     'is_processed' => $checkout['is_processed'],
+                    'rate' => $checkout['rate'],
                 ];
             }
         }
@@ -71,7 +73,8 @@ class CheckoutController extends BaseController
                 'datetime_added' => $receipt['datetime_added'],
                 'datetime_processed' => $receipt['datetime_processed'],
                 'is_processed' => $receipt['is_processed'],
-                'return_reason' => $receipt['return_reason']
+                'return_reason' => $receipt['return_reason'],
+                'rate' => $receipt['rate'],
             ];
         }
     
@@ -157,14 +160,18 @@ class CheckoutController extends BaseController
         foreach ($multipleItems as $item) {
             $itemId = $item['id'];
             $quantity = $item['quantity'];
-    
-            // Fetch the product record
             $product = $products->find($itemId);
-    
-            // Update the current quantity based on the checked-out quantity
             if ($product) {
                 $currentQuantity = $product['currentquantity'] - $quantity;
                 $products->update($itemId, ['currentquantity' => $currentQuantity]);
+                $history = new ProductHistoryModel();
+                $bind = [
+                    'item_id' => $itemId,
+                    'prev_quantity' => $product['currentquantity'],
+                    'new_quantity' => $currentQuantity,
+                    'status' => 'OUTBOUND',
+                ];
+                $history->save($bind);
             }
         }
     
@@ -199,9 +206,17 @@ class CheckoutController extends BaseController
             return $this->respond($response);
         }
         try {
+            $process = $existingData['is_processed'] == 'PROCESSING' ? 'TO PICK UP' : ($existingData['is_processed'] == 'TO PICK UP' ? 'COMPLETE' : $existingData['is_processed']);
+            $newItems = json_decode($existingData['items'], true);
+            foreach ($newItems as &$item) {
+                $item['rate'] = 0;
+            }
+            $existingData['items'] = json_encode($newItems);
+
             $toUpdate = [
-                'is_processed' => $existingData['is_processed'] == 'PROCESSING' ? 'TO PICK UP' : ($existingData['is_processed'] == 'TO PICK UP' ? 'COMPLETE' : $existingData['is_processed']),
-                'datetime_processed' => date('Y-m-d H:i:s')
+                'is_processed' => $process,
+                'datetime_processed' => date('Y-m-d H:i:s'),
+                'items' => $existingData['items']
             ];
             $main->update(['receiptnumber' => $id],$toUpdate);
             $updated = $main->where('receiptnumber', $id)->first();
@@ -209,14 +224,16 @@ class CheckoutController extends BaseController
                 'status' => 204,
                 'error' => null,
                 'messages' => 'Record Successfully Processed',
-                'data' => $updated['is_processed']
+                'data' => $updated,
+                'toUpdate' => $toUpdate
             ];
         } catch (\Exception $e) {
             $response = [
                 'status' => 500,
-                'error' => 'Internal Server Error',
+                'error' => 'Internal Server Error' . $e,
                 'messages' => 'Error processing the record',
-                'data' => null
+                'data' => null,
+                'debug' => $existingData['items']
             ];
         }
     
@@ -263,6 +280,44 @@ class CheckoutController extends BaseController
         $response = [
             'status' => 200,
             'message' => 'Return Denied'
+        ];
+        return $this->respond($response);
+    }
+    public function rateReceipt ($id = null)
+    {
+        $main = new CheckOutModel();
+        $toUpdate = [
+            'rate' => $this->request->getVar('rate'), 
+        ];
+        $main->update(['receiptnumber',$id],$toUpdate);
+        $response = [
+            'status' => 200,
+            'message' => 'Rating Given',
+            'receiptrating' => $this->request->getVar('rate'),
+        ];
+        return $this->respond($response);
+    }
+    public function rateProduct($id = null)
+    {
+        $main = new CheckOutModel();
+        $items = $main->where('receiptnumber', $id)->first();
+        $newItems = json_decode($items['items'], true);
+        $itemIndex = intval($this->request->getVar('itemIndex'));
+        if (isset($newItems[$itemIndex])) {
+            $newItems[$itemIndex]['rate'] = intval($this->request->getVar('rate'));
+        }
+        $updatedItemsJson = json_encode($newItems);
+        $main->update(['receiptnumber' => $id], [
+            'items' => $updatedItemsJson,
+        ]);
+        $response = [
+            'status' => 200,
+            'message' => 'Rating Given',
+            'productrating' => $itemIndex,
+            'toUpdate' => [
+                'rate' => $this->request->getVar('rate'),
+                'items' => $updatedItemsJson,
+            ],
         ];
         return $this->respond($response);
     }

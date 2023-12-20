@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CheckOutModel extends Model
+class ProductHistoryModel extends Model
 {
-    protected $table            = 'checkout';
-    protected $primaryKey       = 'receiptnumber';
+    protected $table            = 'product_history';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['receiptnumber', 'customer', 'items', 'subtotal','datetime_added', 'datetime_processed', 'is_processed','return_reason','rate'];
+    protected $allowedFields    = ['id', 'item_id', 'prev_quantity', 'new_quantity', 'status', 'datetime'];
 
     // Dates
     protected $useTimestamps = false;

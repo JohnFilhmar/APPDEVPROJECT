@@ -54,7 +54,10 @@ const Checkout = ({ data, state }) => {
         try {
             const formData = new FormData();
             formData.append('customer', localStorage.getItem('userId'));
-            formData.append('items', localStorage.getItem('toCheckOutItems'));
+            const existingDataString = localStorage.getItem('toCheckOutItems');
+            const existingData = JSON.parse(existingDataString);
+            existingData.rate = 0;
+            formData.append('items', JSON.stringify(existingData));
             formData.append('subtotal', calculateOverallTotal());
             const response = await postRequest(formData);
             setReceipt([]);
